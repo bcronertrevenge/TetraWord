@@ -11,5 +11,14 @@ package fr.univ.tetraword;
  * @author bruno
  */
 public class Game {
+    Shape currentShape;
+    int score;
+    int level;
+    Dictionary dictionary;
     
+    public Game(){
+        score=0;
+        level=0;
+        currentShape=null;
+    }
 }

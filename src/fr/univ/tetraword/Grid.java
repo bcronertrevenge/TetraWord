@@ -10,6 +10,10 @@ package fr.univ.tetraword;
  *
  * @author bruno
  */
-public class BrickBox extends Box {
+public class Grid {
+    Box grid[][];
     
+    public Grid(){
+        grid=new Box[28][14];
+    }
 }

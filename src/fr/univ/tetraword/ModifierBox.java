@@ -10,6 +10,6 @@ package fr.univ.tetraword;
  *
  * @author bruno
  */
-public class ModifierBox {
+public class ModifierBox extends Box{
     
 }

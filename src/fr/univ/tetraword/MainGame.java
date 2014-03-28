@@ -10,6 +10,6 @@ package fr.univ.tetraword;
  *
  * @author bruno
  */
-public class BrickBox extends Box {
+public class MainGame {
     
 }

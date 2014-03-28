@@ -10,6 +10,12 @@ package fr.univ.tetraword;
  *
  * @author bruno
  */
-public class BrickBox extends Box {
-    
-}
+public enum shapeType {
+        T,
+        Square,
+        rightZ,
+        leftZ,
+        rightL,
+        leftL,
+        line;
+      }
