@@ -11,11 +11,11 @@ import javax.swing.border.Border;
 
 public class MainGame {
     
-    /* Blblblbl Hehehe */
+    /* Fonctions */
     public static JPanel setBackgroundImage(JFrame frame, final File img) throws IOException{
 	JPanel panel = new JPanel(){
-            private static final long serialVersionUID = 1;
             private BufferedImage buf = ImageIO.read(img);
+            private static final long serialVersionUID = 1;
             
             @Override
             protected void paintComponent(Graphics g){
