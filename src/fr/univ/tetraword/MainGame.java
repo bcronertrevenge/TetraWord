@@ -14,8 +14,8 @@ public class MainGame {
     /* Fonctions */
     public static JPanel setBackgroundImage(JFrame frame, final File img) throws IOException{
 	JPanel panel = new JPanel(){
-            private BufferedImage buf = ImageIO.read(img);
             private static final long serialVersionUID = 1;
+            private BufferedImage buf = ImageIO.read(img);
             
             @Override
             protected void paintComponent(Graphics g){
@@ -45,11 +45,17 @@ public class MainGame {
             // Création des boutons
             Font century = new Font("Century Gothic",0,26);
             
-            JCoolButton jouer = new JCoolButton("Jouer");
+            JCoolButton jouer = new JCoolButton("Nouveau jeu");
             jouer.setPreferredSize(new Dimension(220,60));
             jouer.setForeground(Color.white);
             jouer.setFont(century);
             jouer.setFocusPainted(false);
+            
+            JCoolButton charger = new JCoolButton("Charger partie");
+            charger.setPreferredSize(new Dimension(220,60));
+            charger.setForeground(Color.white);
+            charger.setFont(century);
+            charger.setFocusPainted(false);
                         
             JCoolButton options = new JCoolButton("Options");
             options.setPreferredSize(new Dimension(220,60));
@@ -69,9 +75,10 @@ public class MainGame {
             jPanel1Layout.setHorizontalGroup(
                 jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(124, 124, 124)
+                    .addGap(104, 104, 104)
                     .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                         .addComponent(jouer, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(charger, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(options, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(quitter, GroupLayout.PREFERRED_SIZE, 260, GroupLayout.PREFERRED_SIZE))
                     .addContainerGap(640, Short.MAX_VALUE))
@@ -82,11 +89,13 @@ public class MainGame {
             .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(370, Short.MAX_VALUE)
                 .addComponent(jouer, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(charger, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
                 .addComponent(options, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(quitter, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
-                .addGap(159, 159, 159))
+                .addGap(100, 100, 100))
         );
            
             frame.pack();
