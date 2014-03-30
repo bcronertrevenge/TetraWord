@@ -11,7 +11,7 @@ import javax.swing.border.Border;
 
 public class MainGame {
     
-    /* Fonctions */
+    /* Blblblbl Hehehe */
     public static JPanel setBackgroundImage(JFrame frame, final File img) throws IOException{
 	JPanel panel = new JPanel(){
             private static final long serialVersionUID = 1;
