@@ -7,6 +7,12 @@
 package fr.univ.tetraword;
 
 import static fr.univ.tetraword.shapeType.T;
+import static fr.univ.tetraword.shapeType.leftL;
+import static fr.univ.tetraword.shapeType.leftZ;
+import static fr.univ.tetraword.shapeType.line;
+import static fr.univ.tetraword.shapeType.rightL;
+import static fr.univ.tetraword.shapeType.rightZ;
+import static fr.univ.tetraword.shapeType.square;
 
 /**
  *
@@ -40,7 +46,7 @@ public class Shape {
                  bricks[1][1]=case3;
                  bricks[1][2]=case4;
                 break;
-            case Square:
+            case square:
                  bricks[0][0]=case1;
                  bricks[0][1]=case2;
                  bricks[1][0]=case3;
@@ -80,6 +86,63 @@ public class Shape {
                 System.out.println("Not a Shape");
                 break;
         }
+    }
+    
+    public void rotateShape(){
+        
+        
+        if(type.getTaille()==3){
+        Brick tmp, tmp2;
+            
+        //+
+        tmp=bricks[0][1];
+        
+        tmp2=bricks[1][0];
+        bricks[1][0]=tmp;
+        
+        tmp=bricks[2][1];
+        bricks[2][1]=tmp2;
+        
+        tmp2=bricks[1][2];
+        bricks[1][2]=tmp;
+        
+        bricks[0][1]=tmp2;
+        
+        //x
+        tmp=bricks[0][0];
+        
+        tmp2=bricks[2][0];
+        bricks[2][0]=tmp;
+        
+        tmp=bricks[2][2];
+        bricks[2][2]=tmp2;
+        
+        tmp2=bricks[0][2];
+        bricks[0][2]=tmp;
+        
+        bricks[0][0]=tmp2;
+        }
+        else if(type.getTaille()==4){
+            Brick tmp;
+            for(int i=1;i<4;++i){
+                tmp=bricks[i][0];
+                bricks[i][0]=bricks[0][i];
+                bricks[0][i]=tmp;
+            }
+        }
+    }
+    
+    public void printShape(){
+        for(int i=0;i<4;++i){
+            for(int j=0;j<4;++j){
+                if(bricks[i][j]!=null)
+                    System.out.print(bricks[i][j].lettre+" ");
+                else
+                    System.out.print("  ");
+            }
+            System.out.print("\n");
+        }
+        
     }
     
     private int getRarityFromLetter(char lettre){
@@ -143,7 +206,11 @@ public class Shape {
     }
     
     public static void main (String[] args){
-        Shape s=new Shape(T);
-        System.out.println("Hello");
+        Shape s=new Shape(line);
+        s.printShape();
+        s.rotateShape();
+        s.printShape();
+        s.rotateShape();
+        s.printShape();
     }
 }

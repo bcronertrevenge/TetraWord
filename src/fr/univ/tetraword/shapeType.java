@@ -11,11 +11,21 @@ package fr.univ.tetraword;
  * @author bruno
  */
 public enum shapeType {
-        T,
-        Square,
-        rightZ,
-        leftZ,
-        rightL,
-        leftL,
-        line;
+        T(3),
+        square(3),
+        rightZ(3),
+        leftZ(3),
+        rightL(3),
+        leftL(3),
+        line(4);
+        
+        private final int taille;
+        
+        private shapeType(int taille){
+            this.taille=taille;
+        }
+        
+        public int getTaille(){
+            return taille;
+        }
       }
