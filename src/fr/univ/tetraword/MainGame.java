@@ -11,7 +11,7 @@ import javax.swing.border.Border;
 
 public class MainGame {
     
-    /* Fonctions */
+    /* Fonction pour mettre une image en arrière plan */
     public static JPanel setBackgroundImage(JFrame frame, final File img) throws IOException{
 	JPanel panel = new JPanel(){
             private static final long serialVersionUID = 1;
@@ -26,14 +26,13 @@ public class MainGame {
 	
 	frame.setContentPane(panel);
 	return panel;
-    }   
+    }
     
-    /* Programme Principal */
-    public static void main(String[] args) throws IOException{
-        
+    /* Page d'accueil */
+    public static void welcomePage() throws IOException{
             // Création de la fenêtre
             JFrame frame = new JFrame();
-            frame.setTitle("Tetra Word");
+            frame.setTitle("Welcome on Tetra Word");
             frame.setPreferredSize(new Dimension(1024,768));
                         
             // Arrière plan
@@ -100,6 +99,79 @@ public class MainGame {
            
             frame.pack();
             frame.setVisible(true);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
+    }
+    
+    /* Page d'accueil */
+    public static void mainPage() throws IOException{
+            // Création de la fenêtre
+            JFrame frame = new JFrame();
+            frame.setTitle("Tetra Word");
+            frame.setPreferredSize(new Dimension(1024,768));
+                        
+            // Arrière plan
+            JPanel panel = setBackgroundImage(frame, new File("src/fr/univ/graphicinterface/game.jpg"));
+            panel.setMaximumSize(new Dimension(1024, 768));
+            panel.setMinimumSize(new Dimension(600, 400));
+            panel.setPreferredSize(new Dimension(1024, 768));
+            
+            // Fonts
+            Font copperplate = new Font("Copperplate Gothic Light",1,26);
+            Font century = new Font("Century Gothic",0,26);
+            
+            // Création du jeu
+            Game mainGame=new Game();
+            
+            // Affichage score, niveau
+            JLabel niveau = new JLabel("Niveau     "+mainGame.getLevel());
+            niveau.setPreferredSize(new Dimension(180,60));
+            niveau.setForeground(new Color(33,91,201));
+            niveau.setFont(copperplate);
+                        
+            JLabel score = new JLabel("Score     "+mainGame.getScore());
+            score.setPreferredSize(new Dimension(180,60));
+            score.setForeground(new Color(33,91,201));
+            score.setFont(copperplate);
+            
+            JLabel prochainepiece = new JLabel("Prochaine pièce");
+            prochainepiece.setPreferredSize(new Dimension(180,60));
+            prochainepiece.setForeground(new Color(33,91,201));
+            prochainepiece.setFont(copperplate);
+       
+            // Placement à gauche
+            GroupLayout jPanel1Layout = new GroupLayout(panel);
+            panel.setLayout(jPanel1Layout);
+            jPanel1Layout.setHorizontalGroup(
+                jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(640, 640, 640)
+                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                        .addComponent(niveau, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(score, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(prochainepiece, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addContainerGap(640, Short.MAX_VALUE))
+                );
+            
+            jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(370, Short.MAX_VALUE)
+                .addComponent(niveau, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(score, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addComponent(prochainepiece, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+                .addGap(260, 260, 260))
+        );
+                      
+           
+            frame.pack();
+            frame.setVisible(true);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
+    }
+    
+    /* Programme Principal */
+    public static void main(String[] args) throws IOException{
+        mainPage();
     }
 }
