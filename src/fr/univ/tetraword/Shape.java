@@ -22,13 +22,18 @@ import static fr.univ.tetraword.shapeType.square;
 public class Shape {
     
     
-    shapeType type;
-    Brick bricks[][];
+    private shapeType type;
+    private Brick bricks[][];
+    public int x,y;
     
     public Shape(shapeType type){
         this.type=type;
         bricks=new Brick[4][4];
-        
+        if(type.getTaille()==3)
+            x=4;
+        else if(type.getTaille()==4)
+            x=3;
+        y=0;
        
         char random = (char) ((Math.random() * (26)) + 65);
         Brick case1=new Brick(random,getRarityFromLetter(random));
@@ -207,10 +212,6 @@ public class Shape {
     
     public static void main (String[] args){
         Shape s=new Shape(line);
-        s.printShape();
-        s.rotateShape();
-        s.printShape();
-        s.rotateShape();
         s.printShape();
     }
 }

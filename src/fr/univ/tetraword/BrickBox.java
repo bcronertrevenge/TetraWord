@@ -11,5 +11,11 @@ package fr.univ.tetraword;
  * @author bruno
  */
 public class BrickBox extends Box {
+    Shape shape;
+    Brick brick;
     
+    public BrickBox(Shape shape, Brick brick){
+        this.shape=shape;
+        this.brick=brick;
+    }
 }
