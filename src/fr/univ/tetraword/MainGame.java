@@ -14,8 +14,9 @@ public class MainGame {
     /* Fonctions */
     public static JPanel setBackgroundImage(JFrame frame, final File img) throws IOException{
 	JPanel panel = new JPanel(){
-            private BufferedImage buf = ImageIO.read(img);
             private static final long serialVersionUID = 1;
+            private BufferedImage buf = ImageIO.read(img);
+            
             
             @Override
             protected void paintComponent(Graphics g){
