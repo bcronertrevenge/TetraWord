@@ -12,13 +12,21 @@ package fr.univ.tetraword;
  */
 public class Game {
     Shape currentShape;
-    int score;
-    int level;
+    private int score;
+    private int level;
     Dictionary dictionary;
     
     public Game(){
         score=0;
-        level=0;
+        level=1;
         currentShape=null;
+    }
+    
+    public int getScore(){
+        return score;
+    }
+    
+    public int getLevel(){
+        return level;
     }
 }
