@@ -43,7 +43,7 @@ public class MainGame {
             
             // Création des boutons
             Font century = new Font("Century Gothic",0,26);
-            
+                       
             JWelcomeButton jouer = new JWelcomeButton("Nouveau jeu");
             jouer.setPreferredSize(new Dimension(220,60));
             jouer.setForeground(Color.white);
@@ -121,85 +121,85 @@ public class MainGame {
             
             // Création du jeu
             Game game=new Game();
-       
-            // Les labels
-            JLabel labelNiveau = new JLabel("Niveau");
+                   
+            // Grille
+            JButton grille = new JButton();
+            grille.setBackground(new java.awt.Color(102, 102, 102));
+            grille.setFont(century);
+            grille.setText("Grille à venir");
+            
+            // Labels
+            JLabel labelNiveau = new JLabel();
             labelNiveau.setFont(copperplate);
             labelNiveau.setForeground(new Color(33,91,201));
-            
-            JLabel labelScore = new JLabel("Score");
+            labelNiveau.setText("Niveau");
+
+            JLabel labelScore = new JLabel();
             labelScore.setFont(copperplate);
             labelScore.setForeground(new Color(33,91,201));
-            
-            JLabel labelPiece = new JLabel("Prochaine pièce");
+            labelScore.setText("Score");
+
+            JLabel labelPiece = new JLabel();
             labelPiece.setFont(copperplate);
             labelPiece.setForeground(new Color(33,91,201));
+            labelPiece.setText("Prochaine pièce");
             
-            // Les Scores
-            JWelcomeButton buttonNiveau = new JWelcomeButton(String.valueOf(game.getLevel()));
-            buttonNiveau.setForeground(Color.white);
+            // Boutons
+            JWelcomeButton buttonNiveau = new JWelcomeButton("200");
             buttonNiveau.setFont(century);
-            buttonNiveau.setFocusPainted(false);
-      
-            JWelcomeButton buttonScore = new JWelcomeButton(String.valueOf(game.getScore()));
-            buttonScore.setForeground(Color.white);
-            buttonScore.setFont(century);
-            buttonScore.setFocusPainted(false);
-            
-            // Grille prochaine pièce
-            JPanel grillePiece = new JPanel(new GridLayout (4,4));
-            Border line = BorderFactory.createLineBorder(Color.white,1); 
-            for(int i=0; i<16; ++i){
-                JPanel ptest = new JPanel();
-                ptest.setBackground(new Color(51,60,59));
-                ptest.setBorder(line);
-                ptest.setPreferredSize(new Dimension(40,40));
-                grillePiece.add(ptest);
-            }
+            buttonNiveau.setForeground(Color.WHITE);
 
-            
-            // Placements de tous les éléments
+            JWelcomeButton buttonScore = new JWelcomeButton("19180");
+            buttonScore.setFont(century);
+            buttonScore.setForeground(Color.WHITE);
+
+            JButton buttonPiece=new JButton();
+            buttonPiece.setBackground(Color.BLACK);
+            buttonPiece.setForeground(Color.WHITE);
+            buttonPiece.setText("Prochaine Piece");
+
             GroupLayout jPanel1Layout = new GroupLayout(panel);
             panel.setLayout(jPanel1Layout);
             jPanel1Layout.setHorizontalGroup(
-                jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addContainerGap(619, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(labelPiece)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(labelNiveau,GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(labelScore,GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE))
-                                    .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(buttonNiveau, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(buttonScore, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE))))
-                            .addGap(161, 161, 161))
-                        .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(grillePiece)
-                            .addGap(204, 204, 204))))
+                    .addGap(71, 71, 71)
+                    .addComponent(grille, GroupLayout.PREFERRED_SIZE, 361, GroupLayout.PREFERRED_SIZE)
+                    .addGap(148, 148, 148)
+                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(labelNiveau, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(labelScore, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE))
+                            .addGap(48, 48, 48)
+                            .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(buttonNiveau, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(buttonScore, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(labelPiece, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(buttonPiece, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addContainerGap(166, Short.MAX_VALUE))
             );
             jPanel1Layout.setVerticalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                    .addContainerGap(288, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(labelNiveau, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(buttonNiveau, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
-                    .addGap(46, 46, 46)
-                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(labelScore, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(buttonScore, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
-                    .addGap(54, 54, 54)
-                    .addComponent(labelPiece, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-                    .addGap(18, 18, 18)
-                    .addComponent(grillePiece)
-                    .addGap(106, 106, 106))
+                jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(66, 66, 66)
+                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(labelNiveau, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(buttonNiveau, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+                            .addGap(53, 53, 53)
+                            .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(labelScore, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(buttonScore, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+                            .addGap(56, 56, 56)
+                            .addComponent(labelPiece, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
+                            .addGap(28, 28, 28)
+                            .addComponent(buttonPiece, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE))
+                        .addComponent(grille, GroupLayout.PREFERRED_SIZE, 631, GroupLayout.PREFERRED_SIZE))
+                    .addContainerGap(71, Short.MAX_VALUE))
             );
-        
+       
             frame.pack();
             frame.setVisible(true);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
