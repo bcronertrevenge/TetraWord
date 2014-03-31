@@ -11,14 +11,14 @@ import java.awt.geom.RoundRectangle2D;
  
 import javax.swing.JButton;
  
-public class JCoolButton extends JButton {
+public class JWelcomeButton extends JButton {
  
 	private static final long serialVersionUID = 1671314658637614873L;
 	private int inset = 5;
 	private Color buttonColor = (new Color(33,91,201)).darker().darker();
  
  
-	public JCoolButton(String aNameString){
+	public JWelcomeButton(String aNameString){
 		super(aNameString);
 		setContentAreaFilled(false);
 		setForeground(Color.white);

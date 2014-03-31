@@ -150,7 +150,7 @@ public class Shape {
         
     }
     
-    private int getRarityFromLetter(char lettre){
+    private static int getRarityFromLetter(char lettre){
         switch(lettre){
             case 'A':
                 return 1;
@@ -208,6 +208,29 @@ public class Shape {
                 return -1;
         }
         
+    }
+    
+    public static Shape getRandomShape(){
+        char random = (char) (Math.random() * 7);
+        switch(random){
+            case 0:
+                return (new Shape(T));
+            case 1:
+                return (new Shape(square));
+            case 2:
+                return (new Shape(rightZ));
+            case 3:
+                return (new Shape(leftZ));
+            case 4:
+                return (new Shape(rightL));
+            case 5:
+                return (new Shape(leftL));
+            case 6:
+                return (new Shape(line));
+            default:
+                break;
+        }
+        return null;
     }
     
     public static void main (String[] args){
