@@ -122,12 +122,23 @@ public class MainGame {
             // Création du jeu
             Game game=new Game();
                    
-            // Grille
-            JButton grille = new JButton();
-            grille.setBackground(new java.awt.Color(102, 102, 102));
-            grille.setFont(century);
-            grille.setText("Grille à venir");
-            
+            // Grille de Jeu        
+            JPanel grille = new JPanel (new GridLayout (20,10));
+            Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
+            for(int i=0; i<200; ++i){
+               JPanel pCase = new JPanel();
+               if (i==50 || i==51 || i==52 || i==60){
+                    pCase.setBackground(Color.yellow);
+               }
+               else if (i==194 || i==195 || i==196 || i==197){
+                    pCase.setBackground(Color.red);
+               }else{
+                    pCase.setBackground(new Color(67,71,79));
+               }
+               pCase.setBorder(whiteline);
+               grille.add(pCase);
+            }
+                       
             // Labels
             JLabel labelNiveau = new JLabel();
             labelNiveau.setFont(copperplate);
@@ -145,18 +156,24 @@ public class MainGame {
             labelPiece.setText("Prochaine pièce");
             
             // Boutons
-            JWelcomeButton buttonNiveau = new JWelcomeButton("200");
+            JWelcomeButton buttonNiveau = new JWelcomeButton(String.valueOf(game.getLevel()));
             buttonNiveau.setFont(century);
             buttonNiveau.setForeground(Color.WHITE);
+            buttonNiveau.setFocusPainted(false);
 
-            JWelcomeButton buttonScore = new JWelcomeButton("19180");
+            JWelcomeButton buttonScore = new JWelcomeButton(String.valueOf(game.getScore()));
             buttonScore.setFont(century);
             buttonScore.setForeground(Color.WHITE);
+            buttonScore.setFocusPainted(false);
 
-            JButton buttonPiece=new JButton();
-            buttonPiece.setBackground(Color.BLACK);
-            buttonPiece.setForeground(Color.WHITE);
-            buttonPiece.setText("Prochaine Piece");
+            // Prochaine piece        
+            JPanel buttonPiece = new JPanel (new GridLayout (4,4));
+            for(int i=0; i<16; ++i){
+               JPanel pCase = new JPanel();
+               pCase.setBackground(new Color(67,71,79));
+               pCase.setBorder(whiteline);
+               buttonPiece.add(pCase);
+            }
 
             GroupLayout jPanel1Layout = new GroupLayout(panel);
             panel.setLayout(jPanel1Layout);
@@ -176,7 +193,7 @@ public class MainGame {
                                 .addComponent(buttonNiveau, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
                                 .addComponent(buttonScore, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)))
                         .addComponent(labelPiece, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(buttonPiece, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(buttonPiece, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addContainerGap(166, Short.MAX_VALUE))
             );
             jPanel1Layout.setVerticalGroup(
@@ -195,7 +212,7 @@ public class MainGame {
                             .addGap(56, 56, 56)
                             .addComponent(labelPiece, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
                             .addGap(28, 28, 28)
-                            .addComponent(buttonPiece, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE))
+                            .addComponent(buttonPiece, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE))
                         .addComponent(grille, GroupLayout.PREFERRED_SIZE, 631, GroupLayout.PREFERRED_SIZE))
                     .addContainerGap(71, Short.MAX_VALUE))
             );
