@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -28,10 +30,18 @@ public class MainGame {
 	return panel;
     }
     
+    public static void jouerActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
+        mainPage();
+    }
+    
+    public static void chargerActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
+        loadGamePage();
+    }
+    
     /* Page d'accueil */
     public static void welcomePage() throws IOException{
             // Création de la fenêtre
-            JFrame frame = new JFrame();
+            final JFrame frame = new JFrame();
             frame.setTitle("Bienvenue sur Tetra Word");
             frame.setPreferredSize(new Dimension(1024,768));
                         
@@ -49,12 +59,32 @@ public class MainGame {
             jouer.setForeground(Color.white);
             jouer.setFont(century);
             jouer.setFocusPainted(false);
+            jouer.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        jouerActionPerformed(evt);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
             
             JWelcomeButton charger = new JWelcomeButton("Charger partie");
             charger.setPreferredSize(new Dimension(220,60));
             charger.setForeground(Color.white);
             charger.setFont(century);
             charger.setFocusPainted(false);
+            charger.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        chargerActionPerformed(evt);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
                         
             JWelcomeButton options = new JWelcomeButton("Options");
             options.setPreferredSize(new Dimension(220,60));
@@ -67,6 +97,12 @@ public class MainGame {
             quitter.setForeground(Color.white);
             quitter.setFont(century);
             quitter.setFocusPainted(false);
+            quitter.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                   frame.dispose();
+                }
+            });
        
             // Placement à gauche
             GroupLayout jPanel1Layout = new GroupLayout(panel);
@@ -99,10 +135,10 @@ public class MainGame {
            
             frame.pack();
             frame.setVisible(true);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
-    /* Page d'accueil */
+    /* Page Principale */
     public static void mainPage() throws IOException{
             // Création de la fenêtre
             JFrame frame = new JFrame();
@@ -219,12 +255,37 @@ public class MainGame {
        
             frame.pack();
             frame.setVisible(true);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+    
+    /* Page Principale */
+    public static void loadGamePage() throws IOException{
+            // Création de la fenêtre
+            JFrame frame = new JFrame();
+            frame.setTitle("Charger une partie");
+            frame.setPreferredSize(new Dimension(1024,768));
+                        
+            // Arrière plan
+            JPanel panel = setBackgroundImage(frame, new File("src/fr/univ/graphicinterface/game.jpg"));
+            panel.setMaximumSize(new Dimension(1024, 768));
+            panel.setMinimumSize(new Dimension(600, 400));
+            panel.setPreferredSize(new Dimension(1024, 768));
+            
+            // Fonts
+            Font copperplate = new Font("Copperplate Gothic Bold",0,26);
+            Font century = new Font("Century Gothic",0,26);
+            
+            
+       
+            frame.pack();
+            frame.setVisible(true);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
     
     /* Programme Principal */
     public static void main(String[] args) throws IOException{
-        //welcomePage();
-        mainPage();
+        welcomePage();
+        //mainPage();
     }
 }
