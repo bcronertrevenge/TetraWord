@@ -6,10 +6,6 @@
 
 package fr.univ.tetraword;
 
-/**
- *
- * @author bruno
- */
 public class Box {
-    
+
 }
