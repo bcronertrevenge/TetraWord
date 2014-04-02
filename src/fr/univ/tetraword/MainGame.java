@@ -166,7 +166,7 @@ public class MainGame {
             for (int i=0; i<20;++i){
                 for (int j=0; j<10; ++j){
                     JPanel pCase = new JPanel();
-                    if (grid[i][j]!=null){
+                    if (grid[i][j].getShape()!=null){
                         if (grid[i][j].getShape().couleur==0){
                             pCase.setBackground(Color.blue);
                         }

@@ -14,8 +14,15 @@ public class Brick {
     char lettre;
     int rarity;
     
+    public Brick(){
+        lettre=0;
+        rarity=0;
+    }
+    
     public Brick(char lettre, int rarity){
         this.lettre=lettre;
         this.rarity=rarity;
     }
+    
+    
 }

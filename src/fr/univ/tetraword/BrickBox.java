@@ -40,4 +40,12 @@ public class BrickBox extends Box {
     public Brick getBrick(){
         return brick;
     }
+    
+    public boolean isEmpty(){
+        if(this==null)
+            return true;
+        else if(brick==null || shape==null)
+            return true;
+        return false;
+    }
 }

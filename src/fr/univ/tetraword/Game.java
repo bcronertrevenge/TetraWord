@@ -25,7 +25,10 @@ public class Game extends Thread {
         level=1;
         currentShape=null;
         grid=new Box[20][10];
-        
+        for(int i=0;i<20;++i){
+            for(int j=0;j<10;++j)
+                grid[i][j]=new Box();
+        }
     }
     
     public int getScore(){
@@ -48,8 +51,9 @@ public class Game extends Thread {
         currentShape=Shape.getRandomShape();
                             
         while(!end){
-                if(shapeFall(currentShape)==1)
-                    currentShape=Shape.getRandomShape();
+                shapeFall(currentShape);
+                     
+                    //currentShape=Shape.getRandomShape();
                 
                 Thread.sleep(1000);
             
@@ -60,18 +64,20 @@ public class Game extends Thread {
     }
     
     public int shapeFall(Shape shape){
-         
-        System.out.println("Descente");
+         if(shape==null)
+             return -1;
+        
         //La pièce ne peut plus chuter
         if(!canFall(shape)){
             return 1;
         }
-        shape.y--;
+        
+        shape.y++;
         
         for(int i=0;i<4;++i){
-            for(int j=0;j<4;++j){
-                grid[shape.y-i][shape.x-j].setBrick(shape.getBricks()[shape.y-i][shape.x-j]);
-                grid[shape.y-i][shape.x-j].setShape(shape);
+            for(int j=0;j<4;++j){                                      
+                grid[shape.y+i][shape.x+j].setBrick(shape.getBricks()[i][j]);
+                grid[shape.y+i][shape.x+j].setShape(shape);
             }
         }
         
@@ -81,18 +87,24 @@ public class Game extends Thread {
     //Teste si la piece peut tomber
     public boolean canFall(Shape shape){
         int ligne=getLowestLine(shape);
+        shape.printShape();
         for(int i=0;i<4;++i){
-            if(shape.y-ligne-1<0)
+            if(shape.y+ligne+1>20){
+                System.out.println("Hors tableau");
                 return false;
-            else if(grid[shape.y-ligne-1][shape.x-i]!=null && shape.getBricks()[ligne][i]!=null)
+            }
+            else if(!grid[shape.y+ligne+1][shape.x+i].isEmpty() && shape.getBricks()[ligne][i]!=null){
+                System.out.println("Piece en dessous");
                 return false;
+            }
+                
         }
         return true;
     }
     
     //retourne la ligne d'une shape la plus basse
     public int getLowestLine(Shape shape){
-        for(int i=0;i<4;++i){
+        for(int i=3;i>=0;--i){
             for(int j=0;j<4;++j){
                 if(shape.getBricks()[i][j]!=null)
                     return i;

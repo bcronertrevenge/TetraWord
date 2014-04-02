@@ -20,4 +20,7 @@ public class Box {
     
     public Brick getBrick(){return null;}
 
+    public boolean isEmpty(){
+        return true;
+    }
 }
