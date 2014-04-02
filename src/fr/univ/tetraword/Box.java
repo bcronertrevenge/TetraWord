@@ -11,6 +11,9 @@ package fr.univ.tetraword;
  * @author bruno
  */
 public class Box {
+    public Box(){
+        
+    }
     public void setShape(Shape shape){}
     
     public void setBrick(Brick brick){}
