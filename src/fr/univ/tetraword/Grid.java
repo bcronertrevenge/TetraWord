@@ -14,6 +14,6 @@ public class Grid {
     Box grid[][];
     
     public Grid(){
-        grid=new Box[28][14];
+        grid=new Box[20][10];
     }
 }
