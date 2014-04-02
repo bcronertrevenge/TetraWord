@@ -161,18 +161,20 @@ public class MainGame {
             // Grille de Jeu        
             JPanel grille = new JPanel (new GridLayout (20,10));
             Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
-            for(int i=0; i<200; ++i){
-               JPanel pCase = new JPanel();
-               if (i==50 || i==51 || i==52 || i==60){
-                    pCase.setBackground(Color.yellow);
-               }
-               else if (i==194 || i==195 || i==196 || i==197){
-                    pCase.setBackground(Color.red);
-               }else{
-                    pCase.setBackground(new Color(67,71,79));
-               }
-               pCase.setBorder(whiteline);
-               grille.add(pCase);
+           
+            Box grid[][]=game.getGrid();
+            grid[5][5]=new Box();
+            for (int i=0; i<20;++i){
+                for (int j=0; j<10; ++j){
+                    JPanel pCase = new JPanel();
+                    if (grid[i][j]==null){
+                        pCase.setBackground(new Color(67,71,79));
+                    }else {
+                        pCase.setBackground(Color.yellow);
+                    }
+                    pCase.setBorder(whiteline);
+                    grille.add(pCase);
+                } 
             }
                        
             // Labels
@@ -286,6 +288,5 @@ public class MainGame {
     /* Programme Principal */
     public static void main(String[] args) throws IOException{
         welcomePage();
-        //mainPage();
     }
 }
