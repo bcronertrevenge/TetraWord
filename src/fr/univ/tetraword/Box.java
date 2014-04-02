@@ -7,7 +7,9 @@
 package fr.univ.tetraword;
 
 public class Box {
-
+    public Box(){
+        
+    }
 
     public void setShape(Shape shape){}
     

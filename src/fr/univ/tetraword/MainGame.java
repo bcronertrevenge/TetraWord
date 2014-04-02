@@ -163,14 +163,24 @@ public class MainGame {
             Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
            
             Box grid[][]=game.getGrid();
-            grid[5][5]=new Box();
             for (int i=0; i<20;++i){
                 for (int j=0; j<10; ++j){
                     JPanel pCase = new JPanel();
-                    if (grid[i][j]==null){
-                        pCase.setBackground(new Color(67,71,79));
+                    if (grid[i][j]!=null){
+                        if (grid[i][j].getShape().couleur==0){
+                            pCase.setBackground(Color.blue);
+                        }
+                        else if (grid[i][j].getShape().couleur==1){
+                            pCase.setBackground(Color.green);
+                        }
+                        else if (grid[i][j].getShape().couleur==2){
+                            pCase.setBackground(Color.red);
+                        }
+                        else if (grid[i][j].getShape().couleur==3){
+                            pCase.setBackground(Color.orange);
+                        }
                     }else {
-                        pCase.setBackground(Color.yellow);
+                        pCase.setBackground(Color.gray);
                     }
                     pCase.setBorder(whiteline);
                     grille.add(pCase);
