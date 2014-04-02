@@ -286,6 +286,5 @@ public class MainGame {
     /* Programme Principal */
     public static void main(String[] args) throws IOException{
         welcomePage();
-        //mainPage();
     }
 }
