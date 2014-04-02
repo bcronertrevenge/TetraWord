@@ -94,8 +94,8 @@ public class Shape {
         }
         
         //couleurs
-        int couleur = (int) ((Math.random() * (3)));
-        this.couleur=couleur;
+        couleur = (int) ((Math.random() * (3)));
+
     }
     
     public void rotateShape(){
