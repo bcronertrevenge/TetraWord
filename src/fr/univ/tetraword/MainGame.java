@@ -157,7 +157,7 @@ public class MainGame {
             
             // Création du jeu
             Game game=new Game();
-                   
+            game.start();
             // Grille de Jeu        
             JPanel grille = new JPanel (new GridLayout (20,10));
             Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);

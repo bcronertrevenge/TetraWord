@@ -42,7 +42,7 @@ public class Game extends Thread {
     
     public void run(){
         boolean end=false;
-        
+        System.out.println("Debut boucle principale");
         //Boucle principale
         try {
         currentShape=Shape.getRandomShape();
@@ -61,6 +61,7 @@ public class Game extends Thread {
     
     public int shapeFall(Shape shape){
          
+        System.out.println("Descente");
         //La pièce ne peut plus chuter
         if(!canFall(shape)){
             return 1;
