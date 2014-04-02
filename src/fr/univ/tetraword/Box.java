@@ -11,5 +11,11 @@ package fr.univ.tetraword;
  * @author bruno
  */
 public class Box {
+    public void setShape(Shape shape){}
     
+    public void setBrick(Brick brick){}
+    
+    public Shape getShape(){return null;}
+    
+    public Brick getBrick(){return null;}
 }
