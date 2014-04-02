@@ -7,6 +7,7 @@
 package fr.univ.tetraword;
 
 public class Box {
+
     public Box(){
         
     }
