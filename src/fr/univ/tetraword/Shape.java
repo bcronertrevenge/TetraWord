@@ -25,6 +25,7 @@ public class Shape {
     private shapeType type;
     private Brick bricks[][];
     public int x,y;
+    public int couleur;
     
     public Shape(shapeType type){
         this.type=type;
@@ -91,6 +92,10 @@ public class Shape {
                 System.out.println("Not a Shape");
                 break;
         }
+        
+        //couleurs
+        int couleur = (int) ((Math.random() * (3)));
+        this.couleur=couleur;
     }
     
     public void rotateShape(){
@@ -231,6 +236,10 @@ public class Shape {
                 break;
         }
         return null;
+    }
+    
+    public Brick[][] getBricks(){
+        return bricks;    
     }
     
     public static void main (String[] args){

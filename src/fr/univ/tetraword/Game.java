@@ -6,6 +6,9 @@
 
 package fr.univ.tetraword;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author bruno
@@ -40,9 +43,24 @@ public class Game extends Thread {
     public void run(){
         boolean win=false;
         
+        //Boucle principale
         while(!win){
-            
+            try {
+                currentShape=Shape.getRandomShape();
+                
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     
+    public void placeShape(Shape shape){
+        for(int i=0;i<4;++i){
+            for(int j=0;j<4;++j){
+                grid[shape.y-i][shape.x-j].setBrick(shape.getBricks()[shape.y-i][shape.x-j]);
+            }
+        }
+        //Box[shape.y][shape.x]
+    }
 }
