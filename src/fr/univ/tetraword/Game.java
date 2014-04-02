@@ -10,16 +10,19 @@ package fr.univ.tetraword;
  *
  * @author bruno
  */
-public class Game {
+public class Game extends Thread {
     Shape currentShape;
     private int score;
     private int level;
     Dictionary dictionary;
+    private Box grid[][];
     
     public Game(){
         score=0;
         level=1;
         currentShape=null;
+        grid=new Box[20][10];
+        
     }
     
     public int getScore(){
@@ -29,4 +32,17 @@ public class Game {
     public int getLevel(){
         return level;
     }
+    
+    public Box[][] getGrid(){
+        return grid;
+    }
+    
+    public void run(){
+        boolean win=false;
+        
+        while(!win){
+            
+        }
+    }
+    
 }
