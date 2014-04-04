@@ -157,6 +157,7 @@ public class MainGame {
             Font century = new Font("Century Gothic",0,26);
             
             // Création du jeu
+            Games=new Vector<Game>();
             Game game=new Game();
             game.start();
             Games.add(game);

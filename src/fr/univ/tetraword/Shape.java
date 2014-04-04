@@ -247,6 +247,10 @@ public class Shape {
         return bricks;    
     }
     
+    public shapeType getType(){
+        return type;
+    }    
+    
     public static void main (String[] args){
         Shape s=new Shape(line);
         s.printShape();
