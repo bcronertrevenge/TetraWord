@@ -45,18 +45,18 @@ public class Game extends Thread {
     
     public void run(){
         boolean end=false;
-        System.out.println("Debut boucle principale");
+        
         //Boucle principale
         try {
         currentShape=Shape.getRandomShape();
                             
         while(!end){
-                shapeFall(currentShape);
-                     
-                    //currentShape=Shape.getRandomShape();
+            if(shapeFall(currentShape)==1)                     
+                    currentShape=Shape.getRandomShape();
                 
                 Thread.sleep(1000);
-            
+                System.out.println("Game");
+                //Mis a jour de l'affichage
         }
         } catch (InterruptedException ex) {
                 Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
@@ -89,7 +89,7 @@ public class Game extends Thread {
         int ligne=getLowestLine(shape);
         shape.printShape();
         for(int i=0;i<4;++i){
-            if(shape.y+ligne+1>20){
+            if(shape.y+ligne+1>=20){
                 System.out.println("Hors tableau");
                 return false;
             }

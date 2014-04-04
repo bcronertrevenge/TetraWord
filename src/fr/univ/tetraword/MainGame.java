@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -12,7 +13,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 public class MainGame {
-    
+    static Vector<Game> Games;
     /* Fonction pour mettre une image en arrière plan */
     public static JPanel setBackgroundImage(JFrame frame, final File img) throws IOException{
 	JPanel panel = new JPanel(){
@@ -158,11 +159,13 @@ public class MainGame {
             // Création du jeu
             Game game=new Game();
             game.start();
+            Games.add(game);
             // Grille de Jeu        
             JPanel grille = new JPanel (new GridLayout (20,10));
             Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
            
             Box grid[][]=game.getGrid();
+            
             for (int i=0; i<20;++i){
                 for (int j=0; j<10; ++j){
                     JPanel pCase = new JPanel();
@@ -294,7 +297,33 @@ public class MainGame {
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    
+    public static void misAJour(){
+        Box grid[][]=Games.get(0).getGrid();
+        
+        for (int i=0; i<20;++i){
+                for (int j=0; j<10; ++j){
+                    JPanel pCase = new JPanel();
+                    if (grid[i][j].getShape()!=null){
+                        if (grid[i][j].getShape().couleur==0){
+                            pCase.setBackground(Color.blue);
+                        }
+                        else if (grid[i][j].getShape().couleur==1){
+                            pCase.setBackground(Color.green);
+                        }
+                        else if (grid[i][j].getShape().couleur==2){
+                            pCase.setBackground(Color.red);
+                        }
+                        else if (grid[i][j].getShape().couleur==3){
+                            pCase.setBackground(Color.orange);
+                        }
+                    }else {
+                        pCase.setBackground(Color.gray);
+                    }
+                    //pCase.setBorder(whiteline);
+                    //grille.add(pCase);
+                } 
+            }
+    }
     /* Programme Principal */
     public static void main(String[] args) throws IOException{
         welcomePage();
