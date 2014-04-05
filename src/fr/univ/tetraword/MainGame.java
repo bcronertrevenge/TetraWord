@@ -168,6 +168,7 @@ public class MainGame {
                     JPanel pCase = new JPanel();
                     if (grid[i][j]!=null){
                         if (grid[i][j].getShape().couleur==0){
+                            System.out.println("couleur"+grid[i][j].getShape().couleur);
                             pCase.setBackground(Color.blue);
                         }
                         else if (grid[i][j].getShape().couleur==1){
