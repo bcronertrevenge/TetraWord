@@ -51,11 +51,11 @@ public class Game extends Thread {
         currentShape=Shape.getRandomShape();
                             
         while(!end){
-            if(shapeFall(currentShape)==1)                     
+            if(shapeFall()==1)                     
                     currentShape=Shape.getRandomShape();
                 
                 Thread.sleep(1000);
-                moveShapeAside(currentShape,-1);
+                moveShapeAside(1);
                 //Mis a jour de l'affichage
         }
         } catch (InterruptedException ex) {
@@ -64,7 +64,8 @@ public class Game extends Thread {
     }
     
     //Bouge la piece a gauche(-1) ou a droite(1)
-    public void moveShapeAside(Shape shape, int sens){
+    public void moveShapeAside(int sens){
+        Shape shape=currentShape;
         System.out.println("x :"+shape.x+" y :"+shape.y);
         if(!canMoveAside(shape,sens))
             return;
@@ -83,8 +84,9 @@ public class Game extends Thread {
         }
         //Droite
         else {
+            int col=getRightSide(shape);
             for(int i=0;i<4;++i){
-                for(int j=0;j<4;++j){
+                for(int j=col;j>=0;--j){                    
                     grid[shape.y+i][shape.x+j+1].setBrick(grid[shape.y+i][shape.y+j].getBrick());
                     grid[shape.y+i][shape.x+j+1].setShape(grid[shape.y+i][shape.y+j].getShape());
                     grid[shape.y+i][shape.x+j].setBrick(null);
@@ -115,7 +117,8 @@ public class Game extends Thread {
           else {
               int col=getRightSide(shape);
              if(col==-1) return false;
-              if(shape.x+col+1>=20){
+             System.out.println(shape.x+col+1);
+              if(shape.x+col+1>=10){
                   return false;
               }
               else {
@@ -126,6 +129,10 @@ public class Game extends Thread {
               }
           }
           return true;
+    }
+    
+    public void rotate(){
+        currentShape.rotateShape();
     }
     
     //Retourne le côté de la pièce concerné
@@ -140,7 +147,8 @@ public class Game extends Thread {
         return -1;     
     }
     
-    public int shapeFall(Shape shape){
+    public int shapeFall(){
+        Shape shape=currentShape;
          if(shape==null)
              return -1;
         
