@@ -165,31 +165,15 @@ public class MainGame {
             JPanel grille = new JPanel (new GridLayout (20,10));
             Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
            
-            Box grid[][]=game.getGrid();
-            
-            for (int i=0; i<20;++i){
-                for (int j=0; j<10; ++j){
-                    JPanel pCase = new JPanel();
-                    if (grid[i][j].getShape()!=null){
-                        if (grid[i][j].getShape().couleur==0){
-                            System.out.println("couleur"+grid[i][j].getShape().couleur);
-                            pCase.setBackground(Color.blue);
-                        }
-                        else if (grid[i][j].getShape().couleur==1){
-                            pCase.setBackground(Color.green);
-                        }
-                        else if (grid[i][j].getShape().couleur==2){
-                            pCase.setBackground(Color.red);
-                        }
-                        else if (grid[i][j].getShape().couleur==3){
-                            pCase.setBackground(Color.orange);
-                        }
-                    }else {
-                        pCase.setBackground(Color.gray);
-                    }
-                    pCase.setBorder(whiteline);
-                    grille.add(pCase);
-                } 
+            int b=0;
+            while (b<=1000){
+                JPanel grille2[][]=misAjour();
+                for (int i=0; i<20;++i){
+                        for (int j=0; j<10; ++j){
+                            grille.add(grille2[i][j]);
+                        } 
+                }
+                ++b;
             }
                        
             // Labels
@@ -299,32 +283,31 @@ public class MainGame {
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public static void misAJour(){
+    private static JPanel[][] misAjour(){
         Box grid[][]=Games.get(0).getGrid();
+        JPanel grille[][]=Games.get(0).getGrille();
         
         for (int i=0; i<20;++i){
-                for (int j=0; j<10; ++j){
-                    JPanel pCase = new JPanel();
-                    if (grid[i][j].getShape()!=null){
+            for (int j=0; j<10; ++j){
+                if (grid[i][j].getShape()!=null){
                         if (grid[i][j].getShape().couleur==0){
-                            pCase.setBackground(Color.blue);
+                            grille[i][j].setBackground(Color.blue);
                         }
                         else if (grid[i][j].getShape().couleur==1){
-                            pCase.setBackground(Color.green);
+                            grille[i][j].setBackground(Color.green);
                         }
                         else if (grid[i][j].getShape().couleur==2){
-                            pCase.setBackground(Color.red);
+                            grille[i][j].setBackground(Color.red);
                         }
                         else if (grid[i][j].getShape().couleur==3){
-                            pCase.setBackground(Color.orange);
+                            grille[i][j].setBackground(Color.orange);
                         }
-                    }else {
-                        pCase.setBackground(Color.gray);
+                }else {
+                      grille[i][j].setBackground(Color.gray);
                     }
-                    //pCase.setBorder(whiteline);
-                    //grille.add(pCase);
                 } 
             }
+        return grille;
     }
     /* Programme Principal */
     public static void main(String[] args) throws IOException{

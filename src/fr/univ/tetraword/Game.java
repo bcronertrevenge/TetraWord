@@ -6,9 +6,12 @@
 
 package fr.univ.tetraword;
 
+import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 
 /**
  *
@@ -27,10 +30,22 @@ public class Game extends Thread {
         level=1;
         currentShape=null;
         grid=new Box[20][10];
+        grille=new JPanel[20][10];
+        // Initialisation de Grid
         for(int i=0;i<20;++i){
             for(int j=0;j<10;++j)
                 grid[i][j]=new Box();
         }
+        //Initialisation de la grille
+        Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
+        for (int i=0; i<20;++i){
+            for (int j=0; j<10; ++j){
+                JPanel pCase = new JPanel();
+                pCase.setBackground(Color.gray);
+                pCase.setBorder(whiteline);
+                grille[i][j]=pCase;    
+                }
+            }
     }
     
     public int getScore(){
@@ -43,6 +58,10 @@ public class Game extends Thread {
     
     public Box[][] getGrid(){
         return grid;
+    }
+    
+    public JPanel[][] getGrille(){
+        return grille;
     }
     
     public void run(){
