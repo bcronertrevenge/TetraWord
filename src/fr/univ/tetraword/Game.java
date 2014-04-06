@@ -8,6 +8,7 @@ package fr.univ.tetraword;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JPanel;
 
 /**
  *
@@ -19,6 +20,7 @@ public class Game extends Thread {
     private int level;
     Dictionary dictionary;
     private Box grid[][];
+    JPanel grille[][];
     
     public Game(){
         score=0;
@@ -66,7 +68,7 @@ public class Game extends Thread {
     //Bouge la piece a gauche(-1) ou a droite(1)
     public void moveShapeAside(int sens){
         Shape shape=currentShape;
-        System.out.println("x :"+shape.x+" y :"+shape.y);
+
         if(!canMoveAside(shape,sens))
             return;
         
