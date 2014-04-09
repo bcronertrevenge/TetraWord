@@ -30,6 +30,7 @@ public class Game extends Thread {
         level=1;
         currentShape=null;
         grid=new Box[20][10];
+                
         grille=new JPanel[20][10];
         // Initialisation de Grid
         for(int i=0;i<20;++i){
