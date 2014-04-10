@@ -41,7 +41,10 @@ public class Game extends Thread {
         for (int i=0; i<20;++i){
             for (int j=0; j<10; ++j){
                 JPanel pCase = new JPanel();
-                pCase.setBackground(Color.gray);
+                if (i==5)
+                    pCase.setBackground(Color.blue);
+                else
+                    pCase.setBackground(Color.gray);
                 pCase.setBorder(whiteline);
                 grille[i][j]=pCase;    
                 }
