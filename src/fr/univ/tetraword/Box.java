@@ -6,7 +6,9 @@
 
 package fr.univ.tetraword;
 
-public class Box {
+import javax.swing.JButton;
+
+public class Box extends JButton {
 
     public Box(){
         

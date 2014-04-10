@@ -2,6 +2,8 @@ package fr.univ.tetraword;
 
 import fr.univ.graphicinterface.JWelcomeButton;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -12,8 +14,10 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-public class MainGame {
+public class MainGame extends JFrame {
     static Vector<Game> Games;
+    static Vector<JPanel> gamesPanel;
+    
     /* Fonction pour mettre une image en arrière plan */
     public static JPanel setBackgroundImage(JFrame frame, final File img) throws IOException{
 	JPanel panel = new JPanel(){
@@ -152,6 +156,8 @@ public class MainGame {
             panel.setMinimumSize(new Dimension(600, 400));
             panel.setPreferredSize(new Dimension(1024, 768));
             
+            
+            
             // Fonts
             Font copperplate = new Font("Copperplate Gothic Bold",0,26);
             Font century = new Font("Century Gothic",0,26);
@@ -159,22 +165,22 @@ public class MainGame {
             // Création du jeu
             Games=new Vector<Game>();
             Game game=new Game();
-            game.start();
+            //game.start();
             Games.add(game);
             // Grille de Jeu        
             JPanel grille = new JPanel (new GridLayout (20,10));
             Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
            
             int b=0;
-            while (b<=1000){
-                JPanel grille2[][]=misAjour();
+            //while (b<=1000){
+                //JPanel grille2[][]=misAjour();
                 for (int i=0; i<20;++i){
                         for (int j=0; j<10; ++j){
-                            grille.add(grille2[i][j]);
+                            grille.add(new JPanel());
                         } 
                 }
-                ++b;
-            }
+              //  ++b;
+            //}
                        
             // Labels
             JLabel labelNiveau = new JLabel();
@@ -257,6 +263,12 @@ public class MainGame {
             frame.pack();
             frame.setVisible(true);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            
+            System.out.println("Debut Interface");
+    
+            //while(true){
+              //  misAjour();
+            //}
     }
     
     /* Page Principale */
@@ -313,4 +325,46 @@ public class MainGame {
     public static void main(String[] args) throws IOException{
         welcomePage();
     }
+   
+    //Lecture clavier
+   class ClavierListener implements KeyListener{
+
+    public void keyPressed(KeyEvent event) {
+          int keyCode = event.getKeyCode();
+            switch( keyCode ) { 
+                case KeyEvent.VK_UP:
+                    System.out.print("Up");
+                    break;
+                case KeyEvent.VK_DOWN:
+                    // handle down 
+                    break;
+                case KeyEvent.VK_LEFT:
+                    // handle left
+                    break;
+                case KeyEvent.VK_RIGHT :
+                    // handle right
+                    break;
+             }
+      pause();
+    }
+
+    public void keyReleased(KeyEvent event) {
+      System.out.println("Code touche relâchée : " + event.getKeyCode() + " - caractère touche relâchée : " + event.getKeyChar());         
+      pause();                  
+    }
+
+    public void keyTyped(KeyEvent event) {
+      System.out.println("Code touche tapée : " + event.getKeyCode() + " - caractère touche tapée : " + event.getKeyChar());
+      pause();
+    }   	
+  }  
+   
+   //Petite Pause
+     private void pause(){
+    try {
+      Thread.sleep(1000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+  }  
 }
