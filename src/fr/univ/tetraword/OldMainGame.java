@@ -14,12 +14,12 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-public class MainGame extends JFrame {
+public class OldMainGame extends JFrame {
     static Vector<Game> Games;
     static Vector<JPanel> gamesPanel;
     
     /* Fonction pour mettre une image en arrière plan */
-    public JPanel setBackgroundImage(JFrame frame, final File img) throws IOException{
+    public static JPanel setBackgroundImage(JFrame frame, final File img) throws IOException{
 	JPanel panel = new JPanel(){
             private static final long serialVersionUID = 1;
             private BufferedImage buf = ImageIO.read(img);
@@ -31,26 +31,27 @@ public class MainGame extends JFrame {
             }
 	};
 	
-	this.setContentPane(panel);
+	frame.setContentPane(panel);
 	return panel;
     }
     
-    public void jouerActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
+    public static void jouerActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
         mainPage();
     }
     
-    public void chargerActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
+    public static void chargerActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
         loadGamePage();
     }
     
     /* Page d'accueil */
-    public void welcomePage() throws IOException{
+    public static void welcomePage() throws IOException{
             // Création de la fenêtre
-            this.setTitle("Bienvenue sur Tetra Word");
-            this.setPreferredSize(new Dimension(1024,768));
+            final JFrame frame = new JFrame();
+            frame.setTitle("Bienvenue sur Tetra Word");
+            frame.setPreferredSize(new Dimension(1024,768));
                         
             // Arrière plan
-            JPanel panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/accueil.jpg"));
+            JPanel panel = setBackgroundImage(frame, new File("src/fr/univ/graphicinterface/accueil.jpg"));
             panel.setMaximumSize(new Dimension(1024, 768));
             panel.setMinimumSize(new Dimension(600, 400));
             panel.setPreferredSize(new Dimension(1024, 768));
@@ -104,7 +105,7 @@ public class MainGame extends JFrame {
             quitter.addActionListener(new java.awt.event.ActionListener() {
                 @Override
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                   System.out.println("quitter");
+                   frame.dispose();
                 }
             });
        
@@ -137,19 +138,20 @@ public class MainGame extends JFrame {
                 .addGap(100, 100, 100))
         );
            
-            this.pack();
-            this.setVisible(true);
-            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.pack();
+            frame.setVisible(true);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
     /* Page Principale */
-    public void mainPage() throws IOException{
-            // Changement du titre
-            this.setTitle("Vous jouez à Tetra Word");
-            this.setPreferredSize(new Dimension(1024,768));
+    public static void mainPage() throws IOException{
+            // Création de la fenêtre
+            JFrame frame = new JFrame();
+            frame.setTitle("Vous jouez à Tetra Word");
+            frame.setPreferredSize(new Dimension(1024,768));
                         
             // Arrière plan
-            JPanel panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/game.jpg"));
+            JPanel panel = setBackgroundImage(frame, new File("src/fr/univ/graphicinterface/game.jpg"));
             panel.setMaximumSize(new Dimension(1024, 768));
             panel.setMinimumSize(new Dimension(600, 400));
             panel.setPreferredSize(new Dimension(1024, 768));
@@ -258,20 +260,26 @@ public class MainGame extends JFrame {
                     .addContainerGap(71, Short.MAX_VALUE))
             );
        
-            this.pack();
-            this.setVisible(true);
-            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.pack();
+            frame.setVisible(true);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            
+            System.out.println("Debut Interface");
     
+            //while(true){
+              //  misAjour();
+            //}
     }
     
     /* Page Principale */
-    public void loadGamePage() throws IOException{
-            // On change le titre
-            this.setTitle("Charger une partie");
-            this.setPreferredSize(new Dimension(1024,768));
+    public static void loadGamePage() throws IOException{
+            // Création de la fenêtre
+            JFrame frame = new JFrame();
+            frame.setTitle("Charger une partie");
+            frame.setPreferredSize(new Dimension(1024,768));
                         
             // Arrière plan
-            JPanel panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/game.jpg"));
+            JPanel panel = setBackgroundImage(frame, new File("src/fr/univ/graphicinterface/game.jpg"));
             panel.setMaximumSize(new Dimension(1024, 768));
             panel.setMinimumSize(new Dimension(600, 400));
             panel.setPreferredSize(new Dimension(1024, 768));
@@ -279,10 +287,12 @@ public class MainGame extends JFrame {
             // Fonts
             Font copperplate = new Font("Copperplate Gothic Bold",0,26);
             Font century = new Font("Century Gothic",0,26);
-                   
-            this.pack();
-            this.setVisible(true);
-            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            
+            
+       
+            frame.pack();
+            frame.setVisible(true);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     private static JPanel[][] misAjour(){
@@ -311,53 +321,50 @@ public class MainGame extends JFrame {
             }
         return grille;
     }
-
+    /* Programme Principal */
+    public static void main(String[] args) throws IOException{
+        welcomePage();
+    }
    
     //Lecture clavier
    class ClavierListener implements KeyListener{
 
-        public void keyPressed(KeyEvent event) {
-              int keyCode = event.getKeyCode();
-                switch( keyCode ) { 
-                    case KeyEvent.VK_UP:
-                        System.out.print("Up");
-                        break;
-                    case KeyEvent.VK_DOWN:
-                        // handle down 
-                        break;
-                    case KeyEvent.VK_LEFT:
-                        // handle left
-                        break;
-                    case KeyEvent.VK_RIGHT :
-                        // handle right
-                        break;
-                 }
-          pause();
-        }
+    public void keyPressed(KeyEvent event) {
+          int keyCode = event.getKeyCode();
+            switch( keyCode ) { 
+                case KeyEvent.VK_UP:
+                    System.out.print("Up");
+                    break;
+                case KeyEvent.VK_DOWN:
+                    // handle down 
+                    break;
+                case KeyEvent.VK_LEFT:
+                    // handle left
+                    break;
+                case KeyEvent.VK_RIGHT :
+                    // handle right
+                    break;
+             }
+      pause();
+    }
 
-        public void keyReleased(KeyEvent event) {
-          System.out.println("Code touche relâchée : " + event.getKeyCode() + " - caractère touche relâchée : " + event.getKeyChar());         
-          pause();                  
-        }
+    public void keyReleased(KeyEvent event) {
+      System.out.println("Code touche relâchée : " + event.getKeyCode() + " - caractère touche relâchée : " + event.getKeyChar());         
+      pause();                  
+    }
 
-        public void keyTyped(KeyEvent event) {
-          System.out.println("Code touche tapée : " + event.getKeyCode() + " - caractère touche tapée : " + event.getKeyChar());
-          pause();
-        }   	
-    }  
+    public void keyTyped(KeyEvent event) {
+      System.out.println("Code touche tapée : " + event.getKeyCode() + " - caractère touche tapée : " + event.getKeyChar());
+      pause();
+    }   	
+  }  
    
    //Petite Pause
-    private void pause(){
-        try {
-          Thread.sleep(1000);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
+     private void pause(){
+    try {
+      Thread.sleep(1000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
     }
-    
-    /* Programme Principal */
-    public static void main(String[] args) throws IOException{
-        MainGame game=new MainGame();
-        game.welcomePage();
-    }
+  }  
 }

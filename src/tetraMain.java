@@ -1,6 +1,6 @@
 
-import fr.univ.tetraword.MainGame;
-import static fr.univ.tetraword.MainGame.welcomePage;
+import fr.univ.tetraword.OldMainGame;
+import static fr.univ.tetraword.OldMainGame.welcomePage;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,7 +23,7 @@ public class tetraMain {
     public static void main(String[] args) {
         // TODO code application logic here
         System.out.println("Main Project");
-        MainGame main=new MainGame();
+        OldMainGame main=new OldMainGame();
         try {
             welcomePage();
         } catch (IOException ex) {
