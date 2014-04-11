@@ -69,7 +69,7 @@ public class MainGame extends JFrame {
                     try {
                         jouerActionPerformed(evt);
                     } catch (IOException ex) {
-                        Logger.getLogger(OldMainGame.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             });
@@ -85,7 +85,7 @@ public class MainGame extends JFrame {
                     try {
                         chargerActionPerformed(evt);
                     } catch (IOException ex) {
-                        Logger.getLogger(OldMainGame.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             });
