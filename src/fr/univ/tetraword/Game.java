@@ -21,24 +21,17 @@ public class Game extends Thread {
     Shape currentShape;
     private int score;
     private int level;
-    Dictionary dictionary;
-    private Box grid[][];
-    JPanel grille[][];
+    Dictionary dictionary;   
+    Grid gridInterface;
     
     public Game(){
         score=0;
         level=1;
         currentShape=null;
-        grid=new Box[20][10];
-                
-        grille=new JPanel[20][10];
-        // Initialisation de Grid
-        for(int i=0;i<20;++i){
-            for(int j=0;j<10;++j)
-                grid[i][j]=new Box();
-        }
+        gridInterface=new Grid();
+        
         //Initialisation de la grille
-        Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
+        /*Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
         for (int i=0; i<20;++i){
             for (int j=0; j<10; ++j){
                 JPanel pCase = new JPanel();
@@ -49,7 +42,7 @@ public class Game extends Thread {
                 pCase.setBorder(whiteline);
                 grille[i][j]=pCase;    
                 }
-            }
+            }*/
     }
     
     public int getScore(){
@@ -61,11 +54,11 @@ public class Game extends Thread {
     }
     
     public Box[][] getGrid(){
-        return grid;
+        return gridInterface.getGrid();
     }
     
-    public JPanel[][] getGrille(){
-        return grille;
+    public Grid getGridInterface(){
+        return gridInterface;
     }
     
     public void run(){
@@ -91,7 +84,8 @@ public class Game extends Thread {
     //Bouge la piece a gauche(-1) ou a droite(1)
     public void moveShapeAside(int sens){
         Shape shape=currentShape;
-
+        Box[][] grid=gridInterface.getGrid();
+        
         if(!canMoveAside(shape,sens))
             return;
         
@@ -124,7 +118,7 @@ public class Game extends Thread {
     
     //Teste si le mouvement est possible
     public boolean canMoveAside(Shape shape, int sens){
-                    
+        Box[][] grid=gridInterface.getGrid();            
           //Mouvement a gauche
           if(sens < 0){
               if(shape.x-1<0){                 
@@ -183,6 +177,7 @@ public class Game extends Thread {
         }
         
         shape.y++;
+        Box[][] grid=gridInterface.getGrid();
         
         for(int i=0;i<4;++i){
             for(int j=0;j<4;++j){                                      
@@ -198,6 +193,8 @@ public class Game extends Thread {
     public boolean canFall(Shape shape){
         int ligne=getLowestLine(shape);
         if(ligne==-1) return false;
+        
+        Box[][] grid=gridInterface.getGrid();
         
         shape.printShape();
         for(int i=0;i<4;++i){

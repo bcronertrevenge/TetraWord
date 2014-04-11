@@ -15,8 +15,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 public class MainGame extends JFrame {
-    static Vector<Game> Games;
-    static Vector<JPanel> gamesPanel;
+    static Vector<Game> Games;    
     
     /* Fonction pour mettre une image en arrière plan */
     public JPanel setBackgroundImage(JFrame frame, final File img) throws IOException{
@@ -69,7 +68,7 @@ public class MainGame extends JFrame {
                     try {
                         jouerActionPerformed(evt);
                     } catch (IOException ex) {
-                        Logger.getLogger(OldMainGame.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             });
@@ -85,7 +84,7 @@ public class MainGame extends JFrame {
                     try {
                         chargerActionPerformed(evt);
                     } catch (IOException ex) {
-                        Logger.getLogger(OldMainGame.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             });
@@ -286,8 +285,8 @@ public class MainGame extends JFrame {
     }
 
     private static JPanel[][] misAjour(){
-        Box grid[][]=Games.get(0).getGrid();
-        JPanel grille[][]=Games.get(0).getGrille();
+        /*Box grid[][]=Games.get(0).getGrid();
+        JPanel grille[][]=Games.get(0).getGridInterface();
         
         for (int i=0; i<20;++i){
             for (int j=0; j<10; ++j){
@@ -308,8 +307,8 @@ public class MainGame extends JFrame {
                       grille[i][j].setBackground(Color.gray);
                     }
                 } 
-            }
-        return grille;
+            }*/
+        return null;
     }
 
    
