@@ -17,6 +17,10 @@ import javax.swing.border.Border;
 public class MainGame extends JFrame {
     static Vector<Game> Games;    
     
+    public MainGame(){
+        addKeyListener(new ClavierListener());
+    }
+    
     /* Fonction pour mettre une image en arrière plan */
     public JPanel setBackgroundImage(JFrame frame, final File img) throws IOException{
 	JPanel panel = new JPanel(){
@@ -159,25 +163,22 @@ public class MainGame extends JFrame {
             Font copperplate = new Font("Copperplate Gothic Bold",0,26);
             Font century = new Font("Century Gothic",0,26);
             
+            
             // Création du jeu
             Games=new Vector<Game>();
             Game game=new Game();
-            //game.start();
+            game.start();
             Games.add(game);
             // Grille de Jeu        
             JPanel grille = new JPanel (new GridLayout (20,10));
             Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
            
-            int b=0;
-            //while (b<=1000){
-                //JPanel grille2[][]=misAjour();
                 for (int i=0; i<20;++i){
                         for (int j=0; j<10; ++j){
                             grille.add(new JPanel());
                         } 
                 }
-              //  ++b;
-            //}
+
                        
             // Labels
             JLabel labelNiveau = new JLabel();
@@ -257,10 +258,12 @@ public class MainGame extends JFrame {
                     .addContainerGap(71, Short.MAX_VALUE))
             );
        
+            
+       
             this.pack();
             this.setVisible(true);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    
+            this.requestFocusInWindow();
     }
     
     /* Page Principale */
@@ -316,32 +319,35 @@ public class MainGame extends JFrame {
    class ClavierListener implements KeyListener{
 
         public void keyPressed(KeyEvent event) {
+            
               int keyCode = event.getKeyCode();
                 switch( keyCode ) { 
+                    //Joueur 1
                     case KeyEvent.VK_UP:
-                        System.out.print("Up");
+                        Games.get(0).rotate();
                         break;
                     case KeyEvent.VK_DOWN:
                         // handle down 
+                        Games.get(0).shapeFall();
                         break;
                     case KeyEvent.VK_LEFT:
                         // handle left
+                        Games.get(0).moveShapeAside(-1);
                         break;
                     case KeyEvent.VK_RIGHT :
                         // handle right
+                        Games.get(0).moveShapeAside(1);
                         break;
                  }
-          pause();
+          
         }
 
         public void keyReleased(KeyEvent event) {
-          System.out.println("Code touche relâchée : " + event.getKeyCode() + " - caractère touche relâchée : " + event.getKeyChar());         
-          pause();                  
+         
         }
 
         public void keyTyped(KeyEvent event) {
-          System.out.println("Code touche tapée : " + event.getKeyCode() + " - caractère touche tapée : " + event.getKeyChar());
-          pause();
+         
         }   	
     }  
    

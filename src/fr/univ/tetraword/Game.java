@@ -73,7 +73,8 @@ public class Game extends Thread {
                     currentShape=Shape.getRandomShape();
                 
                 Thread.sleep(1000);
-                moveShapeAside(1);
+                currentShape.printShape();
+               // moveShapeAside(1);
                 //Mis a jour de l'affichage
         }
         } catch (InterruptedException ex) {
@@ -196,7 +197,6 @@ public class Game extends Thread {
         
         Box[][] grid=gridInterface.getGrid();
         
-        shape.printShape();
         for(int i=0;i<4;++i){
             if(shape.y+ligne+1>=20){
                 System.out.println("Hors tableau");
