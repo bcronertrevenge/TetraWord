@@ -7,6 +7,7 @@
 package fr.univ.tetraword;
 
 import java.awt.Color;
+import java.awt.GridLayout;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
@@ -22,13 +23,14 @@ public class Game extends Thread {
     private int score;
     private int level;
     Dictionary dictionary;   
-    Grid gridInterface;
+    JPanel gridInterface;
+    private Box[][] grid;
     
     public Game(){
         score=0;
         level=1;
         currentShape=null;
-        gridInterface=new Grid();
+        gridInterface=new JPanel(new GridLayout(20,10));
         
         //Initialisation de la grille
         /*Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
@@ -53,11 +55,7 @@ public class Game extends Thread {
         return level;
     }
     
-    public Box[][] getGrid(){
-        return gridInterface.getGrid();
-    }
-    
-    public Grid getGridInterface(){
+    public JPanel getGridInterface(){
         return gridInterface;
     }
     
@@ -84,8 +82,7 @@ public class Game extends Thread {
     
     //Bouge la piece a gauche(-1) ou a droite(1)
     public void moveShapeAside(int sens){
-        Shape shape=currentShape;
-        Box[][] grid=gridInterface.getGrid();
+        Shape shape=currentShape;        
         
         if(!canMoveAside(shape,sens))
             return;
@@ -119,7 +116,7 @@ public class Game extends Thread {
     
     //Teste si le mouvement est possible
     public boolean canMoveAside(Shape shape, int sens){
-        Box[][] grid=gridInterface.getGrid();            
+               
           //Mouvement a gauche
           if(sens < 0){
               if(shape.x-1<0){                 
@@ -177,8 +174,7 @@ public class Game extends Thread {
             return 1;
         }
         
-        shape.y++;
-        Box[][] grid=gridInterface.getGrid();
+        shape.y++;        
         
         for(int i=0;i<4;++i){
             for(int j=0;j<4;++j){                                      
@@ -194,8 +190,6 @@ public class Game extends Thread {
     public boolean canFall(Shape shape){
         int ligne=getLowestLine(shape);
         if(ligne==-1) return false;
-        
-        Box[][] grid=gridInterface.getGrid();
         
         for(int i=0;i<4;++i){
             if(shape.y+ligne+1>=20){
