@@ -6,6 +6,8 @@
 
 package fr.univ.tetraword;
 
+import java.awt.Color;
+
 /**
  *
  * @author bruno
@@ -47,5 +49,19 @@ public class BrickBox extends Box {
         else if(brick==null || shape==null)
             return true;
         return false;
+    }
+    
+    public void repaint(){
+        switch (shape.couleur){
+            case 0 : setBackground(Color.blue);
+                break;
+            case 1 : setBackground(Color.green);
+                break;
+            case 2 : setBackground(Color.red);
+                break;
+            case 3 : setBackground(Color.orange);
+                break;
+            default : setBackground(Color.gray);
+        }
     }
 }

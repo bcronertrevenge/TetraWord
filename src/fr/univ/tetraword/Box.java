@@ -6,6 +6,7 @@
 
 package fr.univ.tetraword;
 
+import java.awt.Color;
 import javax.swing.JButton;
 
 public class Box extends JButton {
@@ -24,5 +25,9 @@ public class Box extends JButton {
 
     public boolean isEmpty(){
         return true;
+    }
+    
+    public void repaint(){
+        setBackground(Color.gray);
     }
 }

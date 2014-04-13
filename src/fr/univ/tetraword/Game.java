@@ -7,6 +7,7 @@
 package fr.univ.tetraword;
 
 import java.awt.Color;
+import java.awt.GridLayout;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
@@ -21,28 +22,43 @@ public class Game extends Thread {
     Shape currentShape;
     private int score;
     private int level;
-    Dictionary dictionary;   
-    Grid gridInterface;
+    Dictionary dictionary;
+    private Box grid[][];
+    JPanel gridInterface;
     
     public Game(){
         score=0;
         level=1;
         currentShape=null;
-        gridInterface=new Grid();
+        grid=new Box[20][10];
+        gridInterface = new JPanel(new GridLayout(20,10));
         
-        //Initialisation de la grille
-        /*Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
+       // Initialisation de grid
+        for(int i=0;i<20;++i){
+            for(int j=0;j<10;++j)
+                grid[i][j]=new Box();
+        }
+
+        // Initialisation de gridInterface
+        Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
+        for (int i=0;i<20;++i){
+            for (int j=0;j<10;++j){
+                Box jcase =new Box();
+                jcase.setBackground(Color.gray);
+                jcase.setBorder(whiteline);
+                gridInterface.add(jcase);
+            } 
+        }
+    }
+    
+    public void repaint(){
         for (int i=0; i<20;++i){
             for (int j=0; j<10; ++j){
-                JPanel pCase = new JPanel();
-                if (i==5)
-                    pCase.setBackground(Color.blue);
-                else
-                    pCase.setBackground(Color.gray);
-                pCase.setBorder(whiteline);
-                grille[i][j]=pCase;    
-                }
-            }*/
+               if (grid[i][j]!=null){
+                  grid[i][j].repaint();
+               }
+            }
+        }
     }
     
     public int getScore(){
@@ -54,10 +70,10 @@ public class Game extends Thread {
     }
     
     public Box[][] getGrid(){
-        return gridInterface.getGrid();
+        return grid;
     }
     
-    public Grid getGridInterface(){
+    public JPanel getGridInterface(){
         return gridInterface;
     }
     
@@ -71,7 +87,7 @@ public class Game extends Thread {
         while(!end){
             if(shapeFall()==1)                     
                     currentShape=Shape.getRandomShape();
-                
+                repaint();
                 Thread.sleep(1000);
                 currentShape.printShape();
                // moveShapeAside(1);
@@ -85,7 +101,6 @@ public class Game extends Thread {
     //Bouge la piece a gauche(-1) ou a droite(1)
     public void moveShapeAside(int sens){
         Shape shape=currentShape;
-        Box[][] grid=gridInterface.getGrid();
         
         if(!canMoveAside(shape,sens))
             return;
@@ -118,8 +133,7 @@ public class Game extends Thread {
     }
     
     //Teste si le mouvement est possible
-    public boolean canMoveAside(Shape shape, int sens){
-        Box[][] grid=gridInterface.getGrid();            
+    public boolean canMoveAside(Shape shape, int sens){          
           //Mouvement a gauche
           if(sens < 0){
               if(shape.x-1<0){                 
@@ -178,7 +192,6 @@ public class Game extends Thread {
         }
         
         shape.y++;
-        Box[][] grid=gridInterface.getGrid();
         
         for(int i=0;i<4;++i){
             for(int j=0;j<4;++j){                                      
@@ -195,7 +208,6 @@ public class Game extends Thread {
         int ligne=getLowestLine(shape);
         if(ligne==-1) return false;
         
-        Box[][] grid=gridInterface.getGrid();
         
         for(int i=0;i<4;++i){
             if(shape.y+ligne+1>=20){
