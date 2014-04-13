@@ -22,29 +22,45 @@ public class Game extends Thread {
     Shape currentShape;
     private int score;
     private int level;
-    Dictionary dictionary;   
+    Dictionary dictionary;
+    private Box grid[][];
     JPanel gridInterface;
-    private Box[][] grid;
     
     public Game(){
         score=0;
         level=1;
         currentShape=null;
-        gridInterface=new JPanel(new GridLayout(20,10));
+
+        grid=new Box[20][10];
+        gridInterface = new JPanel(new GridLayout(20,10));
         
-        //Initialisation de la grille
-        /*Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
+       // Initialisation de grid
+        
+
+        // Initialisation de gridInterface
+        Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
+        for (int i=0;i<20;++i){
+            for (int j=0;j<10;++j){
+                grid[i][j]=new Box();
+                grid[i][j].setBackground(Color.blue);
+                grid[i][j].setBackground(Color.gray);
+                
+                grid[i][j].setBorder(whiteline);
+                gridInterface.add(grid[i][j]);
+            } 
+        }
+    }
+    
+    public void rafraichir(){
+        gridInterface.repaint();
         for (int i=0; i<20;++i){
-            for (int j=0; j<10; ++j){
-                JPanel pCase = new JPanel();
-                if (i==5)
-                    pCase.setBackground(Color.blue);
-                else
-                    pCase.setBackground(Color.gray);
-                pCase.setBorder(whiteline);
-                grille[i][j]=pCase;    
-                }
-            }*/
+                for (int j=0; j<10; ++j){
+                       if(grid[i][j]!=null){   
+                                grid[i][j].rafraichir();
+                       }      
+               }
+            }
+        
     }
     
     public int getScore(){
@@ -55,23 +71,32 @@ public class Game extends Thread {
         return level;
     }
     
+    public Box[][] getGrid(){
+        return grid;
+    }
+    
     public JPanel getGridInterface(){
         return gridInterface;
     }
     
+    @Override
     public void run(){
         boolean end=false;
         
         //Boucle principale
         try {
-        currentShape=Shape.getRandomShape();
+        newShapeInGame();
                             
         while(!end){
-            if(shapeFall()==1)                     
-                    currentShape=Shape.getRandomShape();
-                
+            if(shapeFall()==1){                                         
+                    newShapeInGame();
+            }
+                rafraichir();
+            
+                //grid[5][5].setBackground(Color.blue);
                 Thread.sleep(1000);
                 currentShape.printShape();
+                
                // moveShapeAside(1);
                 //Mis a jour de l'affichage
         }
@@ -80,9 +105,22 @@ public class Game extends Thread {
             }
     }
     
+    public void newShapeInGame(){
+        
+        currentShape=Shape.getRandomShape();
+        for(int i=0;i<4;++i){
+                for(int j=0;j<4;++j){
+                    if(currentShape.getBricks()[i][j]!=null)
+                        grid[currentShape.y+i][currentShape.x+j].setShapeBrick(currentShape,currentShape.getBricks()[i][j]);
+                }
+        }
+    }
+    
     //Bouge la piece a gauche(-1) ou a droite(1)
     public void moveShapeAside(int sens){
+
         Shape shape=currentShape;        
+
         
         if(!canMoveAside(shape,sens))
             return;
@@ -91,10 +129,8 @@ public class Game extends Thread {
         if(sens < 0){
             for(int i=0;i<4;++i){
                 for(int j=0;j<4;++j){
-                    grid[shape.y+i][shape.x+j-1].setBrick(grid[shape.y+i][shape.y+j].getBrick());
-                    grid[shape.y+i][shape.x+j-1].setShape(grid[shape.y+i][shape.y+j].getShape());
-                    grid[shape.y+i][shape.x+j].setBrick(null);
-                    grid[shape.y+i][shape.x+j].setShape(null);
+                    grid[shape.y+i][shape.x+j-1].setShapeBrick(grid[shape.y+i][shape.y+j].getShape(),grid[shape.y+i][shape.y+j].getBrick());
+                    grid[shape.y+i][shape.x+j].setShapeBrick(null,null);                    
                 }
             }
             shape.x--;
@@ -104,10 +140,8 @@ public class Game extends Thread {
             int col=getRightSide(shape);
             for(int i=0;i<4;++i){
                 for(int j=col;j>=0;--j){                    
-                    grid[shape.y+i][shape.x+j+1].setBrick(grid[shape.y+i][shape.y+j].getBrick());
-                    grid[shape.y+i][shape.x+j+1].setShape(grid[shape.y+i][shape.y+j].getShape());
-                    grid[shape.y+i][shape.x+j].setBrick(null);
-                    grid[shape.y+i][shape.x+j].setShape(null);
+                    grid[shape.y+i][shape.x+j-1].setShapeBrick(grid[shape.y+i][shape.y+j].getShape(),grid[shape.y+i][shape.y+j].getBrick());
+                    grid[shape.y+i][shape.x+j].setShapeBrick(null,null);                    
                 }
             }
             shape.x++;
@@ -115,8 +149,8 @@ public class Game extends Thread {
     }
     
     //Teste si le mouvement est possible
-    public boolean canMoveAside(Shape shape, int sens){
-               
+    public boolean canMoveAside(Shape shape, int sens){          
+
           //Mouvement a gauche
           if(sens < 0){
               if(shape.x-1<0){                 
@@ -175,14 +209,17 @@ public class Game extends Thread {
         }
         
         shape.y++;        
-        
+      
         for(int i=0;i<4;++i){
             for(int j=0;j<4;++j){                                      
-                grid[shape.y+i][shape.x+j].setBrick(shape.getBricks()[i][j]);
-                grid[shape.y+i][shape.x+j].setShape(shape);
+                
+                grid[shape.y+i][shape.x+j].setShapeBrick(shape,shape.getBricks()[i][j]);
+                
             }
         }
         
+        for(int i=0;i<4;++i)
+            grid[shape.y-1][shape.x+i].setShapeBrick(null,null);
         return 0;
     }
     

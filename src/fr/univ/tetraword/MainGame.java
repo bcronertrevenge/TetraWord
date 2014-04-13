@@ -157,32 +157,20 @@ public class MainGame extends JFrame {
             panel.setMinimumSize(new Dimension(600, 400));
             panel.setPreferredSize(new Dimension(1024, 768));
             
-            
-            
             // Fonts
             Font copperplate = new Font("Copperplate Gothic Bold",0,26);
             Font century = new Font("Century Gothic",0,26);
-            
+            Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
             
             // Création du jeu
             Games=new Vector<Game>();
             Game game=new Game();
             game.start();
             Games.add(game);
+            
             // Grille de Jeu        
-            JPanel grille = new JPanel (new GridLayout (20,10));
-            Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
-           
-            int b=0;
-            //while (b<=1000){
-                //JPanel grille2[][]=misAjour();
-                for (int i=0; i<20;++i){
-                        for (int j=0; j<10; ++j){
-                            grille.add(new JPanel());
-                        } 
-                }
-              //  ++b;
-            //}
+            JPanel grille=Games.get(0).getGridInterface();
+
                        
             // Labels
             JLabel labelNiveau = new JLabel();
