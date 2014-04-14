@@ -209,8 +209,9 @@ public class Game extends Thread {
         }
         
         shape.y++;        
+      int ligne=getLowestLine(shape);
       
-        for(int i=0;i<4;++i){
+        for(int i=0;i<=ligne;++i){
             for(int j=0;j<4;++j){                                      
                 
                 grid[shape.y+i][shape.x+j].setShapeBrick(shape,shape.getBricks()[i][j]);

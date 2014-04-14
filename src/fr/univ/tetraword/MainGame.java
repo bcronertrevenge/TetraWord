@@ -325,10 +325,12 @@ public class MainGame extends JFrame {
                     case KeyEvent.VK_LEFT:
                         // handle left
                         Games.get(0).moveShapeAside(-1);
+                        Games.get(0).rafraichir();
                         break;
                     case KeyEvent.VK_RIGHT :
                         // handle right
                         Games.get(0).moveShapeAside(1);
+                        Games.get(0).rafraichir();
                         break;
                  }
           
