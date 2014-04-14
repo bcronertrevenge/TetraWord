@@ -42,9 +42,7 @@ public class Game extends Thread {
         for (int i=0;i<20;++i){
             for (int j=0;j<10;++j){
                 grid[i][j]=new Box();
-                grid[i][j].setBackground(Color.blue);
-                grid[i][j].setBackground(Color.gray);
-                
+                                
                 grid[i][j].setBorder(whiteline);
                 gridInterface.add(grid[i][j]);
             } 
@@ -92,12 +90,11 @@ public class Game extends Thread {
                     newShapeInGame();
             }
                 rafraichir();
-            
-                //grid[5][5].setBackground(Color.blue);
+                           
                 Thread.sleep(1000);
                 currentShape.printShape();
                 
-               // moveShapeAside(1);
+            
                 //Mis a jour de l'affichage
         }
         } catch (InterruptedException ex) {
@@ -108,8 +105,8 @@ public class Game extends Thread {
     public void newShapeInGame(){
         
         currentShape=Shape.getRandomShape();
-        for(int i=0;i<4;++i){
-                for(int j=0;j<4;++j){
+        for(int i=0;i<=currentShape.height;++i){
+                for(int j=0;j<=currentShape.width;++j){
                     if(currentShape.getBricks()[i][j]!=null)
                         grid[currentShape.y+i][currentShape.x+j].setShapeBrick(currentShape,currentShape.getBricks()[i][j]);
                 }
@@ -118,63 +115,61 @@ public class Game extends Thread {
     
     //Bouge la piece a gauche(-1) ou a droite(1)
     public void moveShapeAside(int sens){
-
-        Shape shape=currentShape;        
-
         
-        if(!canMoveAside(shape,sens))
+        if(!canMoveAside(sens))
             return;
         
         //Gauche
         if(sens < 0){
-            for(int i=0;i<4;++i){
-                for(int j=0;j<4;++j){
-                    grid[shape.y+i][shape.x+j-1].setShapeBrick(grid[shape.y+i][shape.y+j].getShape(),grid[shape.y+i][shape.y+j].getBrick());
-                    grid[shape.y+i][shape.x+j].setShapeBrick(null,null);                    
+            currentShape.x--;
+            
+            for(int i=0;i<=currentShape.height;++i){
+                for(int j=0;j<=currentShape.width;++j){
+                    grid[currentShape.y+i][currentShape.x+j].setShapeBrick(currentShape,currentShape.getBricks()[i][j]);
+                    grid[currentShape.y+i][currentShape.x+j+1].setShapeBrick(null,null);                    
                 }
             }
-            shape.x--;
+            
         }
         //Droite
         else {
-            int col=getRightSide(shape);
-            for(int i=0;i<4;++i){
-                for(int j=col;j>=0;--j){                    
-                    grid[shape.y+i][shape.x+j-1].setShapeBrick(grid[shape.y+i][shape.y+j].getShape(),grid[shape.y+i][shape.y+j].getBrick());
-                    grid[shape.y+i][shape.x+j].setShapeBrick(null,null);                    
+           
+            currentShape.x++;
+            
+            for(int i=0;i<=currentShape.height;++i){
+                for(int j=currentShape.width;j>=0;--j){                    
+                    grid[currentShape.y+i][currentShape.x+j].setShapeBrick(currentShape,currentShape.getBricks()[i][j]);
+                    grid[currentShape.y+i][currentShape.x+j-1].setShapeBrick(null,null);                    
                 }
             }
-            shape.x++;
+            
         }
     }
     
     //Teste si le mouvement est possible
-    public boolean canMoveAside(Shape shape, int sens){          
+    public boolean canMoveAside(int sens){          
 
           //Mouvement a gauche
           if(sens < 0){
-              if(shape.x-1<0){                 
+              if(currentShape.x-1<0){                 
                   return false;
               }
               else {
-                  for(int i=0;i<4;++i){
-                      if(!grid[shape.x][shape.y].isEmpty() && !grid[shape.x-1][shape.y].isEmpty()){
-                            return false;
-                      }
+                  for(int i=0;i<=currentShape.height;++i){
+                      if(!grid[currentShape.y+i][currentShape.x].isEmpty() && !grid[currentShape.y+i][currentShape.x-1].isEmpty())
+                          return false;
                   }
               }
           }
           //Mouvement à droite
           else {
-              int col=getRightSide(shape);
-             if(col==-1) return false;
-             System.out.println(shape.x+col+1);
-              if(shape.x+col+1>=10){
+                         
+              if(currentShape.x+currentShape.width+1>=10){
                   return false;
               }
               else {
-                  for(int i=0;i<4;++i){
-                      if(!grid[shape.x+col][shape.y].isEmpty() && !grid[shape.x+col+1][shape.y].isEmpty())
+                  for(int i=0;i<=currentShape.height;++i){
+                      if(!grid[currentShape.y+i][currentShape.x+currentShape.width].isEmpty() && !grid[currentShape.y+i][currentShape.x+currentShape.width+1].isEmpty())
                           return false;
                   }
               }
@@ -186,55 +181,40 @@ public class Game extends Thread {
         currentShape.rotateShape();
     }
     
-    //Retourne le côté de la pièce concerné
-    public int getRightSide(Shape shape){
-         
-        for(int i=3;i>=0;--i){
-            for(int j=0;j<4;++j){
-                if(shape.getBricks()[j][i]!=null)
-                    return i;
-            }
-        }
-        return -1;     
-    }
     
     public int shapeFall(){
-        Shape shape=currentShape;
-         if(shape==null)
+        
+         if(currentShape==null)
              return -1;
         
         //La pièce ne peut plus chuter
-        if(!canFall(shape)){
+        if(!canFall(currentShape)){
             return 1;
         }
         
-        shape.y++;        
-      int ligne=getLowestLine(shape);
+        currentShape.y++;        
+     
       
-        for(int i=0;i<=ligne;++i){
-            for(int j=0;j<4;++j){                                      
-                
-                grid[shape.y+i][shape.x+j].setShapeBrick(shape,shape.getBricks()[i][j]);
-                
+        for(int i=0;i<=currentShape.height;++i){
+            for(int j=0;j<=currentShape.width;++j){                                      
+                grid[currentShape.y+i][currentShape.x+j].setShapeBrick(currentShape,currentShape.getBricks()[i][j]);
             }
         }
         
-        for(int i=0;i<4;++i)
-            grid[shape.y-1][shape.x+i].setShapeBrick(null,null);
+        for(int i=0;i<=currentShape.width;++i)
+            grid[currentShape.y-1][currentShape.x+i].setShapeBrick(null,null);
         return 0;
     }
     
     //Teste si la piece peut tomber
     public boolean canFall(Shape shape){
-        int ligne=getLowestLine(shape);
-        if(ligne==-1) return false;
-        
-        for(int i=0;i<4;++i){
-            if(shape.y+ligne+1>=20){
+       
+        for(int i=0;i<=shape.width;++i){
+            if(shape.y+shape.height+1>=20){
                 System.out.println("Hors tableau");
                 return false;
             }
-            else if(!grid[shape.y+ligne+1][shape.x+i].isEmpty() && shape.getBricks()[ligne][i]!=null){
+            else if(!grid[shape.y+shape.height+1][shape.x+i].isEmpty() && shape.getBricks()[shape.height][i]!=null){
                 System.out.println("Piece en dessous");
                 return false;
             }
@@ -243,14 +223,5 @@ public class Game extends Thread {
         return true;
     }
     
-    //retourne la ligne d'une shape la plus basse
-    public int getLowestLine(Shape shape){
-        for(int i=3;i>=0;--i){
-            for(int j=0;j<4;++j){
-                if(shape.getBricks()[i][j]!=null)
-                    return i;
-            }
-        }
-        return -1;
-    }
+    
 }
