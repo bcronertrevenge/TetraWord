@@ -10,41 +10,31 @@ import java.awt.Color;
 import javax.swing.JButton;
 
 public class Box extends JButton {
-    private int type; //0 : case vide, 1 : case brick, 2 : case modificateur
+    //private int type; //0 : case vide, 1 : case brick, 2 : case modificateur
     private Shape shape;
     private Brick brick;
     
     public Box(){
-        type=0;
+        shape=null;
+        brick=null;
     }
     
     public Box(Shape shape, Brick brick){
-        type=1;
         this.shape=shape;
         this.brick=brick;
-        if(brick==null)
-            type=0;
     }
     public void setShapeBrick(Shape shape, Brick brick){
-        if(brick==null)
-            type=0;
-        else
-            type=1;
         
         this.shape=shape;
         this.brick=brick;
     }
     
     public Shape getShape(){
-        if(type==1)
             return shape;
-        return null;
     }
     
     public Brick getBrick(){
-    if(type==1)
             return brick;
-        return null;
     }
 
     public boolean isEmpty(){
@@ -57,9 +47,11 @@ public class Box extends JButton {
     
     
     public void rafraichir(){
-        if(type==0)
+        if(brick==null){
             setBackground(Color.gray);
-        else if(type==1){            
+            setText(String.valueOf(""));
+        }
+        else if(brick!=null && shape!=null){            
             switch (shape.couleur){
             case 0 :
                 setBackground(Color.blue);
@@ -79,6 +71,7 @@ public class Box extends JButton {
                 break;
             default :
                 setBackground(Color.gray);
+                setText(String.valueOf(""));
                 break;
         }
         

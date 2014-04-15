@@ -126,18 +126,21 @@ public class Game extends Thread {
   
                 if(shapeFall(currentShape)==1){
                     verifLigne();
-                    newShapeInGame();
+                    end=newShapeInGame();                    
                     score+=2;
+                    if(end) break;
                 }
-                Thread.sleep(1000);
-                //currentShape.printShape();
-                
-            
-                //Mis a jour de l'affichage
+                else{
+                    Thread.sleep(1000);
+                }
+              
         }
+        System.out.println("GAME OVER");
         } catch (InterruptedException ex) {
                 Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
             }
+        
+        
     }
     
     public void eraseLine(int ligne){
@@ -181,7 +184,7 @@ public class Game extends Thread {
         return ligne;
     }
     
-    public void newShapeInGame(){
+    public boolean newShapeInGame(){
         
         currentShape=nextShape;
         nextShape=Shape.getRandomShape();
@@ -189,10 +192,15 @@ public class Game extends Thread {
         
         for(int i=0;i<=currentShape.height;++i){
                 for(int j=0;j<=currentShape.width;++j){
-                    if(currentShape.getBricks()[i][j]!=null)
-                        grid[currentShape.y+i][currentShape.x+j].setShapeBrick(currentShape,currentShape.getBricks()[i][j]);
+                    if(!grid[currentShape.y+i][currentShape.x+j].isEmpty()){
+                        System.out.println();
+                        return true;
+                    }
+                    grid[currentShape.y+i][currentShape.x+j].setShapeBrick(currentShape,currentShape.getBricks()[i][j]);
                 }
         }
+        
+        return false;
     }
     
     //Bouge la piece a gauche(-1) ou a droite(1)
