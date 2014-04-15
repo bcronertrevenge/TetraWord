@@ -160,6 +160,7 @@ public class Shape {
                 bricks[0][i]=tmp;
             }
         }
+       
         
         int tmp=width;
         width=height;
@@ -239,9 +240,56 @@ public class Shape {
         
     }
     
-    public void refreshSize(){
+    public void refreshShape(){
+        rePosition();
         width=getRightSide();
         height=getLowestLine();
+    }
+    
+    public void rePosition(){
+        boolean done=false;
+        
+        System.out.println("Before");
+        printShape();
+        //La 1ere ligne est-elle vide ?
+        for(int i=0;i<type.getTaille();++i){
+            if(bricks[0][i]!=null)
+                done=true;
+        }
+        
+        //Si oui, on remonte tout
+        if(!done){
+            
+            for(int i=0;i<type.getTaille();++i){
+                for(int j=0;j<type.getTaille()-1;++j){
+                    bricks[j][i]=bricks[j+1][i];
+                }
+                bricks[type.getTaille()-1][i]=null;
+            }
+        }
+            
+        System.out.println("During :"+done);
+        printShape();
+        
+        done = false;
+        
+        //La 1ere colonne est-elle vide ?
+        for(int i=0;i<type.getTaille();++i){
+            if(bricks[i][0]!=null)
+                done=true;
+        }
+        
+        //Si oui, on decale tout
+        if(!done){
+            for(int i=0;i<type.getTaille();++i){
+                for(int j=0;j<type.getTaille()-1;++j){
+                    bricks[i][j]=bricks[i][j+1];
+                }
+                bricks[i][type.getTaille()-1]=null;
+            }
+        }
+        System.out.println("After :"+done);
+        printShape();
     }
     
     public int getLowestLine(){

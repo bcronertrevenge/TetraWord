@@ -316,11 +316,13 @@ public class MainGame extends JFrame {
                 switch( keyCode ) { 
                     //Joueur 1
                     case KeyEvent.VK_UP:
-                        Games.get(0).rotate();
+                        Games.get(0).rotate();                        
+                        Games.get(0).rafraichir();
                         break;
                     case KeyEvent.VK_DOWN:
                         // handle down 
                         Games.get(0).shapeFall();
+                        Games.get(0).rafraichir();
                         break;
                     case KeyEvent.VK_LEFT:
                         // handle left

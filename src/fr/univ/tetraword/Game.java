@@ -25,8 +25,10 @@ public class Game extends Thread {
     Dictionary dictionary;
     private Box grid[][];
     JPanel gridInterface;
+    boolean ready;
     
     public Game(){
+        ready=true;
         score=0;
         level=1;
         currentShape=null;
@@ -86,13 +88,14 @@ public class Game extends Thread {
         newShapeInGame();
                             
         while(!end){
-            if(shapeFall()==1){                                         
+
+                   rafraichir();
+  
+                if(shapeFall()==1){                                         
                     newShapeInGame();
-            }
-                rafraichir();
-                           
+                }
                 Thread.sleep(1000);
-                currentShape.printShape();
+                //currentShape.printShape();
                 
             
                 //Mis a jour de l'affichage
@@ -177,8 +180,25 @@ public class Game extends Thread {
           return true;
     }
     
+    public boolean canRotate(){
+        if(currentShape.x+currentShape.height>=10 || currentShape.y+currentShape.width>=20)
+            return false;
+        return true;
+    }
+    
     public void rotate(){
+        if(!canRotate()) return;
+        
         currentShape.rotateShape();
+        currentShape.refreshShape();
+        
+        for(int i=0;i<currentShape.getType().getTaille();++i){
+            for(int j=0;j<currentShape.getType().getTaille();++j){                
+                
+                grid[currentShape.y+i][currentShape.x+j].setShapeBrick(currentShape,currentShape.getBricks()[i][j]);
+            }
+        }
+        
     }
     
     
