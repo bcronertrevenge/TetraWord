@@ -8,6 +8,12 @@ package fr.univ.tetraword;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
@@ -343,8 +349,13 @@ public class Game extends Thread {
 			ObjectOutputStream save=new ObjectOutputStream(new FileOutputStream("SavedGame.dat"));
 			save.writeObject(savedGame);
 			save.close();
-		} catch (FileNotFoundException e) {e.printStackTrace();}
-		catch (IOException e) {e.printStackTrace();}
+		} catch (FileNotFoundException e)
+                {
+                    e.printStackTrace();
+                }
+		catch (IOException e) {
+                    e.printStackTrace();
+                }
 	}
 
 	public static Game[] readGame()
@@ -355,7 +366,6 @@ public class Game extends Thread {
 			ObjectInputStream save=new ObjectInputStream(new FileInputStream("SavedGame.dat"));
 			game=(Game[]) save.readObject();
 		} catch (FileNotFoundException e) {} 
-		catch (EOFException e){}
 		catch (IOException e) {e.printStackTrace();} 
 		catch (ClassNotFoundException e) {e.printStackTrace();}
 		return game;

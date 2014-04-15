@@ -31,11 +31,7 @@ public class Shape {
     public Shape(shapeType type){
         this.type=type;
         bricks=new Brick[4][4];
-        /*for(int i=0;i<4;++i){
-            for(int j=0;j<4;++j){
-                bricks[i][j]=new Brick(); 
-            }
-        }*/
+        
         if(type.getTaille()==3)
             x=4;
         else if(type.getTaille()==4)
@@ -114,7 +110,7 @@ public class Shape {
         }
         
         //couleurs
-        couleur = (int) ((Math.random() * (3)));
+        couleur = (int) ((Math.random() * (4)));
 
     }
     
