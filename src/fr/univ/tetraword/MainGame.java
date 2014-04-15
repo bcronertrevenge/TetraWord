@@ -189,12 +189,12 @@ public class MainGame extends JFrame {
             labelPiece.setText("Prochaine pièce");
             
             // Boutons
-            JWelcomeButton buttonNiveau = new JWelcomeButton(String.valueOf(game.getLevel()));
+            JWelcomeButton buttonNiveau = new JWelcomeButton(String.valueOf(Games.get(0).getLevel()));
             buttonNiveau.setFont(century);
             buttonNiveau.setForeground(Color.WHITE);
             buttonNiveau.setFocusPainted(false);
 
-            JWelcomeButton buttonScore = new JWelcomeButton(String.valueOf(game.getScore()));
+            JWelcomeButton buttonScore = new JWelcomeButton(String.valueOf(Games.get(0).getScore()));
             buttonScore.setFont(century);
             buttonScore.setForeground(Color.WHITE);
             buttonScore.setFocusPainted(false);
@@ -321,7 +321,7 @@ public class MainGame extends JFrame {
                         break;
                     case KeyEvent.VK_DOWN:
                         // handle down 
-                        Games.get(0).shapeFall();
+                        Games.get(0).shapeFall(Games.get(0).currentShape);
                         Games.get(0).rafraichir();
                         break;
                     case KeyEvent.VK_LEFT:

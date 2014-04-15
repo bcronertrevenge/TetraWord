@@ -249,8 +249,6 @@ public class Shape {
     public void rePosition(){
         boolean done=false;
         
-        System.out.println("Before");
-        printShape();
         //La 1ere ligne est-elle vide ?
         for(int i=0;i<type.getTaille();++i){
             if(bricks[0][i]!=null)
@@ -268,8 +266,6 @@ public class Shape {
             }
         }
             
-        System.out.println("During :"+done);
-        printShape();
         
         done = false;
         
@@ -288,8 +284,6 @@ public class Shape {
                 bricks[i][type.getTaille()-1]=null;
             }
         }
-        System.out.println("After :"+done);
-        printShape();
     }
     
     public int getLowestLine(){
