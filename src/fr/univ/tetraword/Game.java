@@ -336,6 +336,29 @@ public class Game extends Thread {
         
         return true;
     }
-    
+    public static void saveGame(Game[] savedGame)
+	{
+		try 
+		{
+			ObjectOutputStream save=new ObjectOutputStream(new FileOutputStream("SavedGame.dat"));
+			save.writeObject(savedGame);
+			save.close();
+		} catch (FileNotFoundException e) {e.printStackTrace();}
+		catch (IOException e) {e.printStackTrace();}
+	}
+
+	public static Game[] readGame()
+	{ 
+		Game[] game=new Game[0];
+		try 
+		{
+			ObjectInputStream save=new ObjectInputStream(new FileInputStream("SavedGame.dat"));
+			game=(Game[]) save.readObject();
+		} catch (FileNotFoundException e) {} 
+		catch (EOFException e){}
+		catch (IOException e) {e.printStackTrace();} 
+		catch (ClassNotFoundException e) {e.printStackTrace();}
+		return game;
+	}
     
 }
