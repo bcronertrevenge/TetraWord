@@ -200,13 +200,7 @@ public class MainGame extends JFrame {
             buttonScore.setFocusPainted(false);
 
             // Prochaine piece        
-            JPanel buttonPiece = new JPanel (new GridLayout (4,4));
-            for(int i=0; i<16; ++i){
-               JPanel pCase = new JPanel();
-               pCase.setBackground(new Color(67,71,79));
-               pCase.setBorder(whiteline);
-               buttonPiece.add(pCase);
-            }
+            JPanel buttonPiece = Games.get(0).getNextInterface();
 
             GroupLayout jPanel1Layout = new GroupLayout(panel);
             panel.setLayout(jPanel1Layout);
