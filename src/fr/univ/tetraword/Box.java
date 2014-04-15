@@ -57,25 +57,46 @@ public class Box extends JButton {
     
     
     public void rafraichir(){
+        Color bleuC=new Color(23,109,181);
+        Color bleuF=new Color(21,23,98);
+        Color rougeF=new Color(196,6,6);
+        Color vert=new Color(25,137,49);
+        Color orange=new Color(248,111,0);
+        Color violet=new Color(116,28,191);
+
         if(type==0)
             setBackground(Color.gray);
         else if(type==1){            
             switch (shape.couleur){
             case 0 :
-                setBackground(Color.blue);
+                setBackground(bleuC);
                 setText(String.valueOf(brick.lettre));
+                setForeground(Color.WHITE);
                 break;
             case 1 :
-                setBackground(Color.green);
+                setBackground(rougeF);
                 setText(String.valueOf(brick.lettre));
+                setForeground(Color.WHITE);
                 break;
             case 2 :
-                setBackground(Color.red);
+                setBackground(vert);
                 setText(String.valueOf(brick.lettre));
+                setForeground(Color.WHITE);
                 break;
             case 3 :
-                setBackground(Color.orange);
+                setBackground(orange);
                 setText(String.valueOf(brick.lettre));
+                setForeground(Color.WHITE);
+                break;
+            case 4 :
+                setBackground(violet);
+                setText(String.valueOf(brick.lettre));
+                setForeground(Color.WHITE);
+                break;
+            case 5 :
+                setBackground(bleuF);
+                setText(String.valueOf(brick.lettre));
+                setForeground(Color.WHITE);
                 break;
             default :
                 setBackground(Color.gray);
