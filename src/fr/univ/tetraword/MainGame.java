@@ -189,24 +189,18 @@ public class MainGame extends JFrame {
             labelPiece.setText("Prochaine pièce");
             
             // Boutons
-            JWelcomeButton buttonNiveau = new JWelcomeButton(String.valueOf(game.getLevel()));
+            JWelcomeButton buttonNiveau = new JWelcomeButton(String.valueOf(Games.get(0).getLevel()));
             buttonNiveau.setFont(century);
             buttonNiveau.setForeground(Color.WHITE);
             buttonNiveau.setFocusPainted(false);
 
-            JWelcomeButton buttonScore = new JWelcomeButton(String.valueOf(game.getScore()));
+            JWelcomeButton buttonScore = new JWelcomeButton(String.valueOf(Games.get(0).getScore()));
             buttonScore.setFont(century);
             buttonScore.setForeground(Color.WHITE);
             buttonScore.setFocusPainted(false);
 
             // Prochaine piece        
-            JPanel buttonPiece = new JPanel (new GridLayout (4,4));
-            for(int i=0; i<16; ++i){
-               JPanel pCase = new JPanel();
-               pCase.setBackground(new Color(67,71,79));
-               pCase.setBorder(whiteline);
-               buttonPiece.add(pCase);
-            }
+            JPanel buttonPiece = Games.get(0).getNextInterface();
 
             GroupLayout jPanel1Layout = new GroupLayout(panel);
             panel.setLayout(jPanel1Layout);
@@ -278,34 +272,6 @@ public class MainGame extends JFrame {
             this.setVisible(true);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-
-    private static JPanel[][] misAjour(){
-        /*Box grid[][]=Games.get(0).getGrid();
-        JPanel grille[][]=Games.get(0).getGridInterface();
-        
-        for (int i=0; i<20;++i){
-            for (int j=0; j<10; ++j){
-                if (grid[i][j].getShape()!=null){
-                        if (grid[i][j].getShape().couleur==0){
-                            grille[i][j].setBackground(Color.blue);
-                        }
-                        else if (grid[i][j].getShape().couleur==1){
-                            grille[i][j].setBackground(Color.green);
-                        }
-                        else if (grid[i][j].getShape().couleur==2){
-                            grille[i][j].setBackground(Color.red);
-                        }
-                        else if (grid[i][j].getShape().couleur==3){
-                            grille[i][j].setBackground(Color.orange);
-                        }
-                }else {
-                      grille[i][j].setBackground(Color.gray);
-                    }
-                } 
-            }*/
-        return null;
-    }
-
    
     //Lecture clavier
    class ClavierListener implements KeyListener{
@@ -316,19 +282,23 @@ public class MainGame extends JFrame {
                 switch( keyCode ) { 
                     //Joueur 1
                     case KeyEvent.VK_UP:
-                        Games.get(0).rotate();
+                        Games.get(0).rotate();                        
+                        Games.get(0).rafraichir();
                         break;
                     case KeyEvent.VK_DOWN:
                         // handle down 
-                        Games.get(0).shapeFall();
+                        Games.get(0).shapeFall(Games.get(0).currentShape);
+                        Games.get(0).rafraichir();
                         break;
                     case KeyEvent.VK_LEFT:
                         // handle left
                         Games.get(0).moveShapeAside(-1);
+                        Games.get(0).rafraichir();
                         break;
                     case KeyEvent.VK_RIGHT :
                         // handle right
                         Games.get(0).moveShapeAside(1);
+                        Games.get(0).rafraichir();
                         break;
                  }
           

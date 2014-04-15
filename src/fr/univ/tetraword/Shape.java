@@ -26,6 +26,7 @@ public class Shape {
     private Brick bricks[][];
     public int x,y;
     public int couleur;
+    public int width,height;
     
     public Shape(shapeType type){
         this.type=type;
@@ -56,42 +57,56 @@ public class Shape {
                  bricks[0][1]=case2;
                  bricks[1][1]=case3;
                  bricks[1][2]=case4;
+                 width=2;
+                 height=1;
                 break;
             case square:
                  bricks[0][0]=case1;
                  bricks[0][1]=case2;
                  bricks[1][0]=case3;
                  bricks[1][1]=case4;
+                 width=1;
+                 height=1;
                 break;
             case rightZ:
                  bricks[1][0]=case1;
                  bricks[1][1]=case2;
                  bricks[0][1]=case3;
                  bricks[0][2]=case4;
+                 width=2;
+                 height=1;
                 break;
             case leftZ:
                  bricks[0][0]=case1;
                  bricks[0][1]=case2;
                  bricks[1][1]=case3;
                  bricks[1][2]=case4;
+                 width=2;
+                 height=1;
                 break;
             case rightL:
                  bricks[0][1]=case1;
                  bricks[0][0]=case2;
                  bricks[1][0]=case3;
                  bricks[2][0]=case4;
+                 width=1;
+                 height=2;
                 break;
             case leftL:
                  bricks[0][0]=case1;
                  bricks[0][1]=case2;
                  bricks[1][1]=case3;
                  bricks[2][1]=case4;
+                 width=1;
+                 height=2;
                 break;
             case line:
                  bricks[0][0]=case1;
                  bricks[1][0]=case2;
                  bricks[2][0]=case3;
                  bricks[3][0]=case4;
+                 width=0;
+                 height=3;
                 break;
             default:
                 System.out.println("Not a Shape");
@@ -145,6 +160,11 @@ public class Shape {
                 bricks[0][i]=tmp;
             }
         }
+       
+        
+        int tmp=width;
+        width=height;
+        height=tmp;
     }
     
     public void printShape(){
@@ -218,6 +238,74 @@ public class Shape {
                 return -1;
         }
         
+    }
+    
+    public void refreshShape(){
+        rePosition();
+        width=getRightSide();
+        height=getLowestLine();
+    }
+    
+    public void rePosition(){
+        boolean done=false;
+        
+        //La 1ere ligne est-elle vide ?
+        for(int i=0;i<type.getTaille();++i){
+            if(bricks[0][i]!=null)
+                done=true;
+        }
+        
+        //Si oui, on remonte tout
+        if(!done){
+            
+            for(int i=0;i<type.getTaille();++i){
+                for(int j=0;j<type.getTaille()-1;++j){
+                    bricks[j][i]=bricks[j+1][i];
+                }
+                bricks[type.getTaille()-1][i]=null;
+            }
+        }
+            
+        
+        done = false;
+        
+        //La 1ere colonne est-elle vide ?
+        for(int i=0;i<type.getTaille();++i){
+            if(bricks[i][0]!=null)
+                done=true;
+        }
+        
+        //Si oui, on decale tout
+        if(!done){
+            for(int i=0;i<type.getTaille();++i){
+                for(int j=0;j<type.getTaille()-1;++j){
+                    bricks[i][j]=bricks[i][j+1];
+                }
+                bricks[i][type.getTaille()-1]=null;
+            }
+        }
+    }
+    
+    public int getLowestLine(){
+        for(int i=3;i>=0;--i){
+            for(int j=0;j<4;++j){
+                if(bricks[i][j]!=null)
+                    return i;
+            }
+        }
+        return -1;
+    }
+    
+    //Retourne le côté de la pièce concerné
+    public int getRightSide(){
+         
+        for(int i=3;i>=0;--i){
+            for(int j=0;j<4;++j){
+                if(bricks[j][i]!=null)
+                    return i;
+            }
+        }
+        return -1;     
     }
     
     public static Shape getRandomShape(){

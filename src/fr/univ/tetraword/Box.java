@@ -63,15 +63,19 @@ public class Box extends JButton {
             switch (shape.couleur){
             case 0 :
                 setBackground(Color.blue);
+                setText(String.valueOf(brick.lettre));
                 break;
             case 1 :
                 setBackground(Color.green);
+                setText(String.valueOf(brick.lettre));
                 break;
             case 2 :
                 setBackground(Color.red);
+                setText(String.valueOf(brick.lettre));
                 break;
             case 3 :
                 setBackground(Color.orange);
+                setText(String.valueOf(brick.lettre));
                 break;
             default :
                 setBackground(Color.gray);
