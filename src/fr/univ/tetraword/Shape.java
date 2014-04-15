@@ -110,7 +110,7 @@ public class Shape {
         }
         
         //couleurs
-        couleur = (int) ((Math.random() * (4)));
+        couleur = (int)((Math.random() * (6)));
 
     }
     
