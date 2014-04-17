@@ -148,13 +148,14 @@ public class Game extends Thread implements ActionListener{
                     }
                 }else if (mode == 1){
                     endTime=System.currentTimeMillis(); 
-                    //System.out.println((endTime-beginTime));
-                    if(endTime-beginTime>10000){ 
+                    System.out.println((endTime-beginTime));
+                    if(endTime-beginTime>5000){ //Difficulte a changer
                         mode = 0;
                         clean();
                         window.requestFocusInWindow();
                         mot="";
                         anagLine=-1;
+                        end=newShapeInGame();
                     }
                 }
               
@@ -469,7 +470,6 @@ public class Game extends Thread implements ActionListener{
                             if(grid[anagLine][i]==box){
                                 mot+=box.getBrick().lettre;
                                 box.isSelected=true;
-                                System.out.println("mot : " + mot);
                                 break;
                             }
                         }
