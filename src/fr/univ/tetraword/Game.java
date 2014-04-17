@@ -8,6 +8,7 @@ package fr.univ.tetraword;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -18,6 +19,7 @@ import java.io.ObjectOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
@@ -25,26 +27,32 @@ import javax.swing.border.Border;
  *
  * @author bruno
  */
-public class Game extends Thread {
+public class Game extends Thread implements ActionListener{
     Shape currentShape;
     Shape nextShape;
     private int score;
     private int level;
     Dictionary dictionary;
-    private Box grid[][];
-    private Box nextgrid[][];
+    private final Box grid[][];
+    private final Box nextgrid[][];
     JPanel gridInterface;
     JPanel nextInterface;
-    boolean ready;
+    private int mode; //0 : mode Tetris, 1 : mode Anagramme, 2 : Worddle
+    JFrame window;
+    String mot;
+    int anagLine;
     
-    public Game(){
-        ready=true;
+    public Game(JFrame window, Dictionary dictionary){            
+        anagLine=-1;
         score=0;
         level=1;
         currentShape=null;
-
+        mode = 0;
         grid=new Box[20][10];
         nextgrid=new Box[4][4];
+        this.window=window;
+        mot="";
+        this.dictionary=dictionary;
         
         // Initialisation de grid
         gridInterface = new JPanel(new GridLayout(20,10));
@@ -67,6 +75,7 @@ public class Game extends Thread {
                                 
                 grid[i][j].setBorder(whiteline);
                 gridInterface.add(grid[i][j]);
+                grid[i][j].addActionListener(this); 
             } 
         }
     }
@@ -119,19 +128,34 @@ public class Game extends Thread {
         try {
         nextShape=Shape.getRandomShape();
         newShapeInGame();
-                            
+        long beginTime=0,endTime;
+        
         while(!end){
 
                    rafraichir();
-  
-                if(shapeFall(currentShape)==1){
-                    verifLigne();
-                    end=newShapeInGame();                    
-                    score+=2;
-                    if(end) break;
-                }
-                else{
-                    Thread.sleep(1000);
+                if(mode == 0){
+                    if(shapeFall(currentShape)==1){
+                        beginTime=verifLigne();
+                        if(mode == 0){
+                            end=newShapeInGame();                    
+                            score+=2;
+                            if(score%100==0) level++;
+                            if(end) break;
+                        }
+                    }
+                    else{
+                        Thread.sleep(1000);
+                    }
+                }else if (mode == 1){
+                    endTime=System.currentTimeMillis(); 
+                    //System.out.println((endTime-beginTime));
+                    if(endTime-beginTime>10000){ 
+                        mode = 0;
+                        clean();
+                        window.requestFocusInWindow();
+                        mot="";
+                        anagLine=-1;
+                    }
                 }
               
         }
@@ -143,6 +167,65 @@ public class Game extends Thread {
         
     }
     
+    public void clean(){
+           unSelected(-1);
+           whiteOut();
+    }
+    
+    public void unSelected(int ligne){
+        if(ligne < 0){
+            for(int i=0;i<20;++i){
+                for(int j=0;j<10;++j){
+                    grid[i][j].isSelected=false;
+                }
+            }
+        }
+        else {
+            for(int i=0;i<10;++i)
+                grid[ligne][i].isSelected=false;
+        }
+    }
+    
+    public void whiteOut(){
+        Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
+        for(int i=0;i<20;++i){
+            for(int j=0;j<10;++j){
+                grid[i][j].setBorder(whiteline);
+            }
+        }
+    }
+    
+    public long anagramme(int ligne){
+        
+        Border yellowline = BorderFactory.createLineBorder(Color.YELLOW,1);
+            for(int j=0;j<10;++j){
+                grid[ligne][j].setBorder(yellowline);
+            }
+        anagLine=ligne;
+        mode = 1;
+        return System.currentTimeMillis(); 
+        //Suppression et chute
+    }
+    
+    public void validate(){
+        if(mode == 1){
+            if(mot.length() > 3){ //dictionary.line.contains(mot) && //Changer la difficulte
+                eraseLine(anagLine);
+                score+=mot.length()*10;
+                clean();
+                System.out.println("Correct");
+                mode = 0;
+                anagLine=-1;
+            }
+            else{
+                unSelected(anagLine);
+                System.out.println("Wrong");
+            }
+            mot="";
+        }
+    }
+    
+    //A supprimer
     public void eraseLine(int ligne){
         for(int i=ligne;i>0;--i){
             for(int j=0;j<10;++j){
@@ -153,10 +236,9 @@ public class Game extends Thread {
     }
     
     //Verif ligne
-    public int verifLigne(){
+    public long verifLigne(){
         int ligne=-1;
-        boolean end;
-        do {
+        boolean end;        
             int tmp;
             for(int i=19;i>=0;--i){
                 end=true;
@@ -175,13 +257,11 @@ public class Game extends Thread {
                 if(end || ligne!=-1)
                     break;
             }
-            if(ligne!=-1)
-                score+=10;
-            
-            eraseLine(ligne);
-        } while(ligne!=-1);
-        System.out.println();
-        return ligne;
+            if(ligne!=-1){
+                return anagramme(ligne);
+            }
+
+        return -1;
     }
     
     public boolean newShapeInGame(){
@@ -380,4 +460,23 @@ public class Game extends Thread {
 		return game;
 	}
     
+    public void actionPerformed(java.awt.event.ActionEvent evt) {
+             if(evt.getSource() instanceof Box){
+                 if(mode==1){
+                    Box box=(Box)evt.getSource();
+                    if(!box.isSelected){
+                        for(int i=0;i<10;++i){
+                            if(grid[anagLine][i]==box){
+                                mot+=box.getBrick().lettre;
+                                box.isSelected=true;
+                                System.out.println("mot : " + mot);
+                                break;
+                            }
+                        }
+                        
+                    }
+                 }
+             }
+             window.requestFocusInWindow();
+    }
 }

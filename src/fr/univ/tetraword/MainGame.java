@@ -163,8 +163,9 @@ public class MainGame extends JFrame {
             Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
             
             // Création du jeu
+            Dictionary dictionary=new Dictionary();
             Games=new Vector<Game>();
-            Game game=new Game();
+            Game game=new Game(this,dictionary);
             game.start();
             Games.add(game);
             
@@ -282,6 +283,7 @@ public class MainGame extends JFrame {
                 switch( keyCode ) { 
                     //Joueur 1
                     case KeyEvent.VK_UP:
+                        
                         Games.get(0).rotate();                        
                         Games.get(0).rafraichir();
                         break;
@@ -299,6 +301,10 @@ public class MainGame extends JFrame {
                         // handle right
                         Games.get(0).moveShapeAside(1);
                         Games.get(0).rafraichir();
+                        break;
+                    case KeyEvent.VK_ENTER :
+                        System.out.println("Entrer");
+                        Games.get(0).validate();
                         break;
                  }
           
