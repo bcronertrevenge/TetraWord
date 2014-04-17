@@ -160,8 +160,7 @@ public class MainGame extends JFrame {
             // Fonts
             Font copperplate = new Font("Copperplate Gothic Bold",0,26);
             Font century = new Font("Century Gothic",0,26);
-            Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
-            
+                        
             // Création du jeu
             Dictionary dictionary=new Dictionary();
             Games=new Vector<Game>();

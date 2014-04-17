@@ -148,7 +148,7 @@ public class Game extends Thread implements ActionListener{
                     }
                 }else if (mode == 1){
                     endTime=System.currentTimeMillis(); 
-                    System.out.println((endTime-beginTime));
+                    //System.out.println((endTime-beginTime));
                     if(endTime-beginTime>5000){ //Difficulte a changer
                         mode = 0;
                         clean();
@@ -210,7 +210,8 @@ public class Game extends Thread implements ActionListener{
     
     public void validate(){
         if(mode == 1){
-            if(mot.length() > 3){ //dictionary.line.contains(mot) && //Changer la difficulte
+            mot=mot.toLowerCase();
+            if(mot.length() > 2 && dictionary.line.contains(mot)){ //Changer la difficulte
                 eraseLine(anagLine);
                 score+=mot.length()*10;
                 clean();

@@ -21,7 +21,7 @@ public class Dictionary {
 	HashSet line;
 	public Dictionary() {
  		line = new HashSet();
-		String fichier ="dictionnaire.txt";
+		String fichier ="data/dictionnaire.txt";
 		
 		try{
 			InputStream ips=new FileInputStream(fichier); 
@@ -43,7 +43,7 @@ public class Dictionary {
 
 	public static void main(String[] args){
 		Dictionary dictionary = new Dictionary();
-		String mot = "bonjour";
+		String mot = "pute";
 		if( dictionary.line.contains(mot) ){
 		      System.out.println("Mot correct");
 		}
