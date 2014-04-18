@@ -13,6 +13,7 @@ public class Box extends JButton{
     
     private Shape shape;
     private Brick brick;
+    private Modifier modifier;
     boolean isSelected;
     boolean isSuppressed;
     boolean isStart;
@@ -20,6 +21,7 @@ public class Box extends JButton{
     public Box(){
         shape=null;
         brick=null;
+        modifier=null;
         isSelected=false;
         isSuppressed=false;
         isStart=false;
@@ -28,14 +30,31 @@ public class Box extends JButton{
     public Box(Shape shape, Brick brick){
         this.shape=shape;
         this.brick=brick;
+        modifier=null;
         isSelected=false;
         isSuppressed=false;
         isStart=false;
     }
+    
+    public Box(Modifier modifier){
+        shape=null;
+        brick=null;
+        this.modifier=modifier;
+        isSelected=false;
+        isSuppressed=false;
+        isStart=false;
+    }
+    
     public void setShapeBrick(Shape shape, Brick brick){
-        
+        modifier=null;
         this.shape=shape;
         this.brick=brick;
+    }
+    
+    public void setModifier(Modifier modifier){
+        this.modifier=modifier;
+        shape=null;
+        brick=null;
     }
     
     public Shape getShape(){

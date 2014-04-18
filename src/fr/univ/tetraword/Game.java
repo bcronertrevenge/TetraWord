@@ -51,9 +51,9 @@ public class Game extends Thread implements ActionListener{
     
     public Game(JFrame window, Dictionary dictionary){            
         //Difficulte
-        worddleTime=20000; //Le temps en mode Worddle
+        worddleTime=40000; //Le temps en mode Worddle
         worddleReload=20000; //Le temps de rechargement de Worddle
-        anagTime=10000; //Le temps en mode anagramme
+        anagTime=30000; //Le temps en mode anagramme
         fallTime=1000; //Le temps de chute des pièces
         anagLettres=2; //Le nombre de lettres minimum en anagramme
         worddleLast=0; //Le temps du dernier worddle
@@ -148,12 +148,15 @@ public class Game extends Thread implements ActionListener{
         nextShape=Shape.getRandomShape();
         newShapeInGame();
         long beginTime=0;
-        
+        int nbShape=1;
+        boolean modif=false;
         while(!end){
 
                    rafraichir();
                 if(mode == 0){
                     if(shapeFall(currentShape)==1){
+                        nbShape++;
+                        modif=false;
                         beginTime=verifLigne();
                         if(mode == 0){
                             end=newShapeInGame();                    
@@ -192,7 +195,12 @@ public class Game extends Thread implements ActionListener{
                     }
                 }
                 
-              
+              if(nbShape%5==0 && !modif){
+                  modif=true;
+                  System.out.println("Apparition Modifier");
+                  addModifier();
+              }
+                  
         }
         System.out.println("GAME OVER");
         } catch (InterruptedException ex) {
@@ -721,12 +729,22 @@ public class Game extends Thread implements ActionListener{
     public void levelUp(){
         
         level++;
-        worddleTime=20000-level*50; //Le temps en mode Worddle
+        worddleTime=40000-level*50; //Le temps en mode Worddle
         worddleReload=20000+level*50; //Le temps de rechargement de Worddle
-        anagTime=10000-level*50; //Le temps en mode anagramme
+        anagTime=30000-level*50; //Le temps en mode anagramme
         fallTime=1000-level*5; //Le temps de chute des pièces
         if(anagLettres<5 && level%2==0){
             anagLettres=level; //Le nombre de lettres minimum en anagramme
         }
+    }
+    
+    public void addModifier(){
+        int x,y;
+        do {
+            x=(int)(Math.random() * 10);
+            y=(int)(Math.random() * 20);
+        }while(!grid[y][x].isEmpty());
+        
+        
     }
 }
