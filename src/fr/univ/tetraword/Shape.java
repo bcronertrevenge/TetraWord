@@ -116,47 +116,18 @@ public class Shape {
     
     public void rotateShape(){
         
-        
-        if(type.getTaille()==3){
-        Brick tmp, tmp2;
-            
-        //+
-        tmp=bricks[0][1];
-        
-        tmp2=bricks[1][0];
-        bricks[1][0]=tmp;
-        
-        tmp=bricks[2][1];
-        bricks[2][1]=tmp2;
-        
-        tmp2=bricks[1][2];
-        bricks[1][2]=tmp;
-        
-        bricks[0][1]=tmp2;
-        
-        //x
-        tmp=bricks[0][0];
-        
-        tmp2=bricks[2][0];
-        bricks[2][0]=tmp;
-        
-        tmp=bricks[2][2];
-        bricks[2][2]=tmp2;
-        
-        tmp2=bricks[0][2];
-        bricks[0][2]=tmp;
-        
-        bricks[0][0]=tmp2;
-        }
-        else if(type.getTaille()==4){
-            Brick tmp;
-            for(int i=1;i<4;++i){
-                tmp=bricks[i][0];
-                bricks[i][0]=bricks[0][i];
-                bricks[0][i]=tmp;
+        Brick res[][] = new Brick[type.getTaille()][type.getTaille()];
+        for (int i = 0; i < type.getTaille(); ++i) {
+            for (int j = 0; j < type.getTaille(); ++j) {
+                res[i][j] = bricks[type.getTaille() - j - 1][i];
             }
         }
-       
+        
+        for (int i = 0; i < type.getTaille(); ++i) {
+            for (int j = 0; j < type.getTaille(); ++j) {
+                bricks[i][j]=res[i][j];
+            }
+        }
         
         int tmp=width;
         width=height;

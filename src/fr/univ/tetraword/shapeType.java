@@ -12,7 +12,7 @@ package fr.univ.tetraword;
  */
 public enum shapeType {
         T(3),
-        square(3),
+        square(2),
         rightZ(3),
         leftZ(3),
         rightL(3),
