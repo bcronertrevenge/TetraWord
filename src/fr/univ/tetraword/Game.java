@@ -187,7 +187,7 @@ public class Game extends Thread implements ActionListener{
                         window.requestFocusInWindow();
                         mot="";
                         worddleLast=System.currentTimeMillis();
-                        beginTime=verifLigne();
+                        //beginTime=verifLigne();
                         System.out.println("Worddle Over");
                     }
                 }
@@ -209,19 +209,25 @@ public class Game extends Thread implements ActionListener{
                 if(!grid[i][j].isEmpty() && grid[i][j].isSuppressed){
                     score+=50/grid[i][j].getBrick().rarity;
                     grid[i][j].setShapeBrick(null, null);
-                    for(int k=i-1;k>0;--k){
-                        if(!grid[k][j].isEmpty() && grid[k][j].getShape()!=currentShape && !grid[k][j].isSuppressed){
-                            grid[k][j].getShape().refreshShape();
-                                                                                   
-                            fall=shapeFall(grid[k][j].getShape());
-                            if(fall!=1 && k<19) k++;     
-                            
-                            //grid[i][j].setShapeBrick(grid[i-1][j].getShape(), grid[i-1][j].getBrick());
-                            //grid[i-1][j].setShapeBrick(null,null);
-                        }
+                    
+                }
+            }
+        }
+        
+        boolean quit;
+        for(int i=19;i>=0;--i){
+            quit=true;
+            for(int j=0;j<10;++j){
+                if(!grid[i][j].isEmpty()){
+                    grid[i][j].getShape().refreshShape();
+                    quit=false;           
+                    fall=0;
+                    while(fall!=1 && fall!=-1){
+                        fall=shapeFall(grid[i][j].getShape());
                     }
                 }
             }
+            if(quit) break;
         }
     }
     
@@ -339,7 +345,7 @@ public class Game extends Thread implements ActionListener{
         }
         else if(mode == 2){
             mot=mot.toLowerCase();
-            if(dictionary.line.contains(mot)){                
+            if(mot.length() > 2){//dictionary.line.contains(mot)){                
                 boolean quit;
                 for(int i=19;i>=0;--i){
                     quit=true;
@@ -479,7 +485,8 @@ public class Game extends Thread implements ActionListener{
                 for(int j=0;j<=currentShape.width;++j){
                     if(grid[currentShape.y+i][currentShape.x+j].getShape()==currentShape || grid[currentShape.y+i][currentShape.x+j].isEmpty()){
                         grid[currentShape.y+i][currentShape.x+j].setShapeBrick(currentShape,currentShape.getBricks()[i][j]);
-                        grid[currentShape.y+i][currentShape.x+j+1].setShapeBrick(null,null);                    
+                        if(grid[currentShape.y+i][currentShape.x+j+1].getShape()==currentShape)
+                            grid[currentShape.y+i][currentShape.x+j+1].setShapeBrick(null,null);                    
                     }
                 }
             }
@@ -494,7 +501,8 @@ public class Game extends Thread implements ActionListener{
                 for(int j=currentShape.width;j>=0;--j){                    
                     if(grid[currentShape.y+i][currentShape.x+j].getShape()==currentShape || grid[currentShape.y+i][currentShape.x+j].isEmpty()){
                         grid[currentShape.y+i][currentShape.x+j].setShapeBrick(currentShape,currentShape.getBricks()[i][j]);
-                        grid[currentShape.y+i][currentShape.x+j-1].setShapeBrick(null,null);                    
+                        if(grid[currentShape.y+i][currentShape.x+j-1].getShape()==currentShape)
+                            grid[currentShape.y+i][currentShape.x+j-1].setShapeBrick(null,null);                    
                     }
                 }
             }
