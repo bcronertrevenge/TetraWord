@@ -38,13 +38,17 @@ public class Shape {
             x=3;
         y=0;
        
-        char random = (char) ((Math.random() * (26)) + 65);
+        double totalProb=0;
+        for(int i=65;i<65+26;++i)
+            totalProb+=getRarityFromLetter((char) i);
+        
+        char random = getLetterFromProb((int)(Math.random() * totalProb));
         Brick case1=new Brick(random,getRarityFromLetter(random));
-        random = (char) ((Math.random() * (26)) + 65);
+        random = getLetterFromProb((int)(Math.random() * totalProb));
         Brick case2=new Brick(random,getRarityFromLetter(random));
-        random = (char) ((Math.random() * (26)) + 65);
+        random = getLetterFromProb((int)(Math.random() * totalProb));
         Brick case3=new Brick(random,getRarityFromLetter(random));
-        random = (char) ((Math.random() * (26)) + 65);
+        random = getLetterFromProb((int)(Math.random() * totalProb));
         Brick case4=new Brick(random,getRarityFromLetter(random));
         
         switch(type){
@@ -147,64 +151,74 @@ public class Shape {
         
     }
     
-    private static int getRarityFromLetter(char lettre){
+    public static double getRarityFromLetter(char lettre){
         switch(lettre){
             case 'A':
-                return 1;
+                return 8.11;
             case 'B':
-                return 3;
+                return 0.81;
             case 'C':
-                return 3;
+                return 3.38;
             case 'D':
-                return 2;
+                return 4.28;
             case 'E':
-                return 1;
+                return 17.69;
             case 'F':
-                return 4;
+                return 1.13;
             case 'G':
-                return 2;
+                return 1.19;
             case 'H':
-                return 4;
+                return 0.74;
             case 'I':
-                return 1;
+                return 7.24;
             case 'J':
-                return 8;
+                return 0.18;
             case 'K':
-                return 5;
+                return 0.02;
             case 'L':
-                return 1;
+                return 5.99;
             case 'M':
-                return 3;
+                return 2.29;
             case 'N':
-                return 1;
+                return 7.68;
             case 'O':
-                return 1;
+                return 5.20;
             case 'P':
-                return 3;
+                return 2.92;
             case 'Q':
-                return 10;
+                return 0.83;
             case 'R':
-                return 1;
+                return 6.43;
             case 'S':
-                return 1;
+                return 8.87;
             case 'T':
-                return 1;
+                return 7.44;
             case 'U':
-                return 1;
+                return 5.23;
             case 'V':
-                return 4;
+                return 1.28;
             case 'W':
-                return 4;
+                return 0.06;
             case 'X':
-                return 8;
+                return 0.53;
             case 'Y':
-                return 4;
+                return 0.26;
             case 'Z':
-                return 10;
+                return 0.12;
             default:
                 return -1;
         }
         
+    }
+    
+    public static char getLetterFromProb(double prob){
+        double total=0;
+        char a;
+        for(a='A';a<='Z';++a){
+            total+=getRarityFromLetter((char) a);
+            if(total>prob) break;
+        }
+        return a;
     }
     
     public void refreshShape(){

@@ -12,14 +12,14 @@ package fr.univ.tetraword;
  */
 public class Brick {
     char lettre;
-    int rarity;
+    double rarity;
     
     public Brick(){
         lettre=0;
         rarity=0;
     }
     
-    public Brick(char lettre, int rarity){
+    public Brick(char lettre, double rarity){
         this.lettre=lettre;
         this.rarity=rarity;
     }

@@ -31,7 +31,7 @@ import javax.swing.border.Border;
 public class Game extends Thread implements ActionListener{
     Shape currentShape;
     Shape nextShape;
-    private int score;
+    private double score;
     private int level;
     Dictionary dictionary;
     private final Box grid[][];
@@ -119,7 +119,7 @@ public class Game extends Thread implements ActionListener{
                }
             }
     }
-    public int getScore(){
+    public double getScore(){
         return score;
     }
     
@@ -158,9 +158,8 @@ public class Game extends Thread implements ActionListener{
                         if(mode == 0){
                             end=newShapeInGame();                    
                             score+=2;
-                            if(score%100==0){
-                                level++;
-                                //Difficulte
+                            if(score%500==0){
+                                levelUp();
                             }
                             if(end) break;
                         }
@@ -208,13 +207,12 @@ public class Game extends Thread implements ActionListener{
         for(int i=19;i>=0;--i){
             for(int j=0;j<10;++j){
                 if(!grid[i][j].isEmpty() && grid[i][j].isSuppressed){
+                    score+=50/grid[i][j].getBrick().rarity;
                     grid[i][j].setShapeBrick(null, null);
                     for(int k=i-1;k>0;--k){
-                        if(!grid[k][j].isEmpty() && grid[k][j].getShape()!=currentShape){
+                        if(!grid[k][j].isEmpty() && grid[k][j].getShape()!=currentShape && !grid[k][j].isSuppressed){
                             grid[k][j].getShape().refreshShape();
-                            fall=0;
-                            //System.out.println(k + " " + j);
-                            
+                                                                                   
                             fall=shapeFall(grid[k][j].getShape());
                             if(fall!=1 && k<19) k++;     
                             
@@ -324,10 +322,12 @@ public class Game extends Thread implements ActionListener{
     public void validate(){
         if(mode == 1){
             mot=mot.toLowerCase();
-            //System.out.println(mot);
+            
             if(mot.length() > anagLettres && dictionary.line.contains(mot)){
                 eraseLine(anagLine);
-                score+=mot.length()*10;
+                unSelected(anagLine);
+                for(int i=0;i<mot.length();++i)
+                    score+=50/Shape.getRarityFromLetter(mot.charAt(i));
                 clean();
                 mode = 0;
                 anagLine=-1;
@@ -339,9 +339,7 @@ public class Game extends Thread implements ActionListener{
         }
         else if(mode == 2){
             mot=mot.toLowerCase();
-            System.out.println(mot);
-            if(mot.length()>3){//dictionary.line.contains(mot)){
-                System.out.println("Correct");
+            if(dictionary.line.contains(mot)){                
                 boolean quit;
                 for(int i=19;i>=0;--i){
                     quit=true;
@@ -358,7 +356,6 @@ public class Game extends Thread implements ActionListener{
                 }
             }
             else {
-                System.out.println("Wrong");
                 for(int i=0;i<20;++i){
                     for(int j=0;j<10;++j){
                         if(grid[i][j].isSelected)
@@ -705,8 +702,23 @@ public class Game extends Thread implements ActionListener{
                         }
                         
                     }
+                    else {
+                        unSelected(anagLine);
+                    }
                  }
              }
              window.requestFocusInWindow();
+    }
+    
+    public void levelUp(){
+        
+        level++;
+        worddleTime=20000-level*50; //Le temps en mode Worddle
+        worddleReload=20000+level*50; //Le temps de rechargement de Worddle
+        anagTime=10000-level*50; //Le temps en mode anagramme
+        fallTime=1000-level*5; //Le temps de chute des pièces
+        if(anagLettres<5 && level%2==0){
+            anagLettres=level; //Le nombre de lettres minimum en anagramme
+        }
     }
 }

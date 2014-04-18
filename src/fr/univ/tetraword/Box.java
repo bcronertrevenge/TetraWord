@@ -57,6 +57,9 @@ public class Box extends JButton{
     
     public void rafraichir(){
 
+        if(this == null)
+            return;
+        
         Color bleuC=new Color(23,109,181);
         Color bleuF=new Color(21,23,98);
         Color rougeF=new Color(196,6,6);
