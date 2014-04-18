@@ -15,7 +15,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 public class MainGame extends JFrame {
-    static Vector<Game> Games;    
+    Vector<Game> Games;    
     
     public MainGame(){
         addKeyListener(new ClavierListener());
@@ -283,7 +283,7 @@ public class MainGame extends JFrame {
                     //Joueur 1
                     case KeyEvent.VK_UP:
                         
-                        Games.get(0).rotate();                        
+                        Games.get(0).rotateUp();                        
                         Games.get(0).rafraichir();
                         break;
                     case KeyEvent.VK_DOWN:
@@ -301,9 +301,11 @@ public class MainGame extends JFrame {
                         Games.get(0).moveShapeAside(1);
                         Games.get(0).rafraichir();
                         break;
-                    case KeyEvent.VK_ENTER :
-                        System.out.println("Entrer");
+                    case KeyEvent.VK_ENTER :                        
                         Games.get(0).validate();
+                        break;
+                    case KeyEvent.VK_M :
+                        Games.get(0).worddle();
                         break;
                  }
           

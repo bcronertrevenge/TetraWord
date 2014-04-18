@@ -16,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
@@ -41,8 +42,26 @@ public class Game extends Thread implements ActionListener{
     JFrame window;
     String mot;
     int anagLine;
+    Vector<Integer> worddleStartX;
+    Vector<Integer> worddleStartY; // Case Worddle sur lesquels on peut demarrer
+    int worddleBoxPosX,worddleBoxPosY;
+    
+    long worddleTime, worddleReload, worddleLast, anagTime, fallTime;
+    int anagLettres;
     
     public Game(JFrame window, Dictionary dictionary){            
+        //Difficulte
+        worddleTime=20000; //Le temps en mode Worddle
+        worddleReload=20000; //Le temps de rechargement de Worddle
+        anagTime=10000; //Le temps en mode anagramme
+        fallTime=1000; //Le temps de chute des pièces
+        anagLettres=2; //Le nombre de lettres minimum en anagramme
+        worddleLast=0; //Le temps du dernier worddle
+        worddleBoxPosX=-1;
+        worddleBoxPosY=-1;
+        worddleStartX=new Vector<Integer>();
+        worddleStartY=new Vector<Integer>();
+        
         anagLine=-1;
         score=0;
         level=1;
@@ -128,7 +147,7 @@ public class Game extends Thread implements ActionListener{
         try {
         nextShape=Shape.getRandomShape();
         newShapeInGame();
-        long beginTime=0,endTime;
+        long beginTime=0;
         
         while(!end){
 
@@ -139,25 +158,41 @@ public class Game extends Thread implements ActionListener{
                         if(mode == 0){
                             end=newShapeInGame();                    
                             score+=2;
-                            if(score%100==0) level++;
+                            if(score%100==0){
+                                level++;
+                                //Difficulte
+                            }
                             if(end) break;
                         }
                     }
                     else{
-                        Thread.sleep(1000);
+                        Thread.sleep(fallTime);
                     }
                 }else if (mode == 1){
-                    endTime=System.currentTimeMillis(); 
-                    //System.out.println((endTime-beginTime));
-                    if(endTime-beginTime>5000){ //Difficulte a changer
+
+                    if(System.currentTimeMillis()-beginTime>anagTime){
                         mode = 0;
+                        unSelected(-1);
                         clean();
                         window.requestFocusInWindow();
                         mot="";
                         anagLine=-1;
                         end=newShapeInGame();
                     }
+                }else if(mode == 2){
+                    if(System.currentTimeMillis()-worddleLast>worddleTime){
+                        mode=0;
+                        suppressionWorddle();
+                        clean();
+                        clearBox();
+                        window.requestFocusInWindow();
+                        mot="";
+                        worddleLast=System.currentTimeMillis();
+                        beginTime=verifLigne();
+                        System.out.println("Worddle Over");
+                    }
                 }
+                
               
         }
         System.out.println("GAME OVER");
@@ -168,17 +203,95 @@ public class Game extends Thread implements ActionListener{
         
     }
     
+    public void suppressionWorddle(){
+        int fall;
+        for(int i=19;i>=0;--i){
+            for(int j=0;j<10;++j){
+                if(!grid[i][j].isEmpty() && grid[i][j].isSuppressed){
+                    grid[i][j].setShapeBrick(null, null);
+                    for(int k=i-1;k>0;--k){
+                        if(!grid[k][j].isEmpty() && grid[k][j].getShape()!=currentShape){
+                            grid[k][j].getShape().refreshShape();
+                            fall=0;
+                            //System.out.println(k + " " + j);
+                            
+                            fall=shapeFall(grid[k][j].getShape());
+                            if(fall!=1 && k<19) k++;     
+                            
+                            //grid[i][j].setShapeBrick(grid[i-1][j].getShape(), grid[i-1][j].getBrick());
+                            //grid[i-1][j].setShapeBrick(null,null);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    public void worddle(){
+        if(mode == 1 || mode == 2 || System.currentTimeMillis()-worddleLast<worddleReload){
+            return;
+        }    
+        
+        boolean end;
+        int ligne;
+        for(ligne=19;ligne>=0;--ligne){
+            end=true;
+            for(int j=0;j<10;++j){
+                if(!grid[ligne][j].isEmpty() && grid[ligne][j].getShape()!=currentShape)
+                    end=false;
+            }
+            if(end) break;
+        }
+        
+        if(ligne==19)
+            return;
+        
+        Box firstBox = null;
+        int y=0;
+        int x=(int)(Math.random() * 10);
+        do{
+            y= (int)((Math.random() * (20-ligne)) + ligne);
+            firstBox=grid[y][x];
+        }while(firstBox.isEmpty());
+        
+        firstBox.isStart=true;
+        firstBox.isSelected=true;
+        worddleStartX.add(x);
+        worddleStartY.add(y);
+        worddleBoxPosX=x;
+        worddleBoxPosY=y;
+        mode=2;
+        worddleLast=System.currentTimeMillis();
+        mot+=firstBox.getBrick().lettre;
+    }
+    
     public void clean(){
-           unSelected(-1);
            whiteOut();
+           worddleStartX.clear();
+           worddleStartY.clear();
+    }
+    
+    public void clearBox(){
+            for(int i=0;i<20;++i){
+                for(int j=0;j<10;++j){
+                    grid[i][j].isSelected=false;
+                    grid[i][j].isStart=false;
+                    grid[i][j].isSuppressed=false;
+                }
+            }
     }
     
     public void unSelected(int ligne){
         if(ligne < 0){
-            for(int i=0;i<20;++i){
+            boolean quit;
+            for(int i=19;i>=0;--i){
+                quit=true;
                 for(int j=0;j<10;++j){
                     grid[i][j].isSelected=false;
+                    if(!grid[i][j].isEmpty())
+                        quit=false;
                 }
+                if(quit) break;
             }
         }
         else {
@@ -205,29 +318,61 @@ public class Game extends Thread implements ActionListener{
         anagLine=ligne;
         mode = 1;
         return System.currentTimeMillis(); 
-        //Suppression et chute
+        
     }
     
     public void validate(){
         if(mode == 1){
             mot=mot.toLowerCase();
-            if(mot.length() > 2 && dictionary.line.contains(mot)){ //Changer la difficulte
+            //System.out.println(mot);
+            if(mot.length() > anagLettres && dictionary.line.contains(mot)){
                 eraseLine(anagLine);
                 score+=mot.length()*10;
                 clean();
-                System.out.println("Correct");
                 mode = 0;
                 anagLine=-1;
             }
             else{
                 unSelected(anagLine);
-                System.out.println("Wrong");
             }
             mot="";
         }
+        else if(mode == 2){
+            mot=mot.toLowerCase();
+            System.out.println(mot);
+            if(mot.length()>3){//dictionary.line.contains(mot)){
+                System.out.println("Correct");
+                boolean quit;
+                for(int i=19;i>=0;--i){
+                    quit=true;
+                    for(int j=0;j<10;++j){
+                        if(grid[i][j].isSelected){
+                            grid[i][j].isSelected=false;
+                            grid[i][j].isSuppressed=true;
+                            grid[i][j].isStart=true;
+                        }
+                        if(!grid[i][j].isEmpty())
+                            quit=false;
+                    }
+                    if(quit) break;
+                }
+            }
+            else {
+                System.out.println("Wrong");
+                for(int i=0;i<20;++i){
+                    for(int j=0;j<10;++j){
+                        if(grid[i][j].isSelected)
+                            grid[i][j].isSelected=false;
+                    }
+                }
+            }
+            mot="";
+            worddleBoxPosX=worddleStartX.get(0);
+            worddleBoxPosY=worddleStartY.get(0);
+            grid[worddleBoxPosY][worddleBoxPosX].isSelected=true;
+        }
     }
     
-    //A supprimer
     public void eraseLine(int ligne){
         for(int i=ligne;i>0;--i){
             for(int j=0;j<10;++j){
@@ -288,7 +433,45 @@ public class Game extends Thread implements ActionListener{
     //Bouge la piece a gauche(-1) ou a droite(1)
     public void moveShapeAside(int sens){
         
-        if(!canMoveAside(sens))
+        if(mode == 1)
+            return;
+        else if(mode == 2){ //Worddle Mod
+            if(worddleBoxPosX < 0 || worddleBoxPosX >= 10 || (sens < 0 && worddleBoxPosX == 0) || (sens > 0 && worddleBoxPosX == 9))
+                return;
+            //Droite
+            else if(sens > 0 && !grid[worddleBoxPosY][worddleBoxPosX+1].isEmpty()){
+                if(grid[worddleBoxPosY][worddleBoxPosX+1].isStart){
+                    worddleBoxPosX++;
+                    unSelected(-1);
+                    grid[worddleBoxPosY][worddleBoxPosX].isSelected=true;
+                    mot="";
+                    mot+=grid[worddleBoxPosY][worddleBoxPosX].getBrick().lettre;
+                }
+                else if(!grid[worddleBoxPosY][worddleBoxPosX+1].isSelected){
+                    worddleBoxPosX++;
+                    grid[worddleBoxPosY][worddleBoxPosX].isSelected=true;
+                    mot+=grid[worddleBoxPosY][worddleBoxPosX].getBrick().lettre;
+                }
+            }
+            //Gauche
+            else if(sens < 0 && !grid[worddleBoxPosY][worddleBoxPosX-1].isEmpty()){
+                if(grid[worddleBoxPosY][worddleBoxPosX-1].isStart){
+                    worddleBoxPosX--;
+                    unSelected(-1);
+                    grid[worddleBoxPosY][worddleBoxPosX].isSelected=true;
+                    mot="";
+                    mot+=grid[worddleBoxPosY][worddleBoxPosX].getBrick().lettre;
+                }
+                else if(!grid[worddleBoxPosY][worddleBoxPosX-1].isSelected){
+                    worddleBoxPosX--;
+                    grid[worddleBoxPosY][worddleBoxPosX].isSelected=true;
+                    mot+=grid[worddleBoxPosY][worddleBoxPosX].getBrick().lettre;
+                }
+            }
+            return;
+        }
+        
+        else if(!canMoveAside(sens))
             return;
         
         //Gauche
@@ -365,7 +548,30 @@ public class Game extends Thread implements ActionListener{
         return true;
     }
     
-    public void rotate(){
+    public void rotateUp(){
+        
+        if(mode == 1)
+            return;
+        else if(mode == 2){
+            if(worddleBoxPosY < 1 || worddleBoxPosY >= 20)
+                return;
+            else if(!grid[worddleBoxPosY-1][worddleBoxPosX].isEmpty()){
+                if(grid[worddleBoxPosY-1][worddleBoxPosX].isStart){
+                    worddleBoxPosY--;
+                    unSelected(-1);
+                    grid[worddleBoxPosY][worddleBoxPosX].isSelected=true;
+                    mot="";
+                    mot+=grid[worddleBoxPosY][worddleBoxPosX].getBrick().lettre;
+                }
+                else if(!grid[worddleBoxPosY-1][worddleBoxPosX].isSelected){
+                    worddleBoxPosY--;
+                    grid[worddleBoxPosY][worddleBoxPosX].isSelected=true;
+                    mot+=grid[worddleBoxPosY][worddleBoxPosX].getBrick().lettre;
+                }
+            }
+            return;
+        }
+                   
         if(!canRotate()) return;
         
         currentShape.rotateShape();
@@ -382,6 +588,29 @@ public class Game extends Thread implements ActionListener{
     
     
     public int shapeFall(Shape shape){
+        
+        if(mode == 1)
+            return -1;
+        else if(mode == 2){
+            if(worddleBoxPosY < 0 || worddleBoxPosY >= 19)
+                return -1;
+            
+            else if(!grid[worddleBoxPosY+1][worddleBoxPosX].isEmpty()){
+                 if(grid[worddleBoxPosY+1][worddleBoxPosX].isStart){
+                    worddleBoxPosY++;
+                    unSelected(-1);
+                    grid[worddleBoxPosY][worddleBoxPosX].isSelected=true;
+                    mot="";
+                    mot+=grid[worddleBoxPosY][worddleBoxPosX].getBrick().lettre;
+                }
+                 else if(!grid[worddleBoxPosY+1][worddleBoxPosX].isSelected){
+                    worddleBoxPosY++;
+                    grid[worddleBoxPosY][worddleBoxPosX].isSelected=true;
+                    mot+=grid[worddleBoxPosY][worddleBoxPosX].getBrick().lettre;
+                }
+            }
+            return -1;
+        }
         
          if(shape==null)
              return -1;

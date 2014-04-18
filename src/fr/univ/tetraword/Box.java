@@ -14,17 +14,23 @@ public class Box extends JButton{
     private Shape shape;
     private Brick brick;
     boolean isSelected;
+    boolean isSuppressed;
+    boolean isStart;
     
     public Box(){
         shape=null;
         brick=null;
         isSelected=false;
+        isSuppressed=false;
+        isStart=false;
     }
     
     public Box(Shape shape, Brick brick){
         this.shape=shape;
         this.brick=brick;
         isSelected=false;
+        isSuppressed=false;
+        isStart=false;
     }
     public void setShapeBrick(Shape shape, Brick brick){
         
@@ -67,6 +73,12 @@ public class Box extends JButton{
         else if(brick!=null && shape!=null){            
             if(isSelected){
                 setBackground(jaune);
+                setText(String.valueOf(brick.lettre));
+                setForeground(Color.BLACK);
+                return;
+            }
+            else if(isStart || isSuppressed){
+                setBackground(Color.WHITE);
                 setText(String.valueOf(brick.lettre));
                 setForeground(Color.BLACK);
                 return;
