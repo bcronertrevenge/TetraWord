@@ -14,7 +14,7 @@ public enum modifierType {
        speedFall(false), //Acceleration de la chute
        slowFall(false), // Ralentissement de la chute
        directFall(false), // La piece tombe directement en bas de la grille
-       reverse(false), // Le plateau est a l'enver
+       reverse(false), // Le plateau est a l'envers
        switchGrid(true), // Echange le plateau avec l'autre joueur
        bonus(false), //Ajoute des points
        malus(false), //Enleve des points

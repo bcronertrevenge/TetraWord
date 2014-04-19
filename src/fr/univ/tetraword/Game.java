@@ -31,7 +31,7 @@ import javax.swing.border.Border;
 public class Game extends Thread implements ActionListener{
     Shape currentShape;
     Shape nextShape;
-    private double score;
+    public double score;
     private int level;
     Dictionary dictionary;
     private final Box grid[][];
@@ -45,11 +45,11 @@ public class Game extends Thread implements ActionListener{
     Vector<Integer> worddleStartX;
     Vector<Integer> worddleStartY; // Case Worddle sur lesquels on peut demarrer
     int worddleBoxPosX,worddleBoxPosY;
-    
+    boolean multi;
     long worddleTime, worddleReload, worddleLast, anagTime, fallTime;
     int anagLettres;
     
-    public Game(JFrame window, Dictionary dictionary){            
+    public Game(JFrame window, Dictionary dictionary, boolean multi){            
         //Difficulte
         worddleTime=40000; //Le temps en mode Worddle
         worddleReload=20000; //Le temps de rechargement de Worddle
@@ -62,6 +62,7 @@ public class Game extends Thread implements ActionListener{
         worddleStartX=new Vector<Integer>();
         worddleStartY=new Vector<Integer>();
         
+        this.multi=multi;
         anagLine=-1;
         score=0;
         level=1;
@@ -118,9 +119,6 @@ public class Game extends Thread implements ActionListener{
                        nextgrid[i][j].rafraichir();
                }
             }
-    }
-    public double getScore(){
-        return score;
     }
     
     public int getLevel(){
@@ -195,7 +193,7 @@ public class Game extends Thread implements ActionListener{
                     }
                 }
                 
-              if(nbShape%5==0 && !modif){
+              if(nbShape%3==0 && !modif){
                   modif=true;
                   System.out.println("Apparition Modifier");
                   addModifier();
@@ -353,7 +351,7 @@ public class Game extends Thread implements ActionListener{
         }
         else if(mode == 2){
             mot=mot.toLowerCase();
-            if(mot.length() > 2){//dictionary.line.contains(mot)){                
+            if(dictionary.line.contains(mot)){                
                 boolean quit;
                 for(int i=19;i>=0;--i){
                     quit=true;
@@ -488,10 +486,14 @@ public class Game extends Thread implements ActionListener{
         //Gauche
         if(sens < 0){
             currentShape.x--;
-            
+                
             for(int i=0;i<=currentShape.height;++i){
                 for(int j=0;j<=currentShape.width;++j){
                     if(grid[currentShape.y+i][currentShape.x+j].getShape()==currentShape || grid[currentShape.y+i][currentShape.x+j].isEmpty()){
+                        if(grid[currentShape.y+i][currentShape.x+j].getModifier()!=null && currentShape.getBricks()[i][j]!=null){
+                            grid[currentShape.y+i][currentShape.x+j].getModifier().activate();
+                            grid[currentShape.y+i][currentShape.x+j].setModifier(null);
+                        }
                         grid[currentShape.y+i][currentShape.x+j].setShapeBrick(currentShape,currentShape.getBricks()[i][j]);
                         if(grid[currentShape.y+i][currentShape.x+j+1].getShape()==currentShape)
                             grid[currentShape.y+i][currentShape.x+j+1].setShapeBrick(null,null);                    
@@ -508,6 +510,10 @@ public class Game extends Thread implements ActionListener{
             for(int i=0;i<=currentShape.height;++i){
                 for(int j=currentShape.width;j>=0;--j){                    
                     if(grid[currentShape.y+i][currentShape.x+j].getShape()==currentShape || grid[currentShape.y+i][currentShape.x+j].isEmpty()){
+                        if(grid[currentShape.y+i][currentShape.x+j].getModifier()!=null && currentShape.getBricks()[i][j]!=null){
+                            grid[currentShape.y+i][currentShape.x+j].getModifier().activate();
+                            grid[currentShape.y+i][currentShape.x+j].setModifier(null);
+                        }
                         grid[currentShape.y+i][currentShape.x+j].setShapeBrick(currentShape,currentShape.getBricks()[i][j]);
                         if(grid[currentShape.y+i][currentShape.x+j-1].getShape()==currentShape)
                             grid[currentShape.y+i][currentShape.x+j-1].setShapeBrick(null,null);                    
@@ -638,8 +644,13 @@ public class Game extends Thread implements ActionListener{
       
         for(int i=0;i<=shape.height;++i){
             for(int j=0;j<=shape.width;++j){           
-                if(grid[shape.y+i][shape.x+j].getShape()==shape || grid[shape.y+i][shape.x+j].isEmpty())                     
-                    grid[shape.y+i][shape.x+j].setShapeBrick(shape,shape.getBricks()[i][j]);                
+                if(grid[shape.y+i][shape.x+j].getShape()==shape || grid[shape.y+i][shape.x+j].isEmpty()){
+                    if(grid[shape.y+i][shape.x+j].getModifier()!=null && shape.getBricks()[i][j]!=null){
+                        grid[shape.y+i][shape.x+j].getModifier().activate();
+                        grid[shape.y+i][shape.x+j].setModifier(null);
+                    }
+                    grid[shape.y+i][shape.x+j].setShapeBrick(shape,shape.getBricks()[i][j]);             
+                }
             }
         }
         
@@ -663,16 +674,15 @@ public class Game extends Thread implements ActionListener{
                 if(!grid[shape.y+1+i][shape.x+j].isEmpty() && shape.getBricks()[i][j]!=null && shape.getBricks()[i+1][j]==null){
                   //  System.out.println("Piece dedans");
                     return false;
-                }
-                
+                }        
         }
         
-        for(int i=0;i<=shape.width;++i)
+        for(int i=0;i<=shape.width;++i){
                 if(!grid[shape.y+shape.height+1][shape.x+i].isEmpty() && shape.getBricks()[shape.height][i]!=null){
                     //System.out.println("Piece dessous");
                     return false;
                 }
-        
+        }
         return true;
     }
     public static void saveGame(Game[] savedGame) throws IOException
@@ -745,6 +755,7 @@ public class Game extends Thread implements ActionListener{
             y=(int)(Math.random() * 20);
         }while(!grid[y][x].isEmpty());
         
-        
+        Modifier modifier=new Modifier(multi,this);
+        grid[y][x].setModifier(modifier);
     }
 }

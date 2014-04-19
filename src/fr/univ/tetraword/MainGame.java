@@ -164,7 +164,7 @@ public class MainGame extends JFrame {
             // Création du jeu
             Dictionary dictionary=new Dictionary();
             Games=new Vector<Game>();
-            Game game=new Game(this,dictionary);
+            Game game=new Game(this,dictionary,false);
             game.start();
             Games.add(game);
             
@@ -194,7 +194,7 @@ public class MainGame extends JFrame {
             buttonNiveau.setForeground(Color.WHITE);
             buttonNiveau.setFocusPainted(false);
 
-            JWelcomeButton buttonScore = new JWelcomeButton(String.valueOf(Games.get(0).getScore()));
+            JWelcomeButton buttonScore = new JWelcomeButton(String.valueOf(Games.get(0).score));
             buttonScore.setFont(century);
             buttonScore.setForeground(Color.WHITE);
             buttonScore.setFocusPainted(false);

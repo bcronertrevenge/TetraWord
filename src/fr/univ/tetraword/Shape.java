@@ -32,10 +32,7 @@ public class Shape {
         this.type=type;
         bricks=new Brick[4][4];
         
-        if(type.getTaille()==3)
-            x=4;
-        else if(type.getTaille()==4)
-            x=3;
+        x=7-type.getTaille();
         y=0;
        
         double totalProb=0;

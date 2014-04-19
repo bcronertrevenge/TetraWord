@@ -46,15 +46,18 @@ public class Box extends JButton{
     }
     
     public void setShapeBrick(Shape shape, Brick brick){
-        modifier=null;
+        if(shape!=null && brick!=null)
+            modifier=null;
         this.shape=shape;
         this.brick=brick;
     }
     
     public void setModifier(Modifier modifier){
         this.modifier=modifier;
-        shape=null;
-        brick=null;
+        if(modifier!=null){
+            shape=null;
+            brick=null;
+        }
     }
     
     public Shape getShape(){
@@ -65,6 +68,10 @@ public class Box extends JButton{
             return brick;
     }
 
+    public Modifier getModifier(){
+            return modifier;
+    }
+    
     public boolean isEmpty(){
         if(this==null)
             return true;
@@ -86,11 +93,12 @@ public class Box extends JButton{
         Color orange=new Color(248,111,0);
         Color violet=new Color(116,28,191);
         Color jaune=new Color(248,203,0);
+        Color modifierColor=new Color(147,93,212);
         
-        if(brick==null){
-
-            setBackground(Color.gray);
-            setText(String.valueOf(""));
+        if(modifier!=null){
+            setBackground(modifierColor);
+            setText("");
+            setForeground(Color.BLACK);
         }
         else if(brick!=null && shape!=null){            
             if(isSelected){
@@ -142,6 +150,10 @@ public class Box extends JButton{
                 break;
         }
         
+        }
+        else if(brick==null){
+            setBackground(Color.gray);
+            setText(String.valueOf(""));
         }
     }
     
