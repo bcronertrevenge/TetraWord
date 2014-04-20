@@ -130,9 +130,8 @@ public class Shape {
             }
         }
         
-        int tmp=width;
-        width=height;
-        height=tmp;
+        refreshShape();
+        
     }
     
     public void printShape(){

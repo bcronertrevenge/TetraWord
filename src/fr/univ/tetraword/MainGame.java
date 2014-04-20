@@ -16,6 +16,7 @@ import javax.swing.border.Border;
 
 public class MainGame extends JFrame {
     Vector<Game> Games;    
+    Vector<JWelcomeButton> Buttons;
     
     public MainGame(){
         addKeyListener(new ClavierListener());
@@ -164,7 +165,8 @@ public class MainGame extends JFrame {
             // Création du jeu
             Dictionary dictionary=new Dictionary();
             Games=new Vector<Game>();
-            Game game=new Game(this,dictionary,false);
+            Buttons=new Vector<JWelcomeButton>();
+            Game game=new Game(this,dictionary,false,Buttons);
             game.start();
             Games.add(game);
             
@@ -193,12 +195,13 @@ public class MainGame extends JFrame {
             buttonNiveau.setFont(century);
             buttonNiveau.setForeground(Color.WHITE);
             buttonNiveau.setFocusPainted(false);
-
+            Buttons.add(buttonNiveau);
+            
             JWelcomeButton buttonScore = new JWelcomeButton(String.valueOf(Games.get(0).score));
             buttonScore.setFont(century);
             buttonScore.setForeground(Color.WHITE);
             buttonScore.setFocusPainted(false);
-
+            Buttons.add(buttonScore);
             // Prochaine piece        
             JPanel buttonPiece = Games.get(0).getNextInterface();
 

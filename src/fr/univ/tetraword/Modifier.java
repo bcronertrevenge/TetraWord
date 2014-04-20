@@ -35,6 +35,8 @@ public class Modifier {
         else
             a=(int)(Math.random()*8);
         
+        a=6;
+        
         switch(a){
             case 0:
                 type=speedFall;
@@ -68,8 +70,9 @@ public class Modifier {
         }
     }
     
-    public void activate(){
+    public boolean activate(){
         System.out.println("Activate");
+        boolean terminate=false;
         switch(type){
             case speedFall:
                 game.fallTime-=50;
@@ -92,6 +95,21 @@ public class Modifier {
                 game.score-=50;
                 break;
             case explode:
+                //Dans la shape
+                int explosionwidth=2;
+                for(int i=-explosionwidth;i<game.currentShape.height+explosionwidth;++i){
+                    for(int j=-explosionwidth;j<game.currentShape.width+explosionwidth;++j){
+                        if(game.currentShape.y + i >= 0 && game.currentShape.y + i < 20 && game.currentShape.x + j >= 0 && game.currentShape.x + j < 10)
+                            if(game.getGrid()[game.currentShape.y + i][game.currentShape.x + j].getShape()!=null)
+                                game.getGrid()[game.currentShape.y + i][game.currentShape.x + j].setShapeBrick(null, null);
+                            else if(game.getGrid()[game.currentShape.y + i][game.currentShape.x + j].getModifier()!=null)
+                                game.getGrid()[game.currentShape.y + i][game.currentShape.x + j].setModifier(null);
+                    }
+                }
+                game.currentShape=null;
+                game.newShapeInGame();
+                terminate=true;
+                game.rafraichir();
                 break;
             case allowWorddle:
                 game.worddleLast=0;
@@ -101,5 +119,7 @@ public class Modifier {
             default:
                 break;
         }
+        return terminate;
     }
+    
 }

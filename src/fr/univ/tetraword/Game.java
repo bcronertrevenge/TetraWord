@@ -6,6 +6,7 @@
 
 package fr.univ.tetraword;
 
+import fr.univ.graphicinterface.JWelcomeButton;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -48,8 +49,9 @@ public class Game extends Thread implements ActionListener{
     boolean multi;
     long worddleTime, worddleReload, worddleLast, anagTime, fallTime;
     int anagLettres;
+    Vector<JWelcomeButton> Buttons;
     
-    public Game(JFrame window, Dictionary dictionary, boolean multi){            
+    public Game(JFrame window, Dictionary dictionary, boolean multi, Vector<JWelcomeButton> Buttons){            
         //Difficulte
         worddleTime=40000; //Le temps en mode Worddle
         worddleReload=20000; //Le temps de rechargement de Worddle
@@ -62,6 +64,7 @@ public class Game extends Thread implements ActionListener{
         worddleStartX=new Vector<Integer>();
         worddleStartY=new Vector<Integer>();
         
+        this.Buttons=Buttons;
         this.multi=multi;
         anagLine=-1;
         score=0;
@@ -109,6 +112,13 @@ public class Game extends Thread implements ActionListener{
                        }      
                }
             }
+        
+        Buttons.get(0).setText(String.valueOf(level));
+        Buttons.get(1).setText(String.valueOf((int)score));
+        
+        for(JWelcomeButton b:Buttons)
+            b.repaint();
+        
     }
     
     public void rafraichirNextShape(){
@@ -150,7 +160,7 @@ public class Game extends Thread implements ActionListener{
         boolean modif=false;
         while(!end){
 
-                   rafraichir();
+                   
                 if(mode == 0){
                     if(shapeFall(currentShape)==1){
                         nbShape++;
@@ -158,18 +168,20 @@ public class Game extends Thread implements ActionListener{
                         beginTime=verifLigne();
                         if(mode == 0){
                             end=newShapeInGame();                    
+                            
                             score+=2;
-                            if(score%500==0){
+                            if(nbShape%10==0){
                                 levelUp();
                             }
                             if(end) break;
                         }
                     }
                     else{
+                        rafraichir();
                         Thread.sleep(fallTime);
                     }
                 }else if (mode == 1){
-
+                        rafraichir();
                     if(System.currentTimeMillis()-beginTime>anagTime){
                         mode = 0;
                         unSelected(-1);
@@ -180,6 +192,7 @@ public class Game extends Thread implements ActionListener{
                         end=newShapeInGame();
                     }
                 }else if(mode == 2){
+                        rafraichir();
                     if(System.currentTimeMillis()-worddleLast>worddleTime){
                         mode=0;
                         suppressionWorddle();
@@ -338,8 +351,9 @@ public class Game extends Thread implements ActionListener{
             if(mot.length() > anagLettres && dictionary.line.contains(mot)){
                 eraseLine(anagLine);
                 unSelected(anagLine);
-                for(int i=0;i<mot.length();++i)
-                    score+=50/Shape.getRarityFromLetter(mot.charAt(i));
+                for(int i=0;i<mot.length();++i){
+                    score+=50/Shape.getRarityFromLetter(mot.toUpperCase().charAt(i));
+                }
                 clean();
                 mode = 0;
                 anagLine=-1;
@@ -641,15 +655,16 @@ public class Game extends Thread implements ActionListener{
         
         shape.y++;        
      
-      
+      boolean terminate=false;
         for(int i=0;i<=shape.height;++i){
             for(int j=0;j<=shape.width;++j){           
                 if(grid[shape.y+i][shape.x+j].getShape()==shape || grid[shape.y+i][shape.x+j].isEmpty()){
                     if(grid[shape.y+i][shape.x+j].getModifier()!=null && shape.getBricks()[i][j]!=null){
-                        grid[shape.y+i][shape.x+j].getModifier().activate();
+                        terminate=grid[shape.y+i][shape.x+j].getModifier().activate();
                         grid[shape.y+i][shape.x+j].setModifier(null);
+                        
                     }
-                    grid[shape.y+i][shape.x+j].setShapeBrick(shape,shape.getBricks()[i][j]);             
+                    if(!terminate) grid[shape.y+i][shape.x+j].setShapeBrick(shape,shape.getBricks()[i][j]);             
                 }
             }
         }
@@ -752,10 +767,10 @@ public class Game extends Thread implements ActionListener{
         int x,y;
         do {
             x=(int)(Math.random() * 10);
-            y=(int)(Math.random() * 20);
+            y=(int)(Math.random() * 15);
         }while(!grid[y][x].isEmpty());
         
         Modifier modifier=new Modifier(multi,this);
-        grid[y][x].setModifier(modifier);
+        grid[y+5][x].setModifier(modifier);
     }
 }
