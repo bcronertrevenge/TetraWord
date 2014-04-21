@@ -166,7 +166,8 @@ public class MainGame extends JFrame {
             Dictionary dictionary=new Dictionary();
             Games=new Vector<Game>();
             Buttons=new Vector<JWelcomeButton>();
-            Game game=new Game(this,dictionary,false,Buttons);
+            boolean intelligence=true;
+            Game game=new Game(this,dictionary,false,Buttons,intelligence);
             game.start();
             Games.add(game);
             

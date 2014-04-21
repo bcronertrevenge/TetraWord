@@ -50,8 +50,12 @@ public class Game extends Thread implements ActionListener{
     long worddleTime, worddleReload, worddleLast, anagTime, fallTime;
     int anagLettres;
     Vector<JWelcomeButton> Buttons;
+    IA intelligence;
     
-    public Game(JFrame window, Dictionary dictionary, boolean multi, Vector<JWelcomeButton> Buttons){            
+    public Game(JFrame window, Dictionary dictionary, boolean multi, Vector<JWelcomeButton> Buttons, boolean ia){            
+        if(ia)
+            intelligence=new IA(this);
+        
         //Difficulte
         worddleTime=40000; //Le temps en mode Worddle
         worddleReload=20000; //Le temps de rechargement de Worddle
@@ -177,10 +181,14 @@ public class Game extends Thread implements ActionListener{
                         }
                     }
                     else{
+                        if(intelligence!=null)
+                            intelligence.play();
                         rafraichir();
                         Thread.sleep(fallTime);
                     }
                 }else if (mode == 1){
+                        if(intelligence!=null)
+                             intelligence.play();
                         rafraichir();
                     if(System.currentTimeMillis()-beginTime>anagTime){
                         mode = 0;
@@ -192,6 +200,8 @@ public class Game extends Thread implements ActionListener{
                         end=newShapeInGame();
                     }
                 }else if(mode == 2){
+                        if(intelligence!=null)
+                            intelligence.play();
                         rafraichir();
                     if(System.currentTimeMillis()-worddleLast>worddleTime){
                         mode=0;
@@ -217,7 +227,6 @@ public class Game extends Thread implements ActionListener{
         } catch (InterruptedException ex) {
                 Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
             }
-        
         
     }
     
