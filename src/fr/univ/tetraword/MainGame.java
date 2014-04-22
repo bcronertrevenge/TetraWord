@@ -43,8 +43,16 @@ public class MainGame extends JFrame {
         mainPage();
     }
     
+    public void retourActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
+        welcomePage();
+    }
+    
     public void chargerActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
         loadGamePage();
+    }
+    
+    public void quitter(java.awt.event.ActionEvent evt) throws IOException{                                         
+        this.dispose();
     }
     
     /* Page d'accueil */
@@ -108,7 +116,11 @@ public class MainGame extends JFrame {
             quitter.addActionListener(new java.awt.event.ActionListener() {
                 @Override
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                   System.out.println("quitter");
+                    try {
+                        quitter(evt);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             });
        
@@ -185,6 +197,11 @@ public class MainGame extends JFrame {
             labelScore.setFont(copperplate);
             labelScore.setForeground(new Color(33,91,201));
             labelScore.setText("Score");
+            
+            JLabel labelSaisie = new JLabel();
+            labelSaisie.setFont(copperplate);
+            labelSaisie.setForeground(new Color(33,91,201));
+            labelSaisie.setText("Saisie");
 
             JLabel labelPiece = new JLabel();
             labelPiece.setFont(copperplate);
@@ -192,6 +209,22 @@ public class MainGame extends JFrame {
             labelPiece.setText("Prochaine pièce");
             
             // Boutons
+            JWelcomeButton buttonRetour = new JWelcomeButton("Retour");
+            buttonRetour.setFont(century);
+            buttonRetour.setForeground(Color.WHITE);
+            buttonRetour.setFocusPainted(false);
+            buttonRetour.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        retourActionPerformed(evt);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+            });
+            
             JWelcomeButton buttonNiveau = new JWelcomeButton(String.valueOf(Games.get(0).getLevel()));
             buttonNiveau.setFont(century);
             buttonNiveau.setForeground(Color.WHITE);
@@ -206,46 +239,61 @@ public class MainGame extends JFrame {
             // Prochaine piece        
             JPanel buttonPiece = Games.get(0).getNextInterface();
 
-            GroupLayout jPanel1Layout = new GroupLayout(panel);
+            javax.swing.GroupLayout jPanel1Layout = new GroupLayout(panel);
             panel.setLayout(jPanel1Layout);
             jPanel1Layout.setHorizontalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(71, 71, 71)
-                    .addComponent(grille, GroupLayout.PREFERRED_SIZE, 361, GroupLayout.PREFERRED_SIZE)
-                    .addGap(148, 148, 148)
-                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(labelNiveau, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(labelScore, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE))
-                            .addGap(48, 48, 48)
+                            .addComponent(buttonRetour, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE)
+                            .addContainerGap())
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(grille, GroupLayout.PREFERRED_SIZE, 361, GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 146, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(buttonNiveau, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(buttonScore, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)))
-                        .addComponent(labelPiece, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(buttonPiece, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(166, Short.MAX_VALUE))
+                                .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(labelNiveau, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(labelScore, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(48, 48, 48)
+                                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addComponent(buttonNiveau, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(buttonScore, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE))
+                                    .addGap(136, 136, 136))
+                                .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                    .addComponent(buttonPiece, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE)
+                                    .addGap(173, 173, 173))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addComponent(labelPiece, GroupLayout.PREFERRED_SIZE, 241, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(labelSaisie, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE))
+                                    .addContainerGap())))))
             );
             jPanel1Layout.setVerticalGroup(
                 jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(66, 66, 66)
-                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                    .addContainerGap()
+                    .addComponent(buttonRetour, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(grille, GroupLayout.PREFERRED_SIZE, 631, GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(labelPiece, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(buttonPiece, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(61, 61, 61)
                             .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(labelNiveau, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(buttonNiveau, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+                                .addComponent(buttonNiveau, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE))
                             .addGap(53, 53, 53)
-                            .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(labelScore, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(buttonScore, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+                                .addComponent(buttonScore, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE))
                             .addGap(56, 56, 56)
-                            .addComponent(labelPiece, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
-                            .addGap(28, 28, 28)
-                            .addComponent(buttonPiece, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE))
-                        .addComponent(grille, GroupLayout.PREFERRED_SIZE, 631, GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(71, Short.MAX_VALUE))
+                            .addComponent(labelSaisie, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)))
+                    .addContainerGap(49, Short.MAX_VALUE))
             );
        
             
