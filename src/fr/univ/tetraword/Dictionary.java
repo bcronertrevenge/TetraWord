@@ -18,9 +18,9 @@ import java.io.InputStreamReader;
 import java.io.FileInputStream;
 import java.util.HashSet;
 public class Dictionary {
-	HashSet line;
+	HashSet<String> line;
 	public Dictionary() {
- 		line = new HashSet();
+ 		line = new HashSet<String>();
 		String fichier ="data/dictionnaire.txt";
 		
 		try{
@@ -39,11 +39,20 @@ public class Dictionary {
 		}
 		
 	}
+        
+        public boolean containsRegEx( String regex ) {
+            for( String string : line ) {
+                if( string.matches( regex ) ) {
+                    return true;
+                }
+            }
+            return false;
+        }
 
 
 	public static void main(String[] args){
 		Dictionary dictionary = new Dictionary();
-		String mot = "pute";
+		String mot = "hello";
 		if( dictionary.line.contains(mot) ){
 		      System.out.println("Mot correct");
 		}

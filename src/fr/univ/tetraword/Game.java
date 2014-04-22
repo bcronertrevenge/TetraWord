@@ -61,7 +61,7 @@ public class Game extends Thread implements ActionListener{
         worddleReload=20000; //Le temps de rechargement de Worddle
         anagTime=30000; //Le temps en mode anagramme
         fallTime=1000; //Le temps de chute des pièces
-        anagLettres=2; //Le nombre de lettres minimum en anagramme
+        anagLettres=3; //Le nombre de lettres minimum en anagramme
         worddleLast=0; //Le temps du dernier worddle
         worddleBoxPosX=-1;
         worddleBoxPosY=-1;
@@ -141,6 +141,10 @@ public class Game extends Thread implements ActionListener{
     
     public Box[][] getGrid(){
         return grid;
+    }
+    
+    public int getMode(){
+        return mode;
     }
     
     public JPanel getGridInterface(){
@@ -777,7 +781,7 @@ public class Game extends Thread implements ActionListener{
         do {
             x=(int)(Math.random() * 10);
             y=(int)(Math.random() * 15);
-        }while(!grid[y][x].isEmpty());
+        }while(!grid[y+5][x].isEmpty());
         
         Modifier modifier=new Modifier(multi,this);
         grid[y+5][x].setModifier(modifier);
