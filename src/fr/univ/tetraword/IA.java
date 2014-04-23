@@ -80,8 +80,132 @@ public class IA {
     }
         
     public void worddle(){
-        System.out.println("Worddle");
+               
+        boolean word;
+        while(find){
+            for(int i=0;i<game.worddleStartX.size();++i){
+                if(!game.getGrid()[game.worddleStartY.get(i)][game.worddleStartX.get(i)].noWord){
+                    word=findWordWorddle(String.valueOf(Character.toLowerCase(game.getGrid()[game.worddleStartY.get(i)][game.worddleStartX.get(i)].getBrick().lettre)),game.worddleStartX.get(i),game.worddleStartY.get(i));
+                    if(!word) game.getGrid()[game.worddleStartY.get(i)][game.worddleStartX.get(i)].noWord=true;
+                    else {game.validate(); System.out.println(game.mot);}
+                }
+            }
+            find=endWorddle();
+        }
     }
     
+    public boolean findWordWorddle(String mot,int x, int y){
+        char lettre;
+        boolean res;
+        //Gauche
+        if(x!=0){
+            if(!game.getGrid()[y][x-1].isEmpty()){
+                if(!game.getGrid()[y][x-1].isSelected && !game.getGrid()[y][x-1].isStart){
+                    lettre=Character.toLowerCase(game.getGrid()[y][x-1].getBrick().lettre);
+                    
+                    //Mot Correct
+                    if(game.dictionary.line.contains(mot+lettre)){
+                        game.getGrid()[y][x-1].isSelected=true;
+                        game.mot=mot+lettre;
+                        return true;
+                    }
+                    //Partie du mot
+                    else if(game.dictionary.containsRegEx(mot+lettre+".")){
+                        game.getGrid()[y][x-1].isSelected=true;
+                        res=findWordWorddle(mot+lettre,x-1,y);
+                        if(res) return true;
+                        game.getGrid()[y][x-1].isSelected=false;
+                    }
+                }
+            }
+        }
+        
+        //Haut
+        if(y!=0){
+            if(!game.getGrid()[y-1][x].isEmpty()){
+                if(!game.getGrid()[y-1][x].isSelected && !game.getGrid()[y-1][x].isStart){
+                    lettre=Character.toLowerCase(game.getGrid()[y-1][x].getBrick().lettre);
+                    
+                    //Mot Correct
+                    if(game.dictionary.line.contains(mot+lettre)){
+                        game.getGrid()[y-1][x].isSelected=true;
+                        game.mot=mot+lettre;
+                        return true;
+                    }
+                    //Partie du mot
+                    else if(game.dictionary.containsRegEx(mot+lettre+".")){
+                        game.getGrid()[y-1][x].isSelected=true;
+                        res=findWordWorddle(mot+lettre,x,y-1);
+                        if(res) return true;
+                        game.getGrid()[y-1][x].isSelected=false;
+                    }
+                }
+            }
+        }
+        
+        //Droite
+        if(x!=9){
+            if(!game.getGrid()[y][x+1].isEmpty()){
+                if(!game.getGrid()[y][x+1].isSelected && !game.getGrid()[y][x+1].isStart){
+                    lettre=Character.toLowerCase(game.getGrid()[y][x+1].getBrick().lettre);
+                    
+                    //Mot Correct
+                    if(game.dictionary.line.contains(mot+lettre)){
+                        game.getGrid()[y][x+1].isSelected=true;
+                        game.mot=mot+lettre;
+                        return true;
+                    }
+                    //Partie du mot
+                    else if(game.dictionary.containsRegEx(mot+lettre+".")){
+                        game.getGrid()[y][x+1].isSelected=true;
+                        res=findWordWorddle(mot+lettre,x+1,y);
+                        if(res) return true;
+                        game.getGrid()[y][x+1].isSelected=false;
+                    }
+                }
+            }
+        }
+        
+        //Bas
+        if(y!=19){
+            if(!game.getGrid()[y+1][x].isEmpty()){
+                if(!game.getGrid()[y+1][x].isSelected && !game.getGrid()[y+1][x].isStart){
+                    lettre=Character.toLowerCase(game.getGrid()[y+1][x].getBrick().lettre);
+                    
+                    //Mot Correct
+                    if(game.dictionary.line.contains(mot+lettre)){
+                        game.getGrid()[y+1][x].isSelected=true;
+                        game.mot=mot+lettre;
+                        return true;
+                    }
+                    //Partie du mot
+                    else if(game.dictionary.containsRegEx(mot+lettre+".")){
+                        game.getGrid()[y+1][x].isSelected=true;
+                        res=findWordWorddle(mot+lettre,x,y+1);
+                        if(res) return true;
+                        game.getGrid()[y+1][x].isSelected=false;
+                    }
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    public boolean endWorddle(){
+        boolean end;
+        for(int i=19;i>=0;--i){
+            end=true;
+            for(int j=0;j<10;++j){
+                if(!game.getGrid()[i][j].isEmpty())
+                    end=false;
+                if(game.getGrid()[i][j].isStart && !game.getGrid()[i][j].noWord){
+                    return false;
+                }
+            }
+            if(end) break;
+        }
+        return true;
+    }
 
 }

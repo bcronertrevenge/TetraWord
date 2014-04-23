@@ -17,6 +17,7 @@ public class Box extends JButton{
     boolean isSelected;
     boolean isSuppressed;
     boolean isStart;
+    boolean noWord;
     
     public Box(){
         shape=null;
@@ -25,6 +26,7 @@ public class Box extends JButton{
         isSelected=false;
         isSuppressed=false;
         isStart=false;
+        noWord=false;
     }
     
     public Box(Shape shape, Brick brick){
@@ -34,6 +36,7 @@ public class Box extends JButton{
         isSelected=false;
         isSuppressed=false;
         isStart=false;
+        noWord=false;
     }
     
     public Box(Modifier modifier){
@@ -43,6 +46,7 @@ public class Box extends JButton{
         isSelected=false;
         isSuppressed=false;
         isStart=false;
+        noWord=false;
     }
     
     public void setShapeBrick(Shape shape, Brick brick){

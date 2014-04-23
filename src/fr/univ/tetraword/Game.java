@@ -166,9 +166,10 @@ public class Game extends Thread implements ActionListener{
         long beginTime=0;
         int nbShape=1;
         boolean modif=false;
+                
         while(!end){
 
-                   
+                   rafraichir();
                 if(mode == 0){
                     if(shapeFall(currentShape)==1){
                         nbShape++;
@@ -222,7 +223,6 @@ public class Game extends Thread implements ActionListener{
                 
               if(nbShape%3==0 && !modif){
                   modif=true;
-                  System.out.println("Apparition Modifier");
                   addModifier();
               }
                   
@@ -313,6 +313,7 @@ public class Game extends Thread implements ActionListener{
                     grid[i][j].isSelected=false;
                     grid[i][j].isStart=false;
                     grid[i][j].isSuppressed=false;
+                    grid[i][j].noWord=false;
                 }
             }
     }
@@ -361,7 +362,16 @@ public class Game extends Thread implements ActionListener{
         if(mode == 1){
             mot=mot.toLowerCase();
             
-            if(mot.length() > anagLettres && dictionary.line.contains(mot)){
+            if(mot.equals("")){
+                mode = 0;
+                unSelected(-1);
+                clean();
+                window.requestFocusInWindow();
+                mot="";
+                anagLine=-1;
+                newShapeInGame();
+            }
+            else if(mot.length() > anagLettres && dictionary.line.contains(mot)){
                 eraseLine(anagLine);
                 unSelected(anagLine);
                 for(int i=0;i<mot.length();++i){
@@ -378,7 +388,16 @@ public class Game extends Thread implements ActionListener{
         }
         else if(mode == 2){
             mot=mot.toLowerCase();
-            if(dictionary.line.contains(mot)){                
+            if(mot.length()<=1){
+                mode=0;
+                suppressionWorddle();
+                clean();
+                clearBox();
+                window.requestFocusInWindow();
+                mot="";
+                worddleLast=System.currentTimeMillis();
+            }
+            else if(dictionary.line.contains(mot)){                
                 boolean quit;
                 for(int i=19;i>=0;--i){
                     quit=true;
@@ -387,12 +406,23 @@ public class Game extends Thread implements ActionListener{
                             grid[i][j].isSelected=false;
                             grid[i][j].isSuppressed=true;
                             grid[i][j].isStart=true;
+                            if(!worddleStartX.contains(j))
+                                worddleStartX.add(j);
+                            if(!worddleStartX.contains(i))
+                                worddleStartY.add(i);
                         }
                         if(!grid[i][j].isEmpty())
                             quit=false;
                     }
                     if(quit) break;
                 }
+                
+                worddleBoxPosX=worddleStartX.get(0);
+                worddleBoxPosY=worddleStartY.get(0);
+                mot="";
+                mot+=grid[worddleBoxPosY][worddleBoxPosX].getBrick().lettre;
+                grid[worddleBoxPosY][worddleBoxPosX].isSelected=true;
+            
             }
             else {
                 for(int i=0;i<20;++i){
@@ -401,11 +431,15 @@ public class Game extends Thread implements ActionListener{
                             grid[i][j].isSelected=false;
                     }
                 }
+                
+                worddleBoxPosX=worddleStartX.get(0);
+                worddleBoxPosY=worddleStartY.get(0);
+                mot="";
+                mot+=grid[worddleBoxPosY][worddleBoxPosX].getBrick().lettre;
+                grid[worddleBoxPosY][worddleBoxPosX].isSelected=true;
             }
-            mot="";
-            worddleBoxPosX=worddleStartX.get(0);
-            worddleBoxPosY=worddleStartY.get(0);
-            grid[worddleBoxPosY][worddleBoxPosX].isSelected=true;
+            
+
         }
     }
     
@@ -510,6 +544,7 @@ public class Game extends Thread implements ActionListener{
         else if(!canMoveAside(sens))
             return;
         
+        boolean terminate=false;
         //Gauche
         if(sens < 0){
             currentShape.x--;
@@ -518,8 +553,10 @@ public class Game extends Thread implements ActionListener{
                 for(int j=0;j<=currentShape.width;++j){
                     if(grid[currentShape.y+i][currentShape.x+j].getShape()==currentShape || grid[currentShape.y+i][currentShape.x+j].isEmpty()){
                         if(grid[currentShape.y+i][currentShape.x+j].getModifier()!=null && currentShape.getBricks()[i][j]!=null){
-                            grid[currentShape.y+i][currentShape.x+j].getModifier().activate();
+                            Modifier m=grid[currentShape.y+i][currentShape.x+j].getModifier();
                             grid[currentShape.y+i][currentShape.x+j].setModifier(null);
+                            terminate=m.activate(1);
+                            if(terminate) return;
                         }
                         grid[currentShape.y+i][currentShape.x+j].setShapeBrick(currentShape,currentShape.getBricks()[i][j]);
                         if(grid[currentShape.y+i][currentShape.x+j+1].getShape()==currentShape)
@@ -538,8 +575,10 @@ public class Game extends Thread implements ActionListener{
                 for(int j=currentShape.width;j>=0;--j){                    
                     if(grid[currentShape.y+i][currentShape.x+j].getShape()==currentShape || grid[currentShape.y+i][currentShape.x+j].isEmpty()){
                         if(grid[currentShape.y+i][currentShape.x+j].getModifier()!=null && currentShape.getBricks()[i][j]!=null){
-                            grid[currentShape.y+i][currentShape.x+j].getModifier().activate();
+                            Modifier m=grid[currentShape.y+i][currentShape.x+j].getModifier();
                             grid[currentShape.y+i][currentShape.x+j].setModifier(null);
+                            terminate=m.activate(2);
+                            if(terminate) return;
                         }
                         grid[currentShape.y+i][currentShape.x+j].setShapeBrick(currentShape,currentShape.getBricks()[i][j]);
                         if(grid[currentShape.y+i][currentShape.x+j-1].getShape()==currentShape)
@@ -673,8 +712,9 @@ public class Game extends Thread implements ActionListener{
             for(int j=0;j<=shape.width;++j){           
                 if(grid[shape.y+i][shape.x+j].getShape()==shape || grid[shape.y+i][shape.x+j].isEmpty()){
                     if(grid[shape.y+i][shape.x+j].getModifier()!=null && shape.getBricks()[i][j]!=null){
-                        terminate=grid[shape.y+i][shape.x+j].getModifier().activate();
+                        Modifier m=grid[shape.y+i][shape.x+j].getModifier();
                         grid[shape.y+i][shape.x+j].setModifier(null);
+                        terminate=m.activate(0);
                         
                     }
                     if(!terminate) grid[shape.y+i][shape.x+j].setShapeBrick(shape,shape.getBricks()[i][j]);             
@@ -699,7 +739,7 @@ public class Game extends Thread implements ActionListener{
         
         for(int i=0;i<shape.height;++i){
             for(int j=0;j<=shape.width;++j)
-                if(!grid[shape.y+1+i][shape.x+j].isEmpty() && shape.getBricks()[i][j]!=null && shape.getBricks()[i+1][j]==null){
+                if(!grid[shape.y+1+i][shape.x+j].isEmpty() && shape.getBricks()[i][j]!=null && shape.getBricks()[i+1][j]==null && grid[shape.y+1+i][shape.x+j].getShape()!=shape){
                   //  System.out.println("Piece dedans");
                     return false;
                 }        

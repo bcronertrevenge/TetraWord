@@ -35,6 +35,8 @@ public class Modifier {
         else
             a=(int)(Math.random()*8);
         
+        a=2;
+        
         switch(a){
             case 0:
                 type=speedFall;
@@ -68,8 +70,7 @@ public class Modifier {
         }
     }
     
-    public boolean activate(){
-        System.out.println("Activate");
+    public boolean activate(int from){ //0 : shapeFall, 1 : MoveAside : right, 2 : MoveAside : left
         boolean terminate=false;
         switch(type){
             case speedFall:
@@ -79,10 +80,38 @@ public class Modifier {
                 game.fallTime+=50;
                 break;
             case directFall:
-                int quit=0;
-                while(quit==0){
-                    quit=game.shapeFall(game.currentShape);
+                int end=0;
+                boolean in=false;
+                int x,y;
+                             
+                x=game.currentShape.x;
+                y=game.currentShape.y;
+                
+                
+                while(end==0){
+                    end=game.shapeFall(game.currentShape);
+                    if(end==0) in=true;
                 }
+                if(!in) break;
+
+                switch(from){
+                    case 0:
+                        for(int i=x;i<=x+game.currentShape.width;++i){
+                            game.getGrid()[y-1][i].setShapeBrick(null, null);
+                        }
+                        break;
+                    case 1:
+                        for(int i=y;i<=y+game.currentShape.height;++i)
+                            game.getGrid()[i][x+game.currentShape.width+1].setShapeBrick(null, null);
+                        break;
+                    case 2:
+                        for(int i=y;i<=y+game.currentShape.height;++i)
+                            game.getGrid()[i][x-1].setShapeBrick(null, null);
+                        break;
+                    default :
+                        break;
+                }
+                terminate=true;
                 break;
             case reverse:
                 break;
