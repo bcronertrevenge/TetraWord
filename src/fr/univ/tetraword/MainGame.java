@@ -170,7 +170,7 @@ public class MainGame extends JFrame {
             this.setPreferredSize(new Dimension(1024,768));
                         
             // Arrière plan
-            JPanel panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/game.jpg"));
+            JPanel panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/mode.jpg"));
             panel.setMaximumSize(new Dimension(1024, 768));
             panel.setMinimumSize(new Dimension(600, 400));
             panel.setPreferredSize(new Dimension(1024, 768));
@@ -273,34 +273,31 @@ public class MainGame extends JFrame {
                             .addGap(38, 38, 38)
                             .addComponent(buttonRetour))
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(405, 405, 405)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(labelTitre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(buttonSolo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(buttonOrdi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(buttonAmi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(labelMulti, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(labelSolo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addContainerGap(328, Short.MAX_VALUE))
+                            .addGap(81, 81, 81)
+                            .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                .addComponent(buttonSolo, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(buttonOrdi, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(buttonAmi, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(labelMulti,GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(labelSolo, GroupLayout.PREFERRED_SIZE, 259, GroupLayout.PREFERRED_SIZE))))
+                    .addContainerGap(652, Short.MAX_VALUE))
             );
             jPanel1Layout.setVerticalGroup(
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(15, 15, 15)
                     .addComponent(buttonRetour)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(labelTitre, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(103, 103, 103)
-                    .addComponent(labelSolo, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 188, Short.MAX_VALUE)
+                    .addComponent(labelSolo, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
                     .addGap(31, 31, 31)
-                    .addComponent(buttonSolo, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonSolo, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
                     .addGap(73, 73, 73)
-                    .addComponent(labelMulti, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelMulti, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
                     .addGap(27, 27, 27)
-                    .addComponent(buttonOrdi, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonOrdi, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
                     .addGap(38, 38, 38)
-                    .addComponent(buttonAmi, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(135, Short.MAX_VALUE))
+                    .addComponent(buttonAmi, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
+                    .addGap(101, 101, 101))
             );
             
             
@@ -404,7 +401,7 @@ public class MainGame extends JFrame {
             JPanel buttonPiece = Games.get(0).getNextInterface();
 
 
-        javax.swing.GroupLayout jPanel1Layout = new GroupLayout(panel);
+        GroupLayout jPanel1Layout = new GroupLayout(panel);
         panel.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -462,8 +459,8 @@ public class MainGame extends JFrame {
                             .addComponent(buttonScore, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE))
                         .addGap(56, 56, 56)
                         .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelSaisie, GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(buttonSaisie, GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(labelSaisie, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(buttonSaisie, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(49, Short.MAX_VALUE))
         );
        
