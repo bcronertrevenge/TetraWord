@@ -3,7 +3,6 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
             <file>file:/C:/Users/bruno/Documents/GitHub/TetraWord/src/fr/univ/tetraword/Shape.java</file>
             <file>file:/C:/Users/bruno/Documents/GitHub/TetraWord/src/fr/univ/tetraword/IA.java</file>
             <file>file:/C:/Users/bruno/Documents/GitHub/TetraWord/src/fr/univ/tetraword/Box.java</file>
@@ -12,12 +11,6 @@
             <file>file:/C:/Users/bruno/Documents/GitHub/TetraWord/src/fr/univ/tetraword/MainGame.java</file>
             <file>file:/C:/Users/bruno/Documents/GitHub/TetraWord/src/fr/univ/tetraword/Dictionary.java</file>
             <file>file:/C:/Users/bruno/Documents/GitHub/TetraWord/src/tetraMain.java</file>
-=======
-            <file>file:/C:/Users/Marie/Documents/GitHub/TetraWord/src/fr/univ/tetraword/Game.java</file>
-            <file>file:/C:/Users/Marie/Documents/GitHub/TetraWord/src/fr/univ/tetraword/MainGame.java</file>
-            <file>file:/C:/Users/Marie/Documents/GitHub/TetraWord/src/fr/univ/tetraword/Box.java</file>
-            <file>file:/C:/Users/Marie/Documents/GitHub/TetraWord/src/fr/univ/tetraword/Shape.java</file>
->>>>>>> 8576c73d685102d02c16183d187e93ad64e5e46f
         </group>
     </open-files>
 </project-private>

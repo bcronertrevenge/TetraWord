@@ -6,7 +6,6 @@
 
 package fr.univ.tetraword;
 
-import fr.univ.graphicinterface.JWelcomeButton;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -17,10 +16,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import static java.lang.System.exit;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
@@ -49,10 +51,12 @@ public class Game extends Thread implements ActionListener{
     boolean multi;
     long worddleTime, worddleReload, worddleLast, anagTime, fallTime;
     int anagLettres;
-    Vector<JWelcomeButton> Buttons;
+    Vector<JComponent> composants;
     IA intelligence;
     
-    public Game(JFrame window, Dictionary dictionary, boolean multi, Vector<JWelcomeButton> Buttons, boolean ia){            
+    public Game(JFrame window, Dictionary dictionary, boolean multi, Vector<JComponent> composants, boolean ia){     
+        if(composants==null)
+            exit(1);
         if(ia)
             intelligence=new IA(this);
         
@@ -68,7 +72,7 @@ public class Game extends Thread implements ActionListener{
         worddleStartX=new Vector<Integer>();
         worddleStartY=new Vector<Integer>();
         
-        this.Buttons=Buttons;
+        this.composants=composants;
         this.multi=multi;
         anagLine=-1;
         score=0;
@@ -117,10 +121,14 @@ public class Game extends Thread implements ActionListener{
                }
             }
         
-        Buttons.get(0).setText(String.valueOf(level));
-        Buttons.get(1).setText(String.valueOf((int)score));
+        JButton butt;
+        butt = (JButton)composants.get(0);
+        butt.setText(String.valueOf(level));
         
-        for(JWelcomeButton b:Buttons)
+        butt = (JButton)composants.get(1);
+        butt.setText(String.valueOf((int)score));
+        
+        for(JComponent b:composants)
             b.repaint();
         
     }

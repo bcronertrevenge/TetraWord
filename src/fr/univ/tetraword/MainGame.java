@@ -7,6 +7,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import static java.lang.System.exit;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,7 +17,7 @@ import javax.swing.border.Border;
 
 public class MainGame extends JFrame {
     Vector<Game> Games;    
-    Vector<JWelcomeButton> Buttons;
+    Vector<JComponent> Composants;
     
     public MainGame(){
         addKeyListener(new ClavierListener());
@@ -173,13 +174,29 @@ public class MainGame extends JFrame {
             // Fonts
             Font copperplate = new Font("Copperplate Gothic Bold",0,26);
             Font century = new Font("Century Gothic",0,26);
-                        
+            
+            Composants=new Vector<JComponent>();      
+            
+            JWelcomeButton buttonNiveau = new JWelcomeButton("");
+            if(buttonNiveau==null)exit(1);
+            buttonNiveau.setFont(century);
+            buttonNiveau.setForeground(Color.WHITE);
+            buttonNiveau.setFocusPainted(false);
+            Composants.add(buttonNiveau);
+            
+            JWelcomeButton buttonScore = new JWelcomeButton("");
+            if(buttonScore==null)exit(1);
+            buttonScore.setFont(century);
+            buttonScore.setForeground(Color.WHITE);
+            buttonScore.setFocusPainted(false);
+            Composants.add(buttonScore);
+            
             // Création du jeu
             Dictionary dictionary=new Dictionary();
             Games=new Vector<Game>();
-            Buttons=new Vector<JWelcomeButton>();
-            boolean intelligence=false;
-            Game game=new Game(this,dictionary,false,Buttons,intelligence);
+            
+            boolean intelligence=true;
+            Game game=new Game(this,dictionary,false,Composants,intelligence);
             game.start();
             Games.add(game);
             
@@ -225,17 +242,6 @@ public class MainGame extends JFrame {
                 }
             });
             
-            JWelcomeButton buttonNiveau = new JWelcomeButton(String.valueOf(Games.get(0).getLevel()));
-            buttonNiveau.setFont(century);
-            buttonNiveau.setForeground(Color.WHITE);
-            buttonNiveau.setFocusPainted(false);
-            Buttons.add(buttonNiveau);
-            
-            JWelcomeButton buttonScore = new JWelcomeButton(String.valueOf(Games.get(0).score));
-            buttonScore.setFont(century);
-            buttonScore.setForeground(Color.WHITE);
-            buttonScore.setFocusPainted(false);
-            Buttons.add(buttonScore);
             // Prochaine piece        
             JPanel buttonPiece = Games.get(0).getNextInterface();
 

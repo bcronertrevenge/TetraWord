@@ -37,10 +37,16 @@ public class IA {
         }
     }
     
+    ////////////////////////////// TETRIS ////////////////////////////////////
     public void tetris(){
         //System.out.println("Tetris");
     }
     
+    public void getLowestLine(){
+        
+    }
+    
+    ////////////////////////////// ANAGRAMME ////////////////////////////////////
     public void anagramme(){
         if(game.anagLine==-1 || !find) return;
         
@@ -78,20 +84,23 @@ public class IA {
         }
         return false;
     }
-        
+        ////////////////////////////// WORDDLE ////////////////////////////////////
     public void worddle(){
                
         boolean word;
         while(find){
+            find=false;
             for(int i=0;i<game.worddleStartX.size();++i){
                 if(!game.getGrid()[game.worddleStartY.get(i)][game.worddleStartX.get(i)].noWord){
                     word=findWordWorddle(String.valueOf(Character.toLowerCase(game.getGrid()[game.worddleStartY.get(i)][game.worddleStartX.get(i)].getBrick().lettre)),game.worddleStartX.get(i),game.worddleStartY.get(i));
                     if(!word) game.getGrid()[game.worddleStartY.get(i)][game.worddleStartX.get(i)].noWord=true;
-                    else {game.validate(); System.out.println(game.mot);}
+                    else {System.out.println(game.mot); game.validate(); find=true;}
                 }
             }
-            find=endWorddle();
+            System.out.println(find);
         }
+        System.out.println("Je trouve plus de mot :/ ");
+        game.validate();
     }
     
     public boolean findWordWorddle(String mot,int x, int y){
@@ -190,22 +199,6 @@ public class IA {
         }
         
         return false;
-    }
-    
-    public boolean endWorddle(){
-        boolean end;
-        for(int i=19;i>=0;--i){
-            end=true;
-            for(int j=0;j<10;++j){
-                if(!game.getGrid()[i][j].isEmpty())
-                    end=false;
-                if(game.getGrid()[i][j].isStart && !game.getGrid()[i][j].noWord){
-                    return false;
-                }
-            }
-            if(end) break;
-        }
-        return true;
     }
 
 }
