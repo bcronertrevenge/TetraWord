@@ -6,6 +6,7 @@
 
 package fr.univ.tetraword;
 
+import fr.univ.graphicinterface.JWelcomeButton;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import static java.lang.System.exit;
+import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,10 +53,10 @@ public class Game extends Thread implements ActionListener{
     boolean multi;
     long worddleTime, worddleReload, worddleLast, anagTime, fallTime;
     int anagLettres;
-    Vector<JComponent> composants;
+    HashMap<String,JWelcomeButton> composants;
     IA intelligence;
     
-    public Game(JFrame window, Dictionary dictionary, boolean multi, Vector<JComponent> composants, boolean ia){     
+    public Game(JFrame window, Dictionary dictionary, boolean multi,  HashMap<String,JWelcomeButton> composants, boolean ia){     
         if(composants==null)
             exit(1);
         if(ia)
@@ -121,16 +123,18 @@ public class Game extends Thread implements ActionListener{
                }
             }
         
-        JButton butt;
-        butt = (JButton)composants.get(0);
-        butt.setText(String.valueOf(level));
-        
-        butt = (JButton)composants.get(1);
-        butt.setText(String.valueOf((int)score));
-        
-        for(JComponent b:composants)
-            b.repaint();
-        
+        if(composants.containsKey("Niveau")){
+            composants.get("Niveau").setText(String.valueOf(level));
+            composants.get("Niveau").repaint();
+        }
+        if(composants.containsKey("Score")){
+            composants.get("Score").setText(String.valueOf((int)score));
+            composants.get("Score").repaint();
+        }
+        if(composants.containsKey("Saisie")){
+            composants.get("Saisie").setText(String.valueOf(mot));
+            composants.get("Saisie").repaint();
+        }
     }
     
     public void rafraichirNextShape(){
