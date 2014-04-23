@@ -35,8 +35,6 @@ public class Modifier {
         else
             a=(int)(Math.random()*8);
         
-        a=2;
-        
         switch(a){
             case 0:
                 type=speedFall;
