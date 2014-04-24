@@ -90,8 +90,12 @@ public class Game extends Thread implements ActionListener{
         // Initialisation de grid
         gridInterface = new JPanel(new GridLayout(20,10));
         nextInterface = new JPanel(new GridLayout(4,4));
-       
+    }
+    
+    public void init(){
+                // Initialisation de gridInterface
         Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
+        
         for(int i=0;i<4;++i){
             for(int j=0;j<4;++j){
                 nextgrid[i][j]=new Box();
@@ -99,9 +103,6 @@ public class Game extends Thread implements ActionListener{
                 nextInterface.add(nextgrid[i][j]);
             }
         }
-
-        // Initialisation de gridInterface
-        
         for (int i=0;i<20;++i){
             for (int j=0;j<10;++j){
                 grid[i][j]=new Box();
@@ -111,8 +112,8 @@ public class Game extends Thread implements ActionListener{
                 grid[i][j].addActionListener(this); 
             } 
         }
+        
     }
-    
     public void rafraichir(){
         gridInterface.repaint();
         for (int i=0; i<20;++i){
@@ -173,6 +174,7 @@ public class Game extends Thread implements ActionListener{
         
         //Boucle principale
         try {
+        init();
         nextShape=Shape.getRandomShape();
         newShapeInGame();
         long beginTime=0;

@@ -6,6 +6,8 @@
 
 package fr.univ.tetraword;
 
+import java.util.HashMap;
+
 /**
  *
  * @author bruno
@@ -13,10 +15,17 @@ package fr.univ.tetraword;
 public class IA {
     Game game;
     private boolean find;
+    HashMap<String,Integer> Moves;
+    Shape currentShapeIA;
     
     public IA(Game game){
         this.game=game;
         find=true;
+        Moves=new HashMap<String,Integer>();
+        Moves.put("Left",2);
+        Moves.put("Right",3);
+        Moves.put("Rotate",2);
+        currentShapeIA=null;
     }
     
     public void play(){
@@ -39,7 +48,30 @@ public class IA {
     
     ////////////////////////////// TETRIS ////////////////////////////////////
     public void tetris(){
-        //System.out.println("Tetris");
+        if(currentShapeIA!=game.currentShape){
+            //Recherche chemin et rempli le vecteur
+            System.out.println("Recherche Chemin");
+            currentShapeIA=game.currentShape;
+        }
+        else if(Moves.get("Right")>0){
+            //Bouge à droite
+            game.moveShapeAside(1);
+            Moves.put("Right",Moves.get("Right")-1);
+        }
+        else if(Moves.get("Left")>0){
+            //Bouge à gauche
+            game.moveShapeAside(-1);
+            Moves.put("Left",Moves.get("Left")-1);
+        }
+        else if(Moves.get("Rotate")>0){
+            //Tourne la pièce
+            game.rotateUp();
+            Moves.put("Rotate",Moves.get("Rotate")-1);
+        }
+        else {
+            //Descend la pièce
+            game.shapeFall(game.currentShape);
+        }
     }
     
     public void getLowestLine(){
