@@ -117,8 +117,7 @@ public class IA {
                             trous++;
                         }
                     }
-                }
-                game.rafraichir();
+                }                
                 moves.add(new Moves((i-Ox),j,nblignes,game.currentShape.y,trous));
                 
                 clearLastMove();
@@ -201,7 +200,6 @@ public class IA {
         System.out.println(game.mot);
         if(find){   
             game.validate();
-            game.rafraichir();
         }
 
        
