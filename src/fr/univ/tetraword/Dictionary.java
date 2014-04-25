@@ -53,7 +53,7 @@ public class Dictionary {
 	public static void main(String[] args){
 		Dictionary dictionary = new Dictionary();
 		String mot = "hello";
-		if( dictionary.line.contains(mot) ){
+		if( dictionary.containsRegEx(mot+".") ){
 		      System.out.println("Mot correct");
 		}
 		else{

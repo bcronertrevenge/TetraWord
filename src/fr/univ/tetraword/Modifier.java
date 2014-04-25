@@ -70,6 +70,7 @@ public class Modifier {
     
     public boolean activate(int from){ //0 : shapeFall, 1 : MoveAside : right, 2 : MoveAside : left
         boolean terminate=false;
+        
         switch(type){
             case speedFall:
                 game.fallTime-=50;
@@ -87,7 +88,7 @@ public class Modifier {
                 
                 
                 while(end==0){
-                    end=game.shapeFall(game.currentShape);
+                    end=game.shapeFall(game.currentShape,false);
                     if(end==0) in=true;
                 }
                 if(!in) break;

@@ -7,6 +7,7 @@
 package fr.univ.tetraword;
 
 import java.util.HashMap;
+import java.util.Vector;
 
 /**
  *
@@ -15,16 +16,13 @@ import java.util.HashMap;
 public class IA {
     Game game;
     private boolean find;
-    HashMap<String,Integer> Moves;
+    Moves move;
     Shape currentShapeIA;
     
     public IA(Game game){
         this.game=game;
         find=true;
-        Moves=new HashMap<String,Integer>();
-        Moves.put("Left",2);
-        Moves.put("Right",3);
-        Moves.put("Rotate",2);
+        move=new Moves();
         currentShapeIA=null;
     }
     
@@ -49,33 +47,150 @@ public class IA {
     ////////////////////////////// TETRIS ////////////////////////////////////
     public void tetris(){
         if(currentShapeIA!=game.currentShape){
-            //Recherche chemin et rempli le vecteur
-            System.out.println("Recherche Chemin");
+            //Recherche chemin et rempli le vecteur de mouvements à faire
+            move=null;
+            lookPath();
             currentShapeIA=game.currentShape;
         }
-        else if(Moves.get("Right")>0){
-            //Bouge à droite
-            game.moveShapeAside(1);
-            Moves.put("Right",Moves.get("Right")-1);
-        }
-        else if(Moves.get("Left")>0){
-            //Bouge à gauche
-            game.moveShapeAside(-1);
-            Moves.put("Left",Moves.get("Left")-1);
-        }
-        else if(Moves.get("Rotate")>0){
+        else if(move.getRotation()>0){
             //Tourne la pièce
             game.rotateUp();
-            Moves.put("Rotate",Moves.get("Rotate")-1);
+            move.setRotation(move.getRotation()-1);
+        }
+        else if(move.getDeplacement()>0){
+            //Bouge à droite
+            game.moveShapeAside(1,true);
+            move.setDeplacement(move.getDeplacement()-1);
+        }
+        else if(move.getDeplacement()<0){
+            //Bouge à gauche
+            game.moveShapeAside(-1,true);
+            move.setDeplacement(move.getDeplacement()+1);
         }
         else {
             //Descend la pièce
-            game.shapeFall(game.currentShape);
+            game.shapeFall(game.currentShape,true);
         }
     }
     
-    public void getLowestLine(){
+    public void lookPath(){
+        Vector<Moves> moves=new Vector<Moves>();
+        int Ox=game.currentShape.x;
         
+        for(int i=0;i<=Ox;++i){
+            game.moveShapeAside(-1, false);
+        }
+        
+        //Deplacement gauche droite
+        for(int i=0;i<10-game.currentShape.width;++i){
+            //Rotation
+            for(int j=0;j<4;++j){
+                
+                //Descente de la pièce
+                while(game.shapeFall(game.currentShape,false)==0){}
+                
+                //Verif ligne
+                int nblignes=0;
+                boolean good;
+                for(int k=game.currentShape.y;k<=game.currentShape.y+game.currentShape.height;++k){
+                    good=true;
+                    for(int l=0;l<10;++l){
+                        if(game.getGrid()[k][l].isEmpty()){
+                            good=false;
+                            break;
+                        }
+                    }
+                    if(good) nblignes++;
+                }
+                
+                //Verif Trous
+                int trous=0;
+                
+                for(int l=game.currentShape.x;l<=game.currentShape.x+game.currentShape.width;++l){
+                    good=false;
+                    for(int k=game.currentShape.y;k<=game.currentShape.y+game.currentShape.height+1;++k){
+                        if(k>19) continue;
+                        if(!game.getGrid()[k][l].isEmpty()){
+                            good=true;
+                        }
+                        else if(game.getGrid()[k][l].isEmpty() && good){
+                            trous++;
+                        }
+                    }
+                }
+                game.rafraichir();
+                moves.add(new Moves((i-Ox),j,nblignes,game.currentShape.y,trous));
+                
+                clearLastMove();
+                game.rotateUp();
+            }
+            game.moveShapeAside(1, false);
+        }
+        
+        //Replacement de la pièce
+        while(Ox<game.currentShape.x){
+            game.moveShapeAside(-1, false);
+        }
+        chooseBestMove(moves);
+    }
+    
+    public void chooseBestMove(Vector<Moves> moves){
+        
+        if(moves.isEmpty()) return;
+        
+        int maxLigne=0;
+        int maxHauteur=0;
+        int minTrous=200;
+        move=null;
+        Moves moveRes=null;
+        
+        for(int i=0;i<moves.size();++i){
+            // Choix du mouvement qui enlève le plus de lignes
+            if(moves.get(i).nblignes>=maxLigne){
+                if(moves.get(i).nblignes>maxLigne){
+                    maxHauteur=moves.get(i).hauteurMax;
+                    minTrous=moves.get(i).trous;
+                    maxLigne=moves.get(i).nblignes;
+                    moveRes=moves.get(i);
+                }
+                // Choix du mouvement qui fait le moins de trous possible
+                else if(moves.get(i).trous<=minTrous){
+                    if(moves.get(i).trous<minTrous){
+                        maxHauteur=moves.get(i).hauteurMax;
+                        minTrous=moves.get(i).trous;
+                        moveRes=moves.get(i);
+                    }
+                    // Choix du mouvement qui place une pièce le moins haut possible
+                    else if(moves.get(i).hauteurMax>maxHauteur){
+                        maxHauteur=moves.get(i).hauteurMax;
+                        moveRes=moves.get(i);
+                    }     
+                }
+            }
+        }
+        
+        
+        if(moveRes==null){
+             int rand = (int)((Math.random() * (moves.size())));
+             moveRes=moves.get(rand);
+        }
+        
+        move=moveRes;
+    }
+    public void clearLastMove(){
+        
+        for(int i=game.currentShape.y;i<=game.currentShape.y+game.currentShape.height;++i){
+            for(int j=game.currentShape.x;j<=game.currentShape.x+game.currentShape.width;++j){
+                if(!game.getGrid()[i][j].isEmpty()){
+                    if(game.getGrid()[i][j].getShape()==game.currentShape){
+                        game.getGrid()[i-game.currentShape.y][j].setShapeBrick(game.currentShape, game.getGrid()[i][j].getBrick());
+                        game.getGrid()[i][j].setShapeBrick(null,null);
+                    }
+                }
+            }
+        }
+        
+        game.currentShape.y=0;
     }
     
     ////////////////////////////// ANAGRAMME ////////////////////////////////////

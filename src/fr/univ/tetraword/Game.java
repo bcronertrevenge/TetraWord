@@ -185,7 +185,7 @@ public class Game extends Thread implements ActionListener{
 
                    rafraichir();
                 if(mode == 0){
-                    if(shapeFall(currentShape)==1){
+                    if(shapeFall(currentShape,true)==1){
                         nbShape++;
                         modif=false;
                         beginTime=verifLigne();
@@ -269,7 +269,7 @@ public class Game extends Thread implements ActionListener{
                     quit=false;           
                     fall=0;
                     while(fall!=1 && fall!=-1){
-                        fall=shapeFall(grid[i][j].getShape());
+                        fall=shapeFall(grid[i][j].getShape(),true);
                     }
                 }
             }
@@ -515,7 +515,7 @@ public class Game extends Thread implements ActionListener{
     }
     
     //Bouge la piece a gauche(-1) ou a droite(1)
-    public void moveShapeAside(int sens){
+    public void moveShapeAside(int sens, boolean takeModifier){
         
         if(mode == 1)
             return;
@@ -566,7 +566,7 @@ public class Game extends Thread implements ActionListener{
             for(int i=0;i<=currentShape.height;++i){
                 for(int j=0;j<=currentShape.width;++j){
                     if(grid[currentShape.y+i][currentShape.x+j].getShape()==currentShape || grid[currentShape.y+i][currentShape.x+j].isEmpty()){
-                        if(grid[currentShape.y+i][currentShape.x+j].getModifier()!=null && currentShape.getBricks()[i][j]!=null){
+                        if(grid[currentShape.y+i][currentShape.x+j].getModifier()!=null && currentShape.getBricks()[i][j]!=null && takeModifier){
                             Modifier m=grid[currentShape.y+i][currentShape.x+j].getModifier();
                             grid[currentShape.y+i][currentShape.x+j].setModifier(null);
                             terminate=m.activate(1);
@@ -588,7 +588,7 @@ public class Game extends Thread implements ActionListener{
             for(int i=0;i<=currentShape.height;++i){
                 for(int j=currentShape.width;j>=0;--j){                    
                     if(grid[currentShape.y+i][currentShape.x+j].getShape()==currentShape || grid[currentShape.y+i][currentShape.x+j].isEmpty()){
-                        if(grid[currentShape.y+i][currentShape.x+j].getModifier()!=null && currentShape.getBricks()[i][j]!=null){
+                        if(grid[currentShape.y+i][currentShape.x+j].getModifier()!=null && currentShape.getBricks()[i][j]!=null && takeModifier){
                             Modifier m=grid[currentShape.y+i][currentShape.x+j].getModifier();
                             grid[currentShape.y+i][currentShape.x+j].setModifier(null);
                             terminate=m.activate(2);
@@ -686,7 +686,7 @@ public class Game extends Thread implements ActionListener{
     }
     
     
-    public int shapeFall(Shape shape){
+    public int shapeFall(Shape shape, boolean modifierTake){
         
         if(mode == 1)
             return -1;
@@ -725,7 +725,7 @@ public class Game extends Thread implements ActionListener{
         for(int i=0;i<=shape.height;++i){
             for(int j=0;j<=shape.width;++j){           
                 if(grid[shape.y+i][shape.x+j].getShape()==shape || grid[shape.y+i][shape.x+j].isEmpty()){
-                    if(grid[shape.y+i][shape.x+j].getModifier()!=null && shape.getBricks()[i][j]!=null){
+                    if(grid[shape.y+i][shape.x+j].getModifier()!=null && shape.getBricks()[i][j]!=null && modifierTake){
                         Modifier m=grid[shape.y+i][shape.x+j].getModifier();
                         grid[shape.y+i][shape.x+j].setModifier(null);
                         terminate=m.activate(0);

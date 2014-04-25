@@ -348,7 +348,7 @@ public class MainGame extends JFrame {
             Dictionary dictionary=new Dictionary();
             Games=new Vector<Game>();
             
-            boolean intelligence=false;
+            boolean intelligence=true;
             Game game=new Game(this,dictionary,false,Composants,intelligence);
             game.start();
             Games.add(game);
@@ -502,23 +502,22 @@ public class MainGame extends JFrame {
                 switch( keyCode ) { 
                     //Joueur 1
                     case KeyEvent.VK_UP:
-                        
                         Games.get(0).rotateUp();                        
                         Games.get(0).rafraichir();
                         break;
                     case KeyEvent.VK_DOWN:
                         // handle down 
-                        Games.get(0).shapeFall(Games.get(0).currentShape);
+                        Games.get(0).shapeFall(Games.get(0).currentShape,true);
                         Games.get(0).rafraichir();
                         break;
                     case KeyEvent.VK_LEFT:
                         // handle left
-                        Games.get(0).moveShapeAside(-1);
+                        Games.get(0).moveShapeAside(-1,true);
                         Games.get(0).rafraichir();
                         break;
                     case KeyEvent.VK_RIGHT :
                         // handle right
-                        Games.get(0).moveShapeAside(1);
+                        Games.get(0).moveShapeAside(1,true);
                         Games.get(0).rafraichir();
                         break;
                     case KeyEvent.VK_ENTER :                        
