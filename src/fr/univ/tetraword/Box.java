@@ -18,6 +18,7 @@ public class Box extends JButton{
     boolean isSuppressed;
     boolean isStart;
     boolean noWord;
+    Color temporaryEffect;
     
     public Box(){
         shape=null;
@@ -27,6 +28,7 @@ public class Box extends JButton{
         isSuppressed=false;
         isStart=false;
         noWord=false;
+        temporaryEffect=null;
     }
     
     public Box(Shape shape, Brick brick){
@@ -37,6 +39,7 @@ public class Box extends JButton{
         isSuppressed=false;
         isStart=false;
         noWord=false;
+        temporaryEffect=null;
     }
     
     public Box(Modifier modifier){
@@ -47,6 +50,7 @@ public class Box extends JButton{
         isSuppressed=false;
         isStart=false;
         noWord=false;
+        temporaryEffect=null;
     }
     
     public void setShapeBrick(Shape shape, Brick brick){
@@ -93,7 +97,13 @@ public class Box extends JButton{
         Color jaune=new Color(248,203,0);
         Color modifierColor=new Color(147,93,212);
         
-        if(brick!=null && shape!=null){            
+        if(temporaryEffect!=null){
+            setBackground(jaune);
+            setText("");
+            setForeground(temporaryEffect);
+            temporaryEffect=null;
+        }
+        else if(brick!=null && shape!=null){            
             if(isSelected){
                 setBackground(jaune);
                 setText(String.valueOf(brick.lettre));
@@ -142,7 +152,6 @@ public class Box extends JButton{
                 setText(String.valueOf(""));
                 break;
         }
-        
         }
         else if(modifier!=null){
             setBackground(modifierColor);

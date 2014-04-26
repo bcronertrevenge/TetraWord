@@ -15,6 +15,7 @@ import static fr.univ.tetraword.modifierType.reverse;
 import static fr.univ.tetraword.modifierType.slowFall;
 import static fr.univ.tetraword.modifierType.speedFall;
 import static fr.univ.tetraword.modifierType.switchGrid;
+import java.awt.Color;
 
 
 
@@ -34,6 +35,8 @@ public class Modifier {
             a=(int)(Math.random()*9);
         else
             a=(int)(Math.random()*8);
+        
+        a=6;
         
         switch(a){
             case 0:
@@ -125,17 +128,18 @@ public class Modifier {
                 int explosionwidth=2;
                 for(int i=-explosionwidth;i<game.currentShape.height+explosionwidth;++i){
                     for(int j=-explosionwidth;j<game.currentShape.width+explosionwidth;++j){
-                        if(game.currentShape.y + i >= 0 && game.currentShape.y + i < 20 && game.currentShape.x + j >= 0 && game.currentShape.x + j < 10)
+                        if(game.currentShape.y + i >= 0 && game.currentShape.y + i < 20 && game.currentShape.x + j >= 0 && game.currentShape.x + j < 10){
                             if(game.getGrid()[game.currentShape.y + i][game.currentShape.x + j].getShape()!=null)
                                 game.getGrid()[game.currentShape.y + i][game.currentShape.x + j].setShapeBrick(null, null);
                             else if(game.getGrid()[game.currentShape.y + i][game.currentShape.x + j].getModifier()!=null)
                                 game.getGrid()[game.currentShape.y + i][game.currentShape.x + j].setModifier(null);
+                            game.getGrid()[game.currentShape.y + i][game.currentShape.x + j].temporaryEffect=Color.red;
+                        }
                     }
                 }
                 game.currentShape=null;
                 game.newShapeInGame();
                 terminate=true;
-                game.rafraichir();
                 break;
             case allowWorddle:
                 game.worddleLast=0;

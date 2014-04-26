@@ -67,7 +67,7 @@ public class Game extends Thread implements ActionListener{
         worddleReload=20000; //Le temps de rechargement de Worddle
         anagTime=30000; //Le temps en mode anagramme
         fallTime=1000; //Le temps de chute des pièces
-        anagLettres=3; //Le nombre de lettres minimum en anagramme
+        anagLettres=2; //Le nombre de lettres minimum en anagramme
         worddleLast=0; //Le temps du dernier worddle
         worddleBoxPosX=-1;
         worddleBoxPosY=-1;
@@ -250,17 +250,18 @@ public class Game extends Thread implements ActionListener{
     
     public void suppressionWorddle(){
         int fall;
+        boolean quit=true;
         for(int i=19;i>=0;--i){
             for(int j=0;j<10;++j){
                 if(!grid[i][j].isEmpty() && grid[i][j].isSuppressed){
                     score+=50/grid[i][j].getBrick().rarity;
                     grid[i][j].setShapeBrick(null, null);
-                    
+                    quit=false;
                 }
             }
         }
+        if(quit) return;
         
-        boolean quit;
         for(int i=19;i>=0;--i){
             quit=true;
             for(int j=0;j<10;++j){
@@ -295,12 +296,15 @@ public class Game extends Thread implements ActionListener{
         
         if(ligne==19)
             return;
+        ligne++;
         
         Box firstBox = null;
         int y=0;
-        int x=(int)(Math.random() * 10);
+        int x=0;
         do{
+            x=(int)(Math.random() * 10);
             y= (int)((Math.random() * (20-ligne)) + ligne);
+            System.out.println(y + " " +x);
             firstBox=grid[y][x];
         }while(firstBox.isEmpty());
         

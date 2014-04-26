@@ -32,6 +32,9 @@ public class IA {
             case 0:
                 tetris();
                 find=true;
+                if(System.currentTimeMillis()-game.worddleLast>=game.worddleReload){
+                    game.worddle();
+                }
                 break;
             case 1:
                 anagramme();
