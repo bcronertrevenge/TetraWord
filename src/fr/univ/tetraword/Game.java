@@ -53,15 +53,16 @@ public class Game extends Thread implements ActionListener{
     boolean multi;
     long worddleTime, worddleReload, worddleLast, anagTime, fallTime;
     int anagLettres;
-    HashMap<String,JWelcomeButton> composants;
+    HashMap<String,JButton> composants;
     IA intelligence;
-    
-    public Game(JFrame window, Dictionary dictionary, boolean multi,  HashMap<String,JWelcomeButton> composants, boolean ia){     
+    boolean pause;
+    public Game(JFrame window, Dictionary dictionary, boolean multi,  HashMap<String,JButton> composants, boolean ia){     
         if(composants==null)
             exit(1);
         if(ia)
             intelligence=new IA(this);
         
+        pause=false;
         //Difficulte
         worddleTime=40000; //Le temps en mode Worddle
         worddleReload=20000; //Le temps de rechargement de Worddle
@@ -139,6 +140,24 @@ public class Game extends Thread implements ActionListener{
             composants.get("Saisie").setText(String.valueOf(mot));
             composants.get("Saisie").repaint();
         }
+        if(composants.containsKey("Worddle")){
+            if(System.currentTimeMillis()-worddleLast>=worddleReload){
+                composants.get("Worddle").setBackground(Color.green);
+                composants.get("Worddle").setText("");
+                composants.get("Worddle").repaint();
+            }
+            else if(mode==2){
+                composants.get("Worddle").setBackground(Color.orange);
+                composants.get("Worddle").setText("");
+                composants.get("Worddle").repaint();
+            }
+            else{
+                composants.get("Worddle").setBackground(Color.red);
+                composants.get("Worddle").setText("");
+                composants.get("Worddle").repaint();
+            }
+            
+        }
     }
     
     public void rafraichirNextShape(){
@@ -185,9 +204,12 @@ public class Game extends Thread implements ActionListener{
         boolean modif=false;
                 
         while(!end){
-
-                   rafraichir();
-                if(mode == 0){
+              
+                rafraichir();
+                if(pause){
+                    
+                }
+                else if(mode == 0){
                     if(shapeFall(currentShape,true)==1){
                         nbShape++;
                         modif=false;
@@ -282,7 +304,7 @@ public class Game extends Thread implements ActionListener{
     }
     
     public void worddle(){
-        if(mode == 1 || mode == 2 || System.currentTimeMillis()-worddleLast<worddleReload){
+        if(mode != 0 || System.currentTimeMillis()-worddleLast<worddleReload || pause){
             return;
         }    
         
@@ -307,7 +329,6 @@ public class Game extends Thread implements ActionListener{
         do{
             x=(int)(Math.random() * 10);
             y= (int)((Math.random() * (20-ligne)) + ligne);
-            System.out.println(y + " " +x);
             firstBox=grid[y][x];
         }while(firstBox.isEmpty());
         
@@ -511,7 +532,6 @@ public class Game extends Thread implements ActionListener{
         for(int i=0;i<=currentShape.height;++i){
                 for(int j=0;j<=currentShape.width;++j){
                     if(!grid[currentShape.y+i][currentShape.x+j].isEmpty()){
-                        System.out.println();
                         return true;
                     }
                     grid[currentShape.y+i][currentShape.x+j].setShapeBrick(currentShape,currentShape.getBricks()[i][j]);
@@ -524,7 +544,7 @@ public class Game extends Thread implements ActionListener{
     //Bouge la piece a gauche(-1) ou a droite(1)
     public void moveShapeAside(int sens, boolean takeModifier){
         
-        if(mode == 1)
+        if(mode == 1 || pause)
             return;
         else if(mode == 2){ //Worddle Mod
             if(worddleBoxPosX < 0 || worddleBoxPosX >= 10 || (sens < 0 && worddleBoxPosX == 0) || (sens > 0 && worddleBoxPosX == 9))
@@ -656,7 +676,7 @@ public class Game extends Thread implements ActionListener{
     
     public void rotateUp(){
         
-        if(mode == 1)
+        if(mode == 1 || pause)
             return;
         else if(mode == 2){
             if(worddleBoxPosY < 1 || worddleBoxPosY >= 20)
@@ -695,7 +715,7 @@ public class Game extends Thread implements ActionListener{
     
     public int shapeFall(Shape shape, boolean modifierTake){
         
-        if(mode == 1)
+        if(mode == 1 || pause)
             return -1;
         else if(mode == 2){
             if(worddleBoxPosY < 0 || worddleBoxPosY >= 19)
@@ -851,5 +871,9 @@ public class Game extends Thread implements ActionListener{
         
         Modifier modifier=new Modifier(multi,this);
         grid[y+5][x].setModifier(modifier);
+    }
+
+    void setMode(int i) {
+        mode=i;
     }
 }

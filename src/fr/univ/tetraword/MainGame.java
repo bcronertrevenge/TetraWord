@@ -18,8 +18,8 @@ import javax.swing.border.Border;
 
 public class MainGame extends JFrame {
     Vector<Game> Games;
-    HashMap<String,JWelcomeButton> Composants;
-    HashMap<String,JWelcomeButton> Composants2;
+    HashMap<String,JButton> Composants;
+    HashMap<String,JButton> Composants2;
     
     public MainGame(){
         addKeyListener(new ClavierListener());
@@ -426,7 +426,7 @@ public class MainGame extends JFrame {
             Font copperplate = new Font("Copperplate Gothic Bold",0,22);
             Font century = new Font("Century Gothic",0,26);
             
-            Composants=new HashMap<String,JWelcomeButton>(); 
+            Composants=new HashMap<String,JButton>(); 
             
             // Boutons
             JWelcomeButton buttonRetour = new JWelcomeButton("Retour");
@@ -464,6 +464,7 @@ public class MainGame extends JFrame {
             JButton buttonWorddle = new JButton("");
             if(buttonWorddle==null)exit(1);
             buttonWorddle.setFocusPainted(false);
+            Composants.put("Worddle",buttonWorddle);
             
             JWelcomeButton buttonNiveau = new JWelcomeButton("");
             if(buttonNiveau==null)exit(1);
@@ -631,7 +632,7 @@ public class MainGame extends JFrame {
             
             
             /***** JEU 1 *****/
-            Composants=new HashMap<String,JWelcomeButton>(); 
+            Composants=new HashMap<String,JButton>(); 
             
             // Boutons
             JWelcomeButton buttonRetour = new JWelcomeButton("Retour");
@@ -655,6 +656,7 @@ public class MainGame extends JFrame {
             buttonWorddle1.setFont(century);
             buttonWorddle1.setForeground(Color.green);
             buttonWorddle1.setFocusPainted(false);
+            Composants.put("Worddle",buttonWorddle1);
             
             JWelcomeButton buttonNiveau1 = new JWelcomeButton("");
             if(buttonNiveau1==null)exit(1);
@@ -725,15 +727,16 @@ public class MainGame extends JFrame {
             
             
             /***** JEU 2 *****/
-            Composants2=new HashMap<String,JWelcomeButton>(); 
+            Composants2=new HashMap<String,JButton>(); 
             
             // Boutons
             
             JButton buttonWorddle2 = new JButton("");
             if(buttonWorddle2==null)exit(1);
             buttonWorddle2.setFont(century);
-            buttonWorddle2.setForeground(Color.green);
+            buttonWorddle2.setBackground(Color.green);
             buttonWorddle2.setFocusPainted(false);
+            Composants2.put("Worddle",buttonWorddle2);
             
             JWelcomeButton buttonNiveau2 = new JWelcomeButton("");
             if(buttonNiveau2==null)exit(1);
@@ -937,7 +940,7 @@ public class MainGame extends JFrame {
             
             
             /***** JEU 1 *****/
-            Composants=new HashMap<String,JWelcomeButton>(); 
+            Composants=new HashMap<String,JButton>(); 
             
             // Boutons
             JWelcomeButton buttonRetour = new JWelcomeButton("Retour");
@@ -961,6 +964,7 @@ public class MainGame extends JFrame {
             buttonWorddle1.setFont(century);
             buttonWorddle1.setForeground(Color.green);
             buttonWorddle1.setFocusPainted(false);
+            Composants.put("Worddle",buttonWorddle1);
             
             JWelcomeButton buttonNiveau1 = new JWelcomeButton("");
             if(buttonNiveau1==null)exit(1);
@@ -1032,7 +1036,7 @@ public class MainGame extends JFrame {
             
             
             /***** JEU 2 *****/
-            Composants2=new HashMap<String,JWelcomeButton>(); 
+            Composants2=new HashMap<String,JButton>(); 
             
             // Boutons
             
@@ -1041,6 +1045,7 @@ public class MainGame extends JFrame {
             buttonWorddle2.setFont(century);
             buttonWorddle2.setForeground(Color.green);
             buttonWorddle2.setFocusPainted(false);
+            Composants2.put("Worddle",buttonWorddle2);
             
             JWelcomeButton buttonNiveau2 = new JWelcomeButton("");
             if(buttonNiveau2==null)exit(1);
@@ -1422,6 +1427,14 @@ public class MainGame extends JFrame {
                     case KeyEvent.VK_M :
                         Games.get(0).worddle();
                         break;
+                    case KeyEvent.VK_P :
+                         for(Game g:Games){
+                             if(g.pause)
+                                g.pause=false;
+                             else
+                                 g.pause=true;
+                         }
+                        break;
                  }
           
         }
@@ -1434,15 +1447,6 @@ public class MainGame extends JFrame {
          
         }   	
     }  
-   
-   //Petite Pause
-    private void pause(){
-        try {
-          Thread.sleep(1000);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
-    }
     
     /* Programme Principal */
     public static void main(String[] args) throws IOException{
