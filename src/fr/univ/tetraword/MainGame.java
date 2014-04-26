@@ -443,6 +443,7 @@ public class MainGame extends JFrame {
             JButton buttonWorddle = new JButton("");
             if(buttonWorddle==null)exit(1);
             buttonWorddle.setFocusPainted(false);
+            Composants.put("Worddle",buttonWorddle);
             
             JWelcomeButton buttonNiveau = new JWelcomeButton("");
             if(buttonNiveau==null)exit(1);
@@ -634,6 +635,7 @@ public class MainGame extends JFrame {
             buttonWorddle1.setFont(century);
             buttonWorddle1.setForeground(Color.green);
             buttonWorddle1.setFocusPainted(false);
+            Composants.put("Worddle",buttonWorddle1);
             
             JWelcomeButton buttonNiveau1 = new JWelcomeButton("");
             if(buttonNiveau1==null)exit(1);
@@ -711,8 +713,9 @@ public class MainGame extends JFrame {
             JButton buttonWorddle2 = new JButton("");
             if(buttonWorddle2==null)exit(1);
             buttonWorddle2.setFont(century);
-            buttonWorddle2.setForeground(Color.green);
+            buttonWorddle2.setBackground(Color.green);
             buttonWorddle2.setFocusPainted(false);
+            Composants2.put("Worddle",buttonWorddle2);
             
             JWelcomeButton buttonNiveau2 = new JWelcomeButton("");
             if(buttonNiveau2==null)exit(1);
@@ -940,6 +943,7 @@ public class MainGame extends JFrame {
             buttonWorddle1.setFont(century);
             buttonWorddle1.setForeground(Color.green);
             buttonWorddle1.setFocusPainted(false);
+            Composants.put("Worddle",buttonWorddle1);
             
             JWelcomeButton buttonNiveau1 = new JWelcomeButton("");
             if(buttonNiveau1==null)exit(1);
@@ -1020,6 +1024,7 @@ public class MainGame extends JFrame {
             buttonWorddle2.setFont(century);
             buttonWorddle2.setForeground(Color.green);
             buttonWorddle2.setFocusPainted(false);
+            Composants2.put("Worddle",buttonWorddle2);
             
             JWelcomeButton buttonNiveau2 = new JWelcomeButton("");
             if(buttonNiveau2==null)exit(1);

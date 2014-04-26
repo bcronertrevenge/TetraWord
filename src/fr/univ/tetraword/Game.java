@@ -139,6 +139,24 @@ public class Game extends Thread implements ActionListener{
             composants.get("Saisie").setText(String.valueOf(mot));
             composants.get("Saisie").repaint();
         }
+        if(composants.containsKey("Worddle")){
+            if(System.currentTimeMillis()-worddleLast>=worddleReload){
+                composants.get("Worddle").setBackground(Color.green);
+                composants.get("Worddle").setText("");
+                composants.get("Worddle").repaint();
+            }
+            else if(mode==2){
+                composants.get("Worddle").setBackground(Color.orange);
+                composants.get("Worddle").setText("");
+                composants.get("Worddle").repaint();
+            }
+            else{
+                composants.get("Worddle").setBackground(Color.red);
+                composants.get("Worddle").setText("");
+                composants.get("Worddle").repaint();
+            }
+            
+        }
     }
     
     public void rafraichirNextShape(){
