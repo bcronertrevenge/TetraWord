@@ -66,8 +66,12 @@ public class MainGame extends JFrame {
         welcomePage();
     }
     
-    public void reglesActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
-        regles();
+    public void firstReglesActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
+        firstRegles();
+    }
+    
+    public void secondReglesActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
+        //secondRegles();
     }
     
     public void chargerActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
@@ -333,20 +337,19 @@ public class MainGame extends JFrame {
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
-    public void regles() throws IOException{
+    public void firstRegles() throws IOException{
             // Création de la fenêtre
             this.setTitle("Règles du Tetra Word");
             this.setPreferredSize(new Dimension(1024,768));
                         
             // Arrière plan
-            JPanel panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/game.jpg"));
+            JPanel panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/regles1.jpg"));
             panel.setMaximumSize(new Dimension(1024, 768));
             panel.setMinimumSize(new Dimension(600, 400));
             panel.setPreferredSize(new Dimension(1024, 768));
             
             // Fonts
-            Font copperplate = new Font("Copperplate Gothic Bold",0,26);
-            Font century = new Font("Century Gothic",0,26);
+            Font century = new Font("Century Gothic",0,18);
                        
             // Boutons
             JWelcomeButton buttonRetour = new JWelcomeButton("Retour");
@@ -365,25 +368,43 @@ public class MainGame extends JFrame {
                 }
             });
             
-           
-            
-            // Labels
-            JLabel labelTitre = new JLabel();
-            labelTitre.setFont(copperplate);
-            labelTitre.setForeground(new Color(33,91,201));
-            labelTitre.setText("Modes de Jeu");
-            labelTitre.setHorizontalAlignment(SwingConstants.CENTER);
+            JWelcomeButton buttonSuivant = new JWelcomeButton("Suivant");
+            buttonSuivant.setFont(century);
+            buttonSuivant.setForeground(Color.WHITE);
+            buttonSuivant.setFocusPainted(false);
+            buttonSuivant.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        secondReglesActionPerformed(evt);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 
-            JLabel labelSolo = new JLabel();
-            labelSolo.setFont(copperplate);
-            labelSolo.setForeground(new Color(33,91,201));
-            labelSolo.setText("En Solitaire");
-            labelSolo.setHorizontalAlignment(SwingConstants.CENTER);
-          
+                }
+            });
             
+            javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(panel);
+                panel.setLayout(jPanel1Layout);
+                jPanel1Layout.setHorizontalGroup(
+                    jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(buttonRetour, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 751, Short.MAX_VALUE)
+                        .addComponent(buttonSuivant, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42))
+                );
+                jPanel1Layout.setVerticalGroup(
+                    jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(51, 51, 51)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(buttonRetour, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(buttonSuivant, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(683, Short.MAX_VALUE))
+                );
 
-            
-            
             this.pack();
             this.setVisible(true);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -432,7 +453,7 @@ public class MainGame extends JFrame {
                 @Override
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     try {
-                        reglesActionPerformed(evt);
+                        firstReglesActionPerformed(evt);
                     } catch (IOException ex) {
                         Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
                     }
