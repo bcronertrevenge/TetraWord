@@ -1406,6 +1406,14 @@ public class MainGame extends JFrame {
                     case KeyEvent.VK_M :
                         Games.get(0).worddle();
                         break;
+                    case KeyEvent.VK_P :
+                         for(Game g:Games){
+                             if(g.pause)
+                                g.pause=false;
+                             else
+                                 g.pause=true;
+                         }
+                        break;
                  }
           
         }
@@ -1418,15 +1426,6 @@ public class MainGame extends JFrame {
          
         }   	
     }  
-   
-   //Petite Pause
-    private void pause(){
-        try {
-          Thread.sleep(1000);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
-    }
     
     /* Programme Principal */
     public static void main(String[] args) throws IOException{
