@@ -204,7 +204,7 @@ public class Game extends Thread implements ActionListener{
         boolean modif=false;
                 
         while(!end){
-              
+     
                 rafraichir();
                 if(pause){
                     
@@ -709,7 +709,6 @@ public class Game extends Thread implements ActionListener{
                 grid[currentShape.y+i][currentShape.x+j].setShapeBrick(currentShape,currentShape.getBricks()[i][j]);
             }
         }
-        
     }
     
     
