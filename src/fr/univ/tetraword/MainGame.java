@@ -18,8 +18,8 @@ import javax.swing.border.Border;
 
 public class MainGame extends JFrame {
     Vector<Game> Games;
-    HashMap<String,JWelcomeButton> Composants;
-    HashMap<String,JWelcomeButton> Composants2;
+    HashMap<String,JButton> Composants;
+    HashMap<String,JButton> Composants2;
     
     public MainGame(){
         addKeyListener(new ClavierListener());
@@ -405,7 +405,7 @@ public class MainGame extends JFrame {
             Font copperplate = new Font("Copperplate Gothic Bold",0,22);
             Font century = new Font("Century Gothic",0,26);
             
-            Composants=new HashMap<String,JWelcomeButton>(); 
+            Composants=new HashMap<String,JButton>(); 
             
             // Boutons
             JWelcomeButton buttonRetour = new JWelcomeButton("Retour");
@@ -610,7 +610,7 @@ public class MainGame extends JFrame {
             
             
             /***** JEU 1 *****/
-            Composants=new HashMap<String,JWelcomeButton>(); 
+            Composants=new HashMap<String,JButton>(); 
             
             // Boutons
             JWelcomeButton buttonRetour = new JWelcomeButton("Retour");
@@ -704,7 +704,7 @@ public class MainGame extends JFrame {
             
             
             /***** JEU 2 *****/
-            Composants2=new HashMap<String,JWelcomeButton>(); 
+            Composants2=new HashMap<String,JButton>(); 
             
             // Boutons
             
@@ -916,7 +916,7 @@ public class MainGame extends JFrame {
             
             
             /***** JEU 1 *****/
-            Composants=new HashMap<String,JWelcomeButton>(); 
+            Composants=new HashMap<String,JButton>(); 
             
             // Boutons
             JWelcomeButton buttonRetour = new JWelcomeButton("Retour");
@@ -1011,7 +1011,7 @@ public class MainGame extends JFrame {
             
             
             /***** JEU 2 *****/
-            Composants2=new HashMap<String,JWelcomeButton>(); 
+            Composants2=new HashMap<String,JButton>(); 
             
             // Boutons
             

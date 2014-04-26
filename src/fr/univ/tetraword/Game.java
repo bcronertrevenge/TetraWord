@@ -53,10 +53,10 @@ public class Game extends Thread implements ActionListener{
     boolean multi;
     long worddleTime, worddleReload, worddleLast, anagTime, fallTime;
     int anagLettres;
-    HashMap<String,JWelcomeButton> composants;
+    HashMap<String,JButton> composants;
     IA intelligence;
     
-    public Game(JFrame window, Dictionary dictionary, boolean multi,  HashMap<String,JWelcomeButton> composants, boolean ia){     
+    public Game(JFrame window, Dictionary dictionary, boolean multi,  HashMap<String,JButton> composants, boolean ia){     
         if(composants==null)
             exit(1);
         if(ia)
