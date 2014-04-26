@@ -97,13 +97,8 @@ public class Box extends JButton{
         Color jaune=new Color(248,203,0);
         Color modifierColor=new Color(147,93,212);
         
-        if(temporaryEffect!=null){
-            setBackground(jaune);
-            setText("");
-            setForeground(temporaryEffect);
-            temporaryEffect=null;
-        }
-        else if(brick!=null && shape!=null){            
+        
+        if(brick!=null && shape!=null){            
             if(isSelected){
                 setBackground(jaune);
                 setText(String.valueOf(brick.lettre));
@@ -152,6 +147,11 @@ public class Box extends JButton{
                 setText(String.valueOf(""));
                 break;
         }
+        }
+        else if(temporaryEffect!=null){
+            setBackground(temporaryEffect);
+            setText("");
+            temporaryEffect=null;
         }
         else if(modifier!=null){
             setBackground(modifierColor);

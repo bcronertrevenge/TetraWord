@@ -125,14 +125,17 @@ public class Game extends Thread implements ActionListener{
             }
         
         if(composants.containsKey("Niveau")){
+            composants.get("Niveau").setForeground(Color.white);
             composants.get("Niveau").setText(String.valueOf(level));
             composants.get("Niveau").repaint();
         }
         if(composants.containsKey("Score")){
+            composants.get("Score").setForeground(Color.white);
             composants.get("Score").setText(String.valueOf((int)score));
             composants.get("Score").repaint();
         }
         if(composants.containsKey("Saisie")){
+            composants.get("Saisie").setForeground(Color.white);
             composants.get("Saisie").setText(String.valueOf(mot));
             composants.get("Saisie").repaint();
         }
@@ -831,6 +834,11 @@ public class Game extends Thread implements ActionListener{
         fallTime=1000-level*5; //Le temps de chute des pièces
         if(anagLettres<5 && level%2==0){
             anagLettres=level; //Le nombre de lettres minimum en anagramme
+        }
+        if(composants.containsKey("Niveau")){
+            composants.get("Niveau").setForeground(Color.white);
+            composants.get("Niveau").setText(String.valueOf(level));
+            composants.get("Niveau").repaint();
         }
     }
     

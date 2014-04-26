@@ -36,8 +36,6 @@ public class Modifier {
         else
             a=(int)(Math.random()*8);
         
-        a=6;
-        
         switch(a){
             case 0:
                 type=speedFall;
@@ -91,6 +89,8 @@ public class Modifier {
                 
                 
                 while(end==0){
+                    for(int i=game.currentShape.x;i<=game.currentShape.x+game.currentShape.width;++i)
+                        game.getGrid()[game.currentShape.y][i].temporaryEffect=Color.green;
                     end=game.shapeFall(game.currentShape,false);
                     if(end==0) in=true;
                 }
@@ -119,9 +119,19 @@ public class Modifier {
                 break;
             case bonus:
                 game.score+=50;
+                if(game.composants.containsKey("Score")){
+                    game.composants.get("Score").setForeground(Color.green);
+                    game.composants.get("Score").setText(String.valueOf((int)game.score));
+                    game.composants.get("Score").repaint();
+                }
                 break;
             case malus:
                 game.score-=50;
+                if(game.composants.containsKey("Score")){
+                    game.composants.get("Score").setForeground(Color.red);
+                    game.composants.get("Score").setText(String.valueOf((int)game.score));
+                    game.composants.get("Score").repaint();
+                }
                 break;
             case explode:
                 //Dans la shape
