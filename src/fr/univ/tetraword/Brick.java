@@ -15,7 +15,7 @@ public class Brick {
     double rarity;
     
     public Brick(){
-        lettre=0;
+        lettre='a';
         rarity=0;
     }
     
@@ -24,5 +24,9 @@ public class Brick {
         this.rarity=rarity;
     }
     
+    public void setBrick(Brick b){
+        lettre=b.lettre;
+        rarity=b.rarity;
+    }
     
 }
