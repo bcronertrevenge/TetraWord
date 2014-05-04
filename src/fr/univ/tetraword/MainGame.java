@@ -1429,29 +1429,41 @@ public class MainGame extends JFrame {
                         break;
                     //Joueur 2
                     case KeyEvent.VK_UP:
-                        Games.get(1).rotateUp();                        
-                        Games.get(1).rafraichir();
+                        if(Games.size()>1){
+                            Games.get(1).rotateUp();                        
+                            Games.get(1).rafraichir();
+                        }
                         break;
                     case KeyEvent.VK_DOWN:
                         // handle down 
-                        Games.get(1).shapeFall(Games.get(1).currentShape,true);
-                        Games.get(1).rafraichir();
+                        if(Games.size()>1){
+                            Games.get(1).shapeFall(Games.get(1).currentShape,true);
+                            Games.get(1).rafraichir();
+                        }
                         break;
                     case KeyEvent.VK_LEFT:
                         // handle left
-                        Games.get(1).moveShapeAside(-1,true);
-                        Games.get(1).rafraichir();
+                        if(Games.size()>1){
+                            Games.get(1).moveShapeAside(-1,true);
+                            Games.get(1).rafraichir();
+                        }
                         break;
                     case KeyEvent.VK_RIGHT :
                         // handle right
-                        Games.get(1).moveShapeAside(1,true);
-                        Games.get(1).rafraichir();
+                        if(Games.size()>1){
+                            Games.get(1).moveShapeAside(1,true);
+                            Games.get(1).rafraichir();
+                        }
                         break;
                     case KeyEvent.VK_ENTER :                        
-                        Games.get(1).validate();
+                        if(Games.size()>1){
+                            Games.get(1).validate();
+                        }
                         break;
                     case KeyEvent.VK_M :
-                        Games.get(1).worddle();
+                        if(Games.size()>1){
+                            Games.get(1).worddle();
+                        }
                         break;
 					
                     case KeyEvent.VK_P :
