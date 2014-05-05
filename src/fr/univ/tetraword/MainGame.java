@@ -1501,10 +1501,10 @@ public class MainGame extends JFrame {
 
         public void keyPressed(KeyEvent event) {
             
-              int keyCode = event.getKeyCode();
-                switch( keyCode ) { 
-                  //Joueur1
-		    case KeyEvent.VK_Z:
+                int keyCode = event.getKeyCode();
+                switch( keyCode ) {
+                    //Joueur1
+                    case KeyEvent.VK_Z:
                         Games.get(0).rotateUp();
                         Games.get(0).rafraichir();
                         break;
@@ -1529,7 +1529,7 @@ public class MainGame extends JFrame {
                     case KeyEvent.VK_W :
                         Games.get(0).worddle();
                         break;
-                    //Joueur 2
+                        //Joueur 2
                     case KeyEvent.VK_UP:
                         if(Games.size()>1){
                             Games.get(1).rotateUp();                        
@@ -1569,14 +1569,18 @@ public class MainGame extends JFrame {
                         break;
 					
                     case KeyEvent.VK_P :
-                         for(Game g:Games){
-                             if(g.pause)
-                                g.pause=false;
-                             else
-                                 g.pause=true;
-                         }
+                        pauseGames();
                         break;
-                 }
+                    case KeyEvent.VK_J:
+                        try {
+                            
+                            Game.saveGame(Games.get(0));
+                        } catch (IOException ex) {
+                            Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        break;
+                }
+            
           
         }
         
@@ -1589,6 +1593,14 @@ public class MainGame extends JFrame {
         }   	
     }  
     
+   public void pauseGames(){
+       for(Game g:Games){
+                            if(g.pause)
+                                g.pause=false;
+                            else
+                                g.pause=true;
+                        }
+   }
     /* Programme Principal */
     public static void main(String[] args) throws IOException{
         MainGame game=new MainGame();
