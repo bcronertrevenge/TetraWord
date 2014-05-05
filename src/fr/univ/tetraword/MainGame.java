@@ -71,7 +71,7 @@ public class MainGame extends JFrame {
     }
     
     public void secondReglesActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
-        //secondRegles();
+        secondRegles();
     }
     
     public void chargerActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
@@ -383,6 +383,79 @@ public class MainGame extends JFrame {
 
                 }
             });
+            
+            javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(panel);
+                panel.setLayout(jPanel1Layout);
+                jPanel1Layout.setHorizontalGroup(
+                    jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(buttonRetour, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 751, Short.MAX_VALUE)
+                        .addComponent(buttonSuivant, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42))
+                );
+                jPanel1Layout.setVerticalGroup(
+                    jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(51, 51, 51)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(buttonRetour, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(buttonSuivant, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(683, Short.MAX_VALUE))
+                );
+
+            this.pack();
+            this.setVisible(true);
+            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+    
+    public void secondRegles() throws IOException{
+            // Création de la fenêtre
+            this.setTitle("Règles du Tetra Word (2)");
+            this.setPreferredSize(new Dimension(1024,768));
+                        
+            // Arrière plan
+            JPanel panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/regles2.jpg"));
+            panel.setMaximumSize(new Dimension(1024, 768));
+            panel.setMinimumSize(new Dimension(600, 400));
+            panel.setPreferredSize(new Dimension(1024, 768));
+            
+            // Fonts
+            Font century = new Font("Century Gothic",0,18);
+                       
+            // Boutons
+            JWelcomeButton buttonRetour = new JWelcomeButton("Précédent");
+            buttonRetour.setFont(century);
+            buttonRetour.setForeground(Color.WHITE);
+            buttonRetour.setFocusPainted(false);
+            buttonRetour.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        firstReglesActionPerformed(evt);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+            });
+            
+            JWelcomeButton buttonSuivant = new JWelcomeButton("Suivant");
+            buttonSuivant.setFont(century);
+            buttonSuivant.setForeground(Color.WHITE);
+            buttonSuivant.setFocusPainted(false);
+            /*buttonSuivant.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        secondReglesActionPerformed(evt);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+            });*/
             
             javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(panel);
                 panel.setLayout(jPanel1Layout);
