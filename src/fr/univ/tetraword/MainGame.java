@@ -67,7 +67,7 @@ public class MainGame extends JFrame {
     }
     
     public void sauvegardeActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
-        //Game.saveGame(Games.get(0));
+        JOptionPane.showMessageDialog(this,"Voici l'exception");
     }
     
     public void firstReglesActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
