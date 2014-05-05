@@ -48,15 +48,17 @@ public class Game extends Thread implements ActionListener{
     Vector<Integer> worddleStartX;
     Vector<Integer> worddleStartY; // Case Worddle sur lesquels on peut demarrer
     int worddleBoxPosX,worddleBoxPosY;
-    boolean multi;
     long worddleTime, worddleReload, worddleLast, anagTime, fallTime;
     int anagLettres;
     HashMap<String,JButton> composants;
     IA intelligence;
     boolean pause;
     boolean reverse;
+    Game other;
     
-    public Game(JFrame window, Dictionary dictionary, boolean multi,  HashMap<String,JButton> composants, boolean ia){     
+    public Game(JFrame window, Dictionary dictionary,  HashMap<String,JButton> composants, boolean ia){  
+        this.other=null;
+        
         if(composants==null)
             exit(1);
         if(ia)
@@ -76,7 +78,6 @@ public class Game extends Thread implements ActionListener{
         worddleStartY=new Vector<Integer>();
         
         this.composants=composants;
-        this.multi=multi;
         anagLine=-1;
         score=0;
         level=1;
@@ -91,6 +92,10 @@ public class Game extends Thread implements ActionListener{
         // Initialisation de grid
         gridInterface = new JPanel(new GridLayout(20,10));
         nextInterface = new JPanel(new GridLayout(4,4));
+    }
+    
+    public void setOther(Game other){
+        this.other=other;
     }
     
     public void init(){
@@ -901,7 +906,7 @@ public class Game extends Thread implements ActionListener{
             y=(int)(Math.random() * 15);
         }while(!grid[y+5][x].isEmpty());
         
-        Modifier modifier=new Modifier(multi,this);
+        Modifier modifier=new Modifier(other,this);
         grid[y+5][x].setModifier(modifier);
     }
 
