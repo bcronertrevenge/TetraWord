@@ -36,7 +36,7 @@ public class Modifier {
             a=(int)(Math.random()*9);
         else
             a=(int)(Math.random()*8);
-        //a=3;
+        
         switch(a){
             case 0:
                 type=speedFall;
@@ -157,6 +157,25 @@ public class Modifier {
                 game.worddleLast=0;
                 break;
             case switchGrid:
+                for(int i=0;i<20;++i){
+                    for(int j=0;j<10;++j){
+                        if(game.getGrid()[i][j].getShape()==game.currentShape && game.getGrid()[i][j].getBrick()!=null)
+                            game.getGrid()[i][j].setShapeBrick(null, null);
+                        if(other.getGrid()[i][j].getShape()==other.currentShape && other.getGrid()[i][j].getBrick()!=null)
+                            other.getGrid()[i][j].setShapeBrick(null, null);
+                        
+                        game.getGrid()[i][j].boxChange(other.getGrid()[i][j]);
+                    }
+                }
+                game.rafraichir();
+                other.rafraichir();
+                
+                                game.currentShape=null;
+                other.currentShape=null;
+                game.newShapeInGame();   
+                other.newShapeInGame();  
+
+                terminate=true;
                 break;
             default:
                 break;
