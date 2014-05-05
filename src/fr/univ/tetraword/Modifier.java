@@ -12,6 +12,7 @@ import static fr.univ.tetraword.modifierType.directFall;
 import static fr.univ.tetraword.modifierType.explode;
 import static fr.univ.tetraword.modifierType.malus;
 import static fr.univ.tetraword.modifierType.reverse;
+import static fr.univ.tetraword.modifierType.reverseOther;
 import static fr.univ.tetraword.modifierType.slowFall;
 import static fr.univ.tetraword.modifierType.speedFall;
 import static fr.univ.tetraword.modifierType.switchGrid;
@@ -33,7 +34,7 @@ public class Modifier {
         int a;
         
         if(other!=null)
-            a=(int)(Math.random()*9);
+            a=(int)(Math.random()*10);
         else
             a=(int)(Math.random()*8);
         
@@ -51,18 +52,21 @@ public class Modifier {
                 type=reverse;
                 break;
             case 4:
-                type=bonus;
-                break;
-            case 5:
-                type=malus;
-                break;
-            case 6:
-                type=explode;
-                break;
-            case 7:
                 type=allowWorddle;
                 break;
+            case 5:
+                type=bonus;
+                break;
+            case 6:
+                type=malus;
+                break;
+            case 7:
+                type=explode;
+                break;
             case 8:
+                type=reverseOther;
+                break;
+            case 9:
                 type=switchGrid;
                 break;
             default:
@@ -157,6 +161,8 @@ public class Modifier {
                 game.worddleLast=0;
                 break;
             case switchGrid:
+                other.clearBox();
+                other.whiteOut();
                 for(int i=0;i<20;++i){
                     for(int j=0;j<10;++j){
                         if(game.getGrid()[i][j].getShape()==game.currentShape && game.getGrid()[i][j].getBrick()!=null)
@@ -165,17 +171,31 @@ public class Modifier {
                             other.getGrid()[i][j].setShapeBrick(null, null);
                         
                         game.getGrid()[i][j].boxChange(other.getGrid()[i][j]);
+                        
                     }
                 }
                 game.rafraichir();
                 other.rafraichir();
                 
-                                game.currentShape=null;
+                game.currentShape=null;
                 other.currentShape=null;
                 game.newShapeInGame();   
                 other.newShapeInGame();  
-
+                if(other.getMode()==2){
+                    other.setMode(0);
+                    other.suppressionWorddle();
+                }
+                else
+                    other.setMode(0);
+                
+                
+                other.mot="";
+                other.anagLine=-1;
+                        
                 terminate=true;
+                break;
+            case reverseOther:
+                other.reverse=!other.reverse;
                 break;
             default:
                 break;
