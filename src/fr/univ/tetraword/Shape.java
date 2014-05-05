@@ -13,13 +13,14 @@ import static fr.univ.tetraword.shapeType.line;
 import static fr.univ.tetraword.shapeType.rightL;
 import static fr.univ.tetraword.shapeType.rightZ;
 import static fr.univ.tetraword.shapeType.square;
+import java.io.Serializable;
 
 /**
  *
  * @author bruno
  */
 
-public class Shape {
+public class Shape implements Serializable {
     
     
     private shapeType type;

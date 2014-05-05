@@ -17,6 +17,7 @@ import static fr.univ.tetraword.modifierType.slowFall;
 import static fr.univ.tetraword.modifierType.speedFall;
 import static fr.univ.tetraword.modifierType.switchGrid;
 import java.awt.Color;
+import java.io.Serializable;
 
 
 

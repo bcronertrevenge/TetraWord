@@ -6,11 +6,13 @@
 
 package fr.univ.tetraword;
 
+import java.io.Serializable;
+
 /**
  *
  * @author bruno
  */
-public enum modifierType {
+public enum modifierType{
        speedFall, //Acceleration de la chute
        slowFall, // Ralentissement de la chute
        directFall, // La piece tombe directement en bas de la grille

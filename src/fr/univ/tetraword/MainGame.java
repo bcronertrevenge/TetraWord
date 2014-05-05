@@ -69,7 +69,8 @@ public class MainGame extends JFrame {
     }
     
     public void sauvegardeActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
-        JOptionPane.showMessageDialog(this,"Fichier enregistré");
+        JOptionPane.showMessageDialog(this,"Partie sauvegardée !");
+        Game.saveGame(Games);
     }
     
     public void chargerPartieActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
@@ -1308,7 +1309,7 @@ public class MainGame extends JFrame {
                     case KeyEvent.VK_J:
                         try {
                             
-                            Game.saveGame(Games.get(0));
+                            Game.saveGame(Games);
                         } catch (IOException ex) {
                             Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
                         }
