@@ -35,7 +35,7 @@ public class Modifier {
             a=(int)(Math.random()*9);
         else
             a=(int)(Math.random()*8);
-        
+        //a=3;
         switch(a){
             case 0:
                 type=speedFall;
@@ -116,6 +116,7 @@ public class Modifier {
                 terminate=true;
                 break;
             case reverse:
+                game.reverse=!game.reverse;
                 break;
             case bonus:
                 game.score+=50;

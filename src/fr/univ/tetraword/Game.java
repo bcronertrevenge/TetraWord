@@ -6,7 +6,6 @@
 
 package fr.univ.tetraword;
 
-import fr.univ.graphicinterface.JWelcomeButton;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -24,7 +23,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
@@ -56,12 +54,14 @@ public class Game extends Thread implements ActionListener{
     HashMap<String,JButton> composants;
     IA intelligence;
     boolean pause;
+    boolean reverse;
+    
     public Game(JFrame window, Dictionary dictionary, boolean multi,  HashMap<String,JButton> composants, boolean ia){     
         if(composants==null)
             exit(1);
         if(ia)
             intelligence=new IA(this);
-        
+        reverse=false;
         pause=false;
         //Difficulte
         worddleTime=40000; //Le temps en mode Worddle
@@ -100,6 +100,8 @@ public class Game extends Thread implements ActionListener{
         for(int i=0;i<4;++i){
             for(int j=0;j<4;++j){
                 nextgrid[i][j]=new Box();
+                if(nextgrid[i][j]==null)
+                    exit(1);
                 nextgrid[i][j].setBorder(whiteline);
                 nextInterface.add(nextgrid[i][j]);
             }
@@ -107,7 +109,8 @@ public class Game extends Thread implements ActionListener{
         for (int i=0;i<20;++i){
             for (int j=0;j<10;++j){
                 grid[i][j]=new Box();
-                                
+                if(grid[i][j]==null)                
+                    exit(1);
                 grid[i][j].setBorder(whiteline);
                 gridInterface.add(grid[i][j]);
                 grid[i][j].addActionListener(this); 
@@ -116,14 +119,33 @@ public class Game extends Thread implements ActionListener{
         
     }
     public void rafraichir(){
+        
         gridInterface.repaint();
-        for (int i=0; i<20;++i){
-                for (int j=0; j<10; ++j){
-                       if(grid[i][j]!=null){   
-                                grid[i][j].rafraichir();
-                       }      
-               }
+       
+        //Reverse
+        if(reverse){
+            for (int i=0; i<10;++i){
+                    for (int j=0; j<10; ++j){
+                           if(grid[i][j]!=null){   
+                                    grid[i][j].boxChange(grid[19-i][j]);
+                                     
+                                    grid[i][j].rafraichir();
+                                    grid[19-i][j].rafraichir();
+                                    
+                                    grid[i][j].boxChange(grid[19-i][j]);
+                           }      
+                    }
             }
+        }    
+        else {
+            for (int i=0; i<20;++i){
+               for (int j=0; j<10; ++j){
+                               if(grid[i][j]!=null){   
+                                        grid[i][j].rafraichir();
+                               }      
+                 }
+            }
+        }
         
         if(composants.containsKey("Niveau")){
             composants.get("Niveau").setForeground(Color.white);
@@ -156,7 +178,6 @@ public class Game extends Thread implements ActionListener{
                 composants.get("Worddle").setText("");
                 composants.get("Worddle").repaint();
             }
-            
         }
     }
     
@@ -204,8 +225,7 @@ public class Game extends Thread implements ActionListener{
         boolean modif=false;
                 
         while(!end){
-              
-                rafraichir();
+     
                 if(pause){
                     
                 }
@@ -255,7 +275,6 @@ public class Game extends Thread implements ActionListener{
                         window.requestFocusInWindow();
                         mot="";
                         worddleLast=System.currentTimeMillis();
-                        //beginTime=verifLigne();
                         System.out.println("Worddle Over");
                     }
                 }
@@ -392,7 +411,10 @@ public class Game extends Thread implements ActionListener{
         
         Border yellowline = BorderFactory.createLineBorder(Color.YELLOW,1);
             for(int j=0;j<10;++j){
-                grid[ligne][j].setBorder(yellowline);
+                if(reverse)
+                    grid[19-ligne][j].setBorder(yellowline);
+                else
+                    grid[ligne][j].setBorder(yellowline);
             }
         anagLine=ligne;
         mode = 1;
@@ -405,17 +427,16 @@ public class Game extends Thread implements ActionListener{
             mot=mot.toLowerCase();
             
             if(mot.equals("")){
-                mode = 0;
                 unSelected(-1);
                 clean();
-                window.requestFocusInWindow();
-                mot="";
+                mode=0;
                 anagLine=-1;
                 newShapeInGame();
             }
             else if(mot.length() > anagLettres && dictionary.line.contains(mot)){
+                
                 eraseLine(anagLine);
-                unSelected(anagLine);
+                unSelected(-1);
                 for(int i=0;i<mot.length();++i){
                     score+=50/Shape.getRarityFromLetter(mot.toUpperCase().charAt(i));
                 }
@@ -426,6 +447,7 @@ public class Game extends Thread implements ActionListener{
             else{
                 unSelected(anagLine);
             }
+            
             mot="";
         }
         else if(mode == 2){
@@ -585,7 +607,7 @@ public class Game extends Thread implements ActionListener{
         else if(!canMoveAside(sens))
             return;
         
-        boolean terminate=false;
+        boolean terminate;
         //Gauche
         if(sens < 0){
             currentShape.x--;
@@ -627,7 +649,6 @@ public class Game extends Thread implements ActionListener{
                     }
                 }
             }
-            
         }
     }
     
@@ -709,10 +730,8 @@ public class Game extends Thread implements ActionListener{
                 grid[currentShape.y+i][currentShape.x+j].setShapeBrick(currentShape,currentShape.getBricks()[i][j]);
             }
         }
-        
     }
-    
-    
+      
     public int shapeFall(Shape shape, boolean modifierTake){
         
         if(mode == 1 || pause)
@@ -823,10 +842,27 @@ public class Game extends Thread implements ActionListener{
 		return game;
 	}
     
+    public Box getInverse(Box b){
+        for(int i=0;i<20;++i){
+            for(int j=0;j<10;++j){
+                if(grid[i][j]==b)
+                    return grid[19-i][j];
+            }
+        }
+        return null;
+    }
+    
     public void actionPerformed(java.awt.event.ActionEvent evt) {
              if(evt.getSource() instanceof Box){
                  if(mode==1){
-                    Box box=(Box)evt.getSource();
+                    Box box;
+                    if(reverse)
+                        box=getInverse((Box)evt.getSource());
+                    else
+                        box=(Box)evt.getSource();
+                    
+                    if(box.isEmpty()) return;
+                    
                     if(!box.isSelected){
                         for(int i=0;i<10;++i){
                             if(grid[anagLine][i]==box){
@@ -835,10 +871,6 @@ public class Game extends Thread implements ActionListener{
                                 break;
                             }
                         }
-                        
-                    }
-                    else {
-                        unSelected(anagLine);
                     }
                  }
              }
@@ -852,8 +884,8 @@ public class Game extends Thread implements ActionListener{
         worddleReload=20000+level*50; //Le temps de rechargement de Worddle
         anagTime=30000-level*50; //Le temps en mode anagramme
         fallTime=1000-level*5; //Le temps de chute des pièces
-        if(anagLettres<5 && level%2==0){
-            anagLettres=level; //Le nombre de lettres minimum en anagramme
+        if(anagLettres<4 && level%3==0){
+            anagLettres++; //Le nombre de lettres minimum en anagramme
         }
         if(composants.containsKey("Niveau")){
             composants.get("Niveau").setForeground(Color.white);

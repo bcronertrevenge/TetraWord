@@ -1474,32 +1474,71 @@ public class MainGame extends JFrame {
             
               int keyCode = event.getKeyCode();
                 switch( keyCode ) { 
-                    //Joueur 1
-                    case KeyEvent.VK_UP:
-                        Games.get(0).rotateUp();                        
+                  //Joueur1
+		    case KeyEvent.VK_Z:
+                        Games.get(0).rotateUp();
                         Games.get(0).rafraichir();
                         break;
-                    case KeyEvent.VK_DOWN:
-                        // handle down 
+                    case KeyEvent.VK_S:
+                        // handle down
                         Games.get(0).shapeFall(Games.get(0).currentShape,true);
                         Games.get(0).rafraichir();
                         break;
-                    case KeyEvent.VK_LEFT:
+                    case KeyEvent.VK_Q:
                         // handle left
                         Games.get(0).moveShapeAside(-1,true);
                         Games.get(0).rafraichir();
                         break;
-                    case KeyEvent.VK_RIGHT :
+                    case KeyEvent.VK_D :
                         // handle right
                         Games.get(0).moveShapeAside(1,true);
                         Games.get(0).rafraichir();
                         break;
-                    case KeyEvent.VK_ENTER :                        
+                    case KeyEvent.VK_SPACE :
                         Games.get(0).validate();
                         break;
-                    case KeyEvent.VK_M :
+                    case KeyEvent.VK_W :
                         Games.get(0).worddle();
                         break;
+                    //Joueur 2
+                    case KeyEvent.VK_UP:
+                        if(Games.size()>1){
+                            Games.get(1).rotateUp();                        
+                            Games.get(1).rafraichir();
+                        }
+                        break;
+                    case KeyEvent.VK_DOWN:
+                        // handle down 
+                        if(Games.size()>1){
+                            Games.get(1).shapeFall(Games.get(1).currentShape,true);
+                            Games.get(1).rafraichir();
+                        }
+                        break;
+                    case KeyEvent.VK_LEFT:
+                        // handle left
+                        if(Games.size()>1){
+                            Games.get(1).moveShapeAside(-1,true);
+                            Games.get(1).rafraichir();
+                        }
+                        break;
+                    case KeyEvent.VK_RIGHT :
+                        // handle right
+                        if(Games.size()>1){
+                            Games.get(1).moveShapeAside(1,true);
+                            Games.get(1).rafraichir();
+                        }
+                        break;
+                    case KeyEvent.VK_ENTER :                        
+                        if(Games.size()>1){
+                            Games.get(1).validate();
+                        }
+                        break;
+                    case KeyEvent.VK_M :
+                        if(Games.size()>1){
+                            Games.get(1).worddle();
+                        }
+                        break;
+					
                     case KeyEvent.VK_P :
                          for(Game g:Games){
                              if(g.pause)
@@ -1511,7 +1550,7 @@ public class MainGame extends JFrame {
                  }
           
         }
-
+        
         public void keyReleased(KeyEvent event) {
          
         }

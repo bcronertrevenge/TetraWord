@@ -82,6 +82,37 @@ public class Box extends JButton{
         return false;
     }
     
+    public static Box getItself(Box itself, Box dummy)
+    {
+        return itself;
+    }
+    public void boxChange(Box bo){
+        Shape s=shape;
+        Brick b=brick;
+        Modifier m=modifier;
+        boolean selec=isSelected;
+        boolean suppr=isSuppressed;
+        boolean start=isStart;
+        boolean word=noWord;
+        Color temp=temporaryEffect;
+        
+        setShapeBrick(bo.shape, bo.brick);
+        modifier=bo.modifier;
+        isSelected=bo.isSelected;
+        isSuppressed=bo.isSuppressed;
+        isStart=bo.isStart;
+        noWord=bo.noWord;
+        temporaryEffect=bo.temporaryEffect;
+        
+        bo.setShapeBrick(s, b);
+        bo.brick=b;
+        bo.modifier=m;
+        bo.isSelected=selec;
+        bo.isSuppressed=suppr;
+        bo.isStart=start;
+        bo.noWord=word;
+        bo.temporaryEffect=temp;
+    }
     
     public void rafraichir(){
 
@@ -101,6 +132,7 @@ public class Box extends JButton{
         if(brick!=null && shape!=null){            
             if(isSelected){
                 setBackground(jaune);
+                if(brick!=null)
                 setText(String.valueOf(brick.lettre));
                 setForeground(Color.BLACK);
                 return;
