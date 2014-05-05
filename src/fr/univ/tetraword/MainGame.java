@@ -6,7 +6,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import static java.lang.System.exit;
 import java.util.HashMap;
 import java.util.Vector;
@@ -67,7 +69,22 @@ public class MainGame extends JFrame {
     }
     
     public void sauvegardeActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
-        //Game.saveGame(Games.get(0));
+        JOptionPane.showMessageDialog(this,"Fichier enregistré");
+    }
+    
+    public void chargerPartieActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
+        JFileChooser dialogue = new JFileChooser(new File("."));
+	PrintWriter sortie;
+	File fichier;
+	
+	if (dialogue.showOpenDialog(null)== 
+	    JFileChooser.APPROVE_OPTION) {
+	    fichier = dialogue.getSelectedFile();
+	    sortie = new PrintWriter
+		(new FileWriter(fichier.getPath(), true));
+	    sortie.println("Fichier chargé");
+	    sortie.close();
+	}
     }
     
     public void firstReglesActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
@@ -77,11 +94,7 @@ public class MainGame extends JFrame {
     public void secondReglesActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
         secondRegles();
     }
-    
-    public void chargerActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
-        loadGamePage();
-    }
-    
+        
     public void quitter(java.awt.event.ActionEvent evt) throws IOException{                                         
         this.dispose();
     }
@@ -126,7 +139,7 @@ public class MainGame extends JFrame {
                 @Override
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     try {
-                        chargerActionPerformed(evt);
+                        chargerPartieActionPerformed(evt);
                     } catch (IOException ex) {
                         Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
                     }
