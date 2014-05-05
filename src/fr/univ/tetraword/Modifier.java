@@ -26,12 +26,13 @@ import java.awt.Color;
 public class Modifier {
     modifierType type;
     Game game;
-    
-    public Modifier(boolean multi, Game game){
+    Game other;
+    public Modifier(Game other, Game game){
         this.game=game;
+        this.other=other;
         int a;
         
-        if(multi)
+        if(other!=null)
             a=(int)(Math.random()*9);
         else
             a=(int)(Math.random()*8);

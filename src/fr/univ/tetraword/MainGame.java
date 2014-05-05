@@ -51,7 +51,7 @@ public class MainGame extends JFrame {
     }
     
     public void ordiActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
-        gameOrdi();
+        gameMulti(true);
     }
     
     public void optionsActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
@@ -59,7 +59,7 @@ public class MainGame extends JFrame {
     }
     
     public void amiActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
-        gameAmi();
+        gameMulti(false);
     }
     
     public void retourActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
@@ -584,7 +584,7 @@ public class MainGame extends JFrame {
             Dictionary dictionary=new Dictionary();
             Games=new Vector<Game>();
             
-            Game game=new Game(this,dictionary,false,Composants,false);
+            Game game=new Game(this,dictionary,Composants,false);
             game.start();
             Games.add(game);
             
@@ -716,9 +716,13 @@ public class MainGame extends JFrame {
     }
     
   /* Jeu contre l'ordinateur */
-    public void gameOrdi() throws IOException{
+    public void gameMulti(boolean ia) throws IOException{
             // Changement du titre
-            this.setTitle("Tetra Word contre l'ordinateur");
+            if(ia)
+                this.setTitle("Tetra Word contre l'ordinateur");
+            else
+                this.setTitle("Tetra Word contre un ami");
+            
             this.setPreferredSize(new Dimension(1280,768));
                         
             // Arrière plan
@@ -784,7 +788,7 @@ public class MainGame extends JFrame {
             Dictionary dictionary=new Dictionary();
             Games=new Vector<Game>();
             
-            Game game1=new Game(this,dictionary,false,Composants,false);
+            Game game1=new Game(this,dictionary,Composants,false);
             game1.start();
             Games.add(game1);
             
@@ -861,7 +865,7 @@ public class MainGame extends JFrame {
             Composants2.put("Saisie",buttonSaisie2);
             
             // Création du jeu
-            Game game2=new Game(this,dictionary,false,Composants2,true);
+            Game game2=new Game(this,dictionary,Composants2,ia);
             game2.start();
             Games.add(game2);
             
@@ -872,7 +876,11 @@ public class MainGame extends JFrame {
             JLabel labelTitle2 = new JLabel();
             labelTitle2.setFont(bigCopperplate);
             labelTitle2.setForeground(new Color(33,91,201));
-            labelTitle2.setText("Ordinateur");
+            if(ia)
+                labelTitle2.setText("Ordinateur");
+            else
+                labelTitle2.setText("Votre Ami");
+            
             labelTitle2.setHorizontalAlignment(SwingConstants.CENTER);
             
             JLabel labelTime2 = new JLabel();
@@ -1015,317 +1023,8 @@ public class MainGame extends JFrame {
                     .addContainerGap(53, Short.MAX_VALUE))
             );
        
-            
-       
-            this.pack();
-            this.setVisible(true);
-            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            this.requestFocusInWindow();
-    }
-    
-    /* Jeu contre un ami */
-    public void gameAmi() throws IOException{
-            // Changement du titre
-            this.setTitle("Tetra Word contre un ami");
-            this.setPreferredSize(new Dimension(1280,768));
-                        
-            // Arrière plan
-            JPanel panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/multi.jpg"));
-            panel.setMaximumSize(new Dimension(1280, 768));
-            panel.setMinimumSize(new Dimension(600, 400));
-            panel.setPreferredSize(new Dimension(1280, 768));
-            
-            // Fonts
-            Font bigCopperplate = new Font("Copperplate Gothic Bold",0,24);
-            Font smallCopperplate = new Font("Copperplate Gothic Bold",0,18);
-            Font century = new Font("Century Gothic",0,20);
-            
-            
-            /***** JEU 1 *****/
-            Composants=new HashMap<String,JButton>(); 
-            
-            // Boutons
-            JWelcomeButton buttonRetour = new JWelcomeButton("Retour");
-            buttonRetour.setFont(century);
-            buttonRetour.setForeground(Color.WHITE);
-            buttonRetour.setFocusPainted(false);
-            buttonRetour.addActionListener(new java.awt.event.ActionListener() {
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    try {
-                        retourActionPerformed(evt);
-                    } catch (IOException ex) {
-                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                }
-            });
-            
-            JButton buttonWorddle1 = new JButton("");
-            if(buttonWorddle1==null)exit(1);
-            buttonWorddle1.setFont(century);
-            buttonWorddle1.setForeground(Color.green);
-            buttonWorddle1.setFocusPainted(false);
-            Composants.put("Worddle",buttonWorddle1);
-            
-            JWelcomeButton buttonNiveau1 = new JWelcomeButton("");
-            if(buttonNiveau1==null)exit(1);
-            buttonNiveau1.setFont(century);
-            buttonNiveau1.setForeground(Color.WHITE);
-            buttonNiveau1.setFocusPainted(false);
-            Composants.put("Niveau",buttonNiveau1);
-            
-            JWelcomeButton buttonScore1 = new JWelcomeButton("");
-            if(buttonScore1==null)exit(1);
-            buttonScore1.setFont(century);
-            buttonScore1.setForeground(Color.WHITE);
-            buttonScore1.setFocusPainted(false);
-            Composants.put("Score",buttonScore1);
-            
-            JWelcomeButton buttonSaisie1 = new JWelcomeButton("");
-            buttonSaisie1.setFont(century);
-            buttonSaisie1.setForeground(Color.WHITE);
-            buttonSaisie1.setFocusPainted(false);
-            Composants.put("Saisie",buttonSaisie1);
-            
-            // Création du jeu
-            Dictionary dictionary=new Dictionary();
-            Games=new Vector<Game>();
-            
-            boolean intelligence=false;
-            Game game1=new Game(this,dictionary,false,Composants,intelligence);
-            game1.start();
-            Games.add(game1);
-            
-            // Grille de Jeu        
-            JPanel grille1=Games.get(0).getGridInterface();
-    
-            // Labels
-            JLabel labelTitle1 = new JLabel();
-            labelTitle1.setFont(bigCopperplate);
-            labelTitle1.setForeground(new Color(33,91,201));
-            labelTitle1.setText("Vous");
-            labelTitle1.setHorizontalAlignment(SwingConstants.CENTER);
-            
-            JLabel labelTime1 = new JLabel();
-            labelTime1.setFont(smallCopperplate);
-            labelTime1.setForeground(new Color(33,91,201));
-            labelTime1.setText("Temps");
-            
-            JLabel labelWorddle1 = new JLabel();
-            labelWorddle1.setFont(smallCopperplate);
-            labelWorddle1.setForeground(new Color(33,91,201));
-            labelWorddle1.setText("Worddle");
-            
-            JLabel labelNiveau1 = new JLabel();
-            labelNiveau1.setFont(smallCopperplate);
-            labelNiveau1.setForeground(new Color(33,91,201));
-            labelNiveau1.setText("Niveau");
-
-            JLabel labelScore1 = new JLabel();
-            labelScore1.setFont(smallCopperplate);
-            labelScore1.setForeground(new Color(33,91,201));
-            labelScore1.setText("Score");
-
-            JLabel labelSaisie1 = new JLabel();
-            labelSaisie1.setFont(smallCopperplate);
-            labelSaisie1.setForeground(new Color(33,91,201));
-            labelSaisie1.setText("Saisie");
-       
-      
-            // Prochaine piece        
-            JPanel buttonPiece1 = Games.get(0).getNextInterface();
-            
-            
-            /***** JEU 2 *****/
-            Composants2=new HashMap<String,JButton>(); 
-            
-            // Boutons
-            
-            JButton buttonWorddle2 = new JButton("");
-            if(buttonWorddle2==null)exit(1);
-            buttonWorddle2.setFont(century);
-            buttonWorddle2.setForeground(Color.green);
-            buttonWorddle2.setFocusPainted(false);
-            Composants2.put("Worddle",buttonWorddle2);
-            
-            JWelcomeButton buttonNiveau2 = new JWelcomeButton("");
-            if(buttonNiveau2==null)exit(1);
-            buttonNiveau2.setFont(century);
-            buttonNiveau2.setForeground(Color.WHITE);
-            buttonNiveau2.setFocusPainted(false);
-            Composants2.put("Niveau",buttonNiveau2);
-            
-            JWelcomeButton buttonScore2 = new JWelcomeButton("");
-            if(buttonScore2==null)exit(1);
-            buttonScore2.setFont(century);
-            buttonScore2.setForeground(Color.WHITE);
-            buttonScore2.setFocusPainted(false);
-            Composants2.put("Score",buttonScore2);
-            
-            JWelcomeButton buttonSaisie2 = new JWelcomeButton("");
-            buttonSaisie2.setFont(century);
-            buttonSaisie2.setForeground(Color.WHITE);
-            buttonSaisie2.setFocusPainted(false);
-            Composants2.put("Saisie",buttonSaisie2);
-            
-            // Création du jeu
-            intelligence=false;
-            Game game2=new Game(this,dictionary,false,Composants2,intelligence);
-            game2.start();
-            Games.add(game2);
-            
-            // Grille de Jeu        
-            JPanel grille2=Games.get(1).getGridInterface();
-    
-            // Labels
-            JLabel labelTitle2 = new JLabel();
-            labelTitle2.setFont(bigCopperplate);
-            labelTitle2.setForeground(new Color(33,91,201));
-            labelTitle2.setText("Votre ami");
-            labelTitle2.setHorizontalAlignment(SwingConstants.CENTER);
-            
-            JLabel labelTime2 = new JLabel();
-            labelTime2.setFont(smallCopperplate);
-            labelTime2.setForeground(new Color(33,91,201));
-            labelTime2.setText("Temps");
-            
-            JLabel labelWorddle2 = new JLabel();
-            labelWorddle2.setFont(smallCopperplate);
-            labelWorddle2.setForeground(new Color(33,91,201));
-            labelWorddle2.setText("Worddle");
-            
-            JLabel labelNiveau2 = new JLabel();
-            labelNiveau2.setFont(smallCopperplate);
-            labelNiveau2.setForeground(new Color(33,91,201));
-            labelNiveau2.setText("Niveau");
-
-            JLabel labelScore2 = new JLabel();
-            labelScore2.setFont(smallCopperplate);
-            labelScore2.setForeground(new Color(33,91,201));
-            labelScore2.setText("Score");
-
-            JLabel labelSaisie2 = new JLabel();
-            labelSaisie2.setFont(smallCopperplate);
-            labelSaisie2.setForeground(new Color(33,91,201));
-            labelSaisie2.setText("Saisie");
-       
-            // Prochaine piece        
-            JPanel buttonPiece2 = Games.get(1).getNextInterface();
-
-
-            GroupLayout jPanel1Layout = new GroupLayout(panel);
-            panel.setLayout(jPanel1Layout);
-            jPanel1Layout.setHorizontalGroup(
-                jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(38, 38, 38)
-                    .addComponent(buttonRetour)
-                    .addGap(1002, 1115, Short.MAX_VALUE))
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(72, 72, 72)
-                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(labelTitle1, GroupLayout.PREFERRED_SIZE, 298, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(grille1, GroupLayout.PREFERRED_SIZE, 298, GroupLayout.PREFERRED_SIZE))
-                    .addGap(46, 46, 46)
-                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                        .addComponent(labelTime1, GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                        .addComponent(buttonPiece1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(labelNiveau1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(buttonNiveau1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(labelScore1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(buttonScore1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(labelSaisie1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(buttonSaisie1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(labelWorddle2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(buttonWorddle1, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)))
-                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(labelTitle2, GroupLayout.PREFERRED_SIZE, 298, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(grille2, GroupLayout.PREFERRED_SIZE, 298, GroupLayout.PREFERRED_SIZE))
-                    .addGap(46, 46, 46)
-                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                        .addComponent(labelTime2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(buttonPiece2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(labelNiveau2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(buttonNiveau2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(labelScore2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(buttonScore2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(labelSaisie2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(buttonSaisie2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(labelWorddle2, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(buttonWorddle2, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)))
-                    .addGap(69, 69, 69))
-            );
-            jPanel1Layout.setVerticalGroup(
-                jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(15, 15, 15)
-                    .addComponent(buttonRetour)
-                    .addGap(18, 18, 18)
-                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(labelTitle2)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGap(8, 8, 8)
-                                    .addComponent(labelTime2)))
-                            .addGap(39, 39, 39)
-                            .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(buttonPiece2, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
-                                    .addGap(37, 37, 37)
-                                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(labelWorddle2)
-                                        .addComponent(buttonWorddle2, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
-                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(labelNiveau2)
-                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(buttonNiveau2, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
-                                    .addGap(30, 30, 30)
-                                    .addComponent(labelScore2)
-                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(buttonScore2, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
-                                    .addGap(35, 35, 35)
-                                    .addComponent(labelSaisie2)
-                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(buttonSaisie2, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
-                                .addComponent(grille2, GroupLayout.PREFERRED_SIZE, 536, GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(labelTitle1)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGap(8, 8, 8)
-                                    .addComponent(labelTime1)))
-                            .addGap(39, 39, 39)
-                            .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(buttonPiece1, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
-                                    .addGap(37, 37, 37)
-                                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(labelWorddle2)
-                                        .addComponent(buttonWorddle1, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
-                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(labelNiveau1)
-                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(buttonNiveau1, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
-                                    .addGap(30, 30, 30)
-                                    .addComponent(labelScore1)
-                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(buttonScore1, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
-                                    .addGap(35, 35, 35)
-                                    .addComponent(labelSaisie1)
-                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(buttonSaisie1, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
-                                .addComponent(grille1, GroupLayout.PREFERRED_SIZE, 536, GroupLayout.PREFERRED_SIZE))))
-                    .addContainerGap(53, Short.MAX_VALUE))
-            );
-       
-            
+            Games.get(0).setOther(Games.get(1));
+            Games.get(1).setOther(Games.get(0));
        
             this.pack();
             this.setVisible(true);
@@ -1531,39 +1230,39 @@ public class MainGame extends JFrame {
                         break;
                         //Joueur 2
                     case KeyEvent.VK_UP:
-                        if(Games.size()>1){
+                        if(Games.size()>1 && Games.get(1).intelligence==null){
                             Games.get(1).rotateUp();                        
                             Games.get(1).rafraichir();
                         }
                         break;
                     case KeyEvent.VK_DOWN:
                         // handle down 
-                        if(Games.size()>1){
+                        if(Games.size()>1 && Games.get(1).intelligence==null){
                             Games.get(1).shapeFall(Games.get(1).currentShape,true);
                             Games.get(1).rafraichir();
                         }
                         break;
                     case KeyEvent.VK_LEFT:
                         // handle left
-                        if(Games.size()>1){
+                        if(Games.size()>1 && Games.get(1).intelligence==null){
                             Games.get(1).moveShapeAside(-1,true);
                             Games.get(1).rafraichir();
                         }
                         break;
                     case KeyEvent.VK_RIGHT :
                         // handle right
-                        if(Games.size()>1){
+                        if(Games.size()>1 && Games.get(1).intelligence==null){
                             Games.get(1).moveShapeAside(1,true);
                             Games.get(1).rafraichir();
                         }
                         break;
                     case KeyEvent.VK_ENTER :                        
-                        if(Games.size()>1){
+                        if(Games.size()>1 && Games.get(1).intelligence==null){
                             Games.get(1).validate();
                         }
                         break;
                     case KeyEvent.VK_M :
-                        if(Games.size()>1){
+                        if(Games.size()>1 && Games.get(1).intelligence==null){
                             Games.get(1).worddle();
                         }
                         break;
