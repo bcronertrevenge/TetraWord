@@ -813,7 +813,7 @@ public class Game extends Thread implements ActionListener{
         }
         return true;
     }
-    public static void saveGame(Game[] savedGame) throws IOException
+    public static void saveGame(Game savedGame) throws IOException
 	{
 		try 
 		{
