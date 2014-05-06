@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
@@ -175,17 +176,20 @@ public class Game extends Thread implements ActionListener{
         }
         if(composants.containsKey("Worddle")){
             if(System.currentTimeMillis()-worddleLast>=worddleReload){
-                composants.get("Worddle").setBackground(Color.green);
+                composants.get("Worddle").setBackground(new Color(49,177,19));
+                composants.get("Worddle").setFocusPainted(false);
                 composants.get("Worddle").setText("");
                 composants.get("Worddle").repaint();
             }
             else if(mode==2){
-                composants.get("Worddle").setBackground(Color.orange);
+                composants.get("Worddle").setBackground(new Color(221,128,17));
+                composants.get("Worddle").setFocusPainted(false);
                 composants.get("Worddle").setText("");
                 composants.get("Worddle").repaint();
             }
             else{
-                composants.get("Worddle").setBackground(Color.red);
+                composants.get("Worddle").setBackground(new Color(209,7,7));
+                composants.get("Worddle").setFocusPainted(false);
                 composants.get("Worddle").setText("");
                 composants.get("Worddle").repaint();
             }
