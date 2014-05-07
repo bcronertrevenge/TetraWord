@@ -1,7 +1,6 @@
 package fr.univ.tetraword;
 
 import java.awt.Color;
-import java.io.Serializable;
 import javax.swing.JButton;
 
 /**
@@ -245,5 +244,6 @@ public class Box extends JButton {
     public void changeColor(Color color){
         setBackground(color);
     }
+
     
 }
