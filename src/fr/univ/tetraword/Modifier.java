@@ -122,6 +122,18 @@ public class Modifier {
                 break;
             case reverse:
                 game.reverse=!game.reverse;
+                 for (int i=0; i<10;++i){
+                    for (int j=0; j<10; ++j){
+                           if(game.getGrid()[i][j]!=null){   
+                                    game.getGrid()[i][j].boxChange(game.getGrid()[19-i][j]);
+                                     
+                                    game.getGrid()[i][j].rafraichir();
+                                    game.getGrid()[19-i][j].rafraichir();
+                                    
+                                    game.getGrid()[i][j].boxChange(game.getGrid()[19-i][j]);
+                           }      
+                    }
+                }
                 break;
             case bonus:
                 game.score+=50;
