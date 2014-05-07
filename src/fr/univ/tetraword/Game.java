@@ -581,6 +581,11 @@ public class Game extends Thread implements ActionListener{
         }
     }
     
+/**
+    * Permet de supprimer une ligne
+    * @param ligne
+    * numéro de la ligne à supprimer
+ **/    
     public void eraseLine(int ligne){
         for(int i=ligne;i>0;--i){
             for(int j=0;j<10;++j){
@@ -590,7 +595,9 @@ public class Game extends Thread implements ActionListener{
         }
     }
     
-    //Verif ligne
+/**
+    * Permet de vérifier si il y a une ligne complète dans la grille
+ **/  
     public long verifLigne(){
         int ligne=-1;
         boolean end;        
@@ -618,7 +625,10 @@ public class Game extends Thread implements ActionListener{
 
         return -1;
     }
-    
+
+/**
+    * Permet de créer une nouvelle forme dans le jeu
+ **/ 
     public boolean newShapeInGame(){
         
         currentShape=nextShape;
@@ -637,7 +647,13 @@ public class Game extends Thread implements ActionListener{
         return false;
     }
     
-    //Bouge la piece a gauche(-1) ou a droite(1)
+/**
+    * Permet de bouger la piece a gauche(-1) ou a droite(1)
+    * @param sens
+    * le sens du mouvement
+    * @param takeModifier
+    * Si il doit prendre en compte les modificateurs ou pas
+ **/
     public void moveShapeAside(int sens, boolean takeModifier){
         
         if(mode == 1 || pause)
@@ -726,7 +742,9 @@ public class Game extends Thread implements ActionListener{
         }
     }
     
-    //Teste si le mouvement est possible
+/**
+    * Permet de tester si le mouvement est possible ou pas
+ **/
     public boolean canMoveAside(int sens){          
 
           //Mouvement a gauche
@@ -756,7 +774,10 @@ public class Game extends Thread implements ActionListener{
           }
           return true;
     }
-    
+
+/**
+    * Permet de tester si la pièce courante peut rotater ou pas
+ **/
     public boolean canRotate(){
         if(currentShape.x+currentShape.height>=10 || currentShape.y+currentShape.width>=20)
             return false;
@@ -768,7 +789,10 @@ public class Game extends Thread implements ActionListener{
         }
         return true;
     }
-    
+
+/**
+    * Permet de rotater la pièce
+ **/
     public void rotateUp(){
         
         if(mode == 1 || pause)
