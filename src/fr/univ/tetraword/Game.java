@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package fr.univ.tetraword;
 
 import com.sun.corba.se.impl.orbutil.ObjectWriter;
@@ -788,7 +782,7 @@ public class Game extends Thread implements ActionListener{
     }
 
 /**
-    * Permet de rotater la pièce
+    * Permet de rotater la pièce courante
  **/
     public void rotateUp(){
         
@@ -826,7 +820,14 @@ public class Game extends Thread implements ActionListener{
             }
         }
     }
-      
+
+/**
+    * Permet de faire tomber la pièce courante
+    * @param shape
+    * La forme que l'on veut faire tomber
+    * @param modifierTake
+    * Si la forme doit prendre le modificateur ou pas
+ **/
     public int shapeFall(Shape shape, boolean modifierTake){
         
         if(mode == 1 || pause)
@@ -884,7 +885,11 @@ public class Game extends Thread implements ActionListener{
         return 0;
     }
     
-    //Teste si la piece peut tomber
+/**
+    * Permet de tester si une pièce peut tomber
+    * @param shape
+    * la pièce que l'on souhaite tester
+ **/
     public boolean canFall(Shape shape){
        
         if(shape.y+shape.height+1>=20){
@@ -908,6 +913,12 @@ public class Game extends Thread implements ActionListener{
         }
         return true;
     }
+
+/**
+    * Permet la sauvegarde d'un ou plusieurs jeux
+    * @param savedGame
+    * Vecteurs qui contient un ou plusieurs jeux
+ **/
     public static void saveGame(Vector<Game> savedGame) throws IOException
     {
 	try{
@@ -943,6 +954,9 @@ public class Game extends Thread implements ActionListener{
 
         }
 
+ /**
+    * Permet de charger un jeu déjà existant
+ **/
 	public static Game[] readGame()
 	{ 
 		Game[] game=new Game[0];
@@ -955,7 +969,12 @@ public class Game extends Thread implements ActionListener{
 		catch (ClassNotFoundException e) {e.printStackTrace();}
 		return game;
 	}
-    
+
+/**
+    * Permet d'inverser la place d'une Box dans la grille
+    * @param b
+    * La Box que l'on souhaite inverser
+ **/ 
     public Box getInverse(Box b){
         for(int i=0;i<20;++i){
             for(int j=0;j<10;++j){
@@ -990,7 +1009,10 @@ public class Game extends Thread implements ActionListener{
              }
              window.requestFocusInWindow();
     }
-    
+
+/**
+    * Permet d'augmenter le niveau du jeu
+ **/ 
     public void levelUp(){
         
         level++;
@@ -1007,7 +1029,10 @@ public class Game extends Thread implements ActionListener{
             composants.get("Niveau").repaint();
         }
     }
-    
+ 
+/**
+    * Permet l'ajout d'un modificateur
+ **/
     public void addModifier(){
         int x,y;
         do {
@@ -1019,6 +1044,11 @@ public class Game extends Thread implements ActionListener{
         grid[y+5][x].setModifier(modifier);
     }
 
+/**
+    * Permet de définir le mode du jeu
+    * @param i
+    * Si i=0 mode Tetris, i=1 mode Anagramme, i=2 mode Worddle
+ **/
     void setMode(int i) {
         mode=i;
     }

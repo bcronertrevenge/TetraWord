@@ -1,15 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package fr.univ.tetraword;
 
 import java.awt.Color;
 import java.io.Serializable;
 import javax.swing.JButton;
 
+/**
+    * Box est la classe représentant une case de la grille
+ **/
 public class Box extends JButton {
     
     private Shape shape;
@@ -21,6 +18,9 @@ public class Box extends JButton {
     boolean noWord;
     Color temporaryEffect;
     
+/**
+    * Constructeur par défaut d'une Box
+ **/
     public Box(){
         shape=null;
         brick=null;
@@ -31,7 +31,15 @@ public class Box extends JButton {
         noWord=false;
         temporaryEffect=null;
     }
-    
+
+ /**
+    * Constructeur de Box
+    * @param shape
+    * la forme que contiendra la box (et les box adjacentes)
+    * @param brick
+    * la brique que contiendra la box
+    * 
+ **/
     public Box(Shape shape, Brick brick){
         this.shape=shape;
         this.brick=brick;
@@ -42,7 +50,13 @@ public class Box extends JButton {
         noWord=false;
         temporaryEffect=null;
     }
-    
+
+ /**
+    * Constructeur de Box
+    * @param modifier
+    * le modificateur que pourra contenir la Box
+    * 
+ **/
     public Box(Modifier modifier){
         shape=null;
         brick=null;
@@ -53,28 +67,52 @@ public class Box extends JButton {
         noWord=false;
         temporaryEffect=null;
     }
-    
+
+ /**
+    * Permet d'associer une forme et une brique à une Box existante
+    * @param shape
+    * la forme qui sera contenue dans la Box
+    * @param brick
+    * la brique que contiendra la Box
+ **/
     public void setShapeBrick(Shape shape, Brick brick){
         this.shape=shape;
         this.brick=brick;
     }
-    
+
+ /**
+    * Permet d'associer un modificateur à une Box existante
+    * @param modifier
+    * le modificateur que contiendra la Box
+ **/
     public void setModifier(Modifier modifier){
         this.modifier=modifier;
     }
-    
+
+ /**
+    * Permet d'obtenir la forme associée à la Box courante
+ **/
     public Shape getShape(){
             return shape;
     }
-    
+
+ /**
+    * Permet d'obtenir la brique associée à la Box courante
+ **/
     public Brick getBrick(){
             return brick;
     }
 
+/**
+    * Permet d'obtenir le modificateur associé à la Box courante
+ **/
     public Modifier getModifier(){
             return modifier;
     }
-    
+
+/**
+    * Permet de savoir si une Box est vide ou pas
+ **/
     public boolean isEmpty(){
         if(this==null)
             return true;
@@ -82,11 +120,12 @@ public class Box extends JButton {
             return true;
         return false;
     }
-    
-    public static Box getItself(Box itself, Box dummy)
-    {
-        return itself;
-    }
+
+/**
+    * Permet de modifier la Box courante en fonction d'une autre Box existante
+    * @param bo
+    * La box que l'on souhaite copier
+ **/
     public void boxChange(Box bo){
         Shape s=shape;
         Brick b=brick;
@@ -114,7 +153,10 @@ public class Box extends JButton {
         bo.noWord=word;
         bo.temporaryEffect=temp;
     }
-    
+
+/**
+    * Permet de mettre à jour la Box courante
+ **/
     public void rafraichir(){
 
         if(this == null)
@@ -196,7 +238,10 @@ public class Box extends JButton {
             setText(String.valueOf(""));
         }
     }
-    
+
+/**
+    * Permet de changer la couleur de fond d'une Box
+ **/
     public void changeColor(Color color){
         setBackground(color);
     }

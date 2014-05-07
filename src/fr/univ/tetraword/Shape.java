@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package fr.univ.tetraword;
 
 import static fr.univ.tetraword.shapeType.T;
@@ -14,11 +8,6 @@ import static fr.univ.tetraword.shapeType.rightL;
 import static fr.univ.tetraword.shapeType.rightZ;
 import static fr.univ.tetraword.shapeType.square;
 import java.io.Serializable;
-
-/**
- *
- * @author bruno
- */
 
 public class Shape implements Serializable {
     

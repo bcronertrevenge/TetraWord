@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package fr.univ.tetraword;
 
 import java.io.Serializable;
@@ -11,22 +5,29 @@ import java.util.HashMap;
 import java.util.Vector;
 
 /**
- *
- * @author bruno
- */
+    * IA est la classe représentant l'intelligence artificielle de l'ordinateur
+ **/
 public class IA {
     Game game;
     private boolean find;
     Moves move;
     Shape currentShapeIA;
-    
+  
+/**
+    * Constructeur par défaut
+    * @param game
+    * le jeu dans lequel on souhaite incorporer l'IA
+ **/
     public IA(Game game){
         this.game=game;
         find=true;
         move=new Moves();
         currentShapeIA=null;
     }
-    
+ 
+/**
+    * Permet de lancer le jeu de l'intelligence artificielle
+ **/
     public void play(){
         
         switch(game.getMode()){
@@ -48,7 +49,9 @@ public class IA {
         }
     }
     
-    ////////////////////////////// TETRIS ////////////////////////////////////
+/**
+    * Permet à l'IA de jouer en mode Tetris
+ **/
     public void tetris(){
         if(currentShapeIA!=game.currentShape){
             //Recherche chemin et rempli le vecteur de mouvements à faire
@@ -76,7 +79,10 @@ public class IA {
             game.shapeFall(game.currentShape,true);
         }
     }
-    
+
+ /**
+    * Permet de chercher le chemin qu'une pièce peut faire pour se positionner le mieux possible
+ **/
     public void lookPath(){
         Vector<Moves> moves=new Vector<Moves>();
         int Ox=game.currentShape.x;
@@ -136,7 +142,10 @@ public class IA {
         }
         chooseBestMove(moves);
     }
-    
+
+ /**
+    * Permet de chercher le chemin qu'une pièce peut faire pour se positionner le mieux possible
+ **/
     public void chooseBestMove(Vector<Moves> moves){
         
         if(moves.isEmpty()) return;

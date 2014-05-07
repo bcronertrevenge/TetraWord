@@ -1,17 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package fr.univ.tetraword;
 
 import java.io.Serializable;
 
-/**
- *
- * @author bruno
- */
+
 public enum modifierType{
        speedFall, //Acceleration de la chute
        slowFall, // Ralentissement de la chute
