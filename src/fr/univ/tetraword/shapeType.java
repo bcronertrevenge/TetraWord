@@ -6,11 +6,13 @@
 
 package fr.univ.tetraword;
 
+import java.io.Serializable;
+
 /**
  *
  * @author bruno
  */
-public enum shapeType {
+public enum shapeType{
         T(3),
         square(2),
         rightZ(3),

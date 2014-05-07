@@ -6,17 +6,23 @@
 
 package fr.univ.tetraword;
 
+import com.sun.corba.se.impl.orbutil.ObjectWriter;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
-
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import static java.lang.System.exit;
+import static java.lang.System.out;
 import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -24,6 +30,7 @@ import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
@@ -155,17 +162,20 @@ public class Game extends Thread implements ActionListener{
         }
         if(composants.containsKey("Worddle")){
             if(System.currentTimeMillis()-worddleLast>=worddleReload){
-                composants.get("Worddle").setBackground(Color.green);
+                composants.get("Worddle").setBackground(new Color(49,177,19));
+                composants.get("Worddle").setFocusPainted(false);
                 composants.get("Worddle").setText("");
                 composants.get("Worddle").repaint();
             }
             else if(mode==2){
-                composants.get("Worddle").setBackground(Color.orange);
+                composants.get("Worddle").setBackground(new Color(221,128,17));
+                composants.get("Worddle").setFocusPainted(false);
                 composants.get("Worddle").setText("");
                 composants.get("Worddle").repaint();
             }
             else{
-                composants.get("Worddle").setBackground(Color.red);
+                composants.get("Worddle").setBackground(new Color(209,7,7));
+                composants.get("Worddle").setFocusPainted(false);
                 composants.get("Worddle").setText("");
                 composants.get("Worddle").repaint();
             }
@@ -804,21 +814,40 @@ public class Game extends Thread implements ActionListener{
         }
         return true;
     }
-    public static void saveGame(Game savedGame) throws IOException
-	{
-		try 
-		{
-			ObjectOutputStream save=new ObjectOutputStream(new FileOutputStream("SavedGame.dat"));
-			save.writeObject(savedGame);
-			save.close();
-		} catch (FileNotFoundException e)
-                {
-                    e.printStackTrace();
-                }
-		catch (IOException e) {
-                    e.printStackTrace();
-                }
+    public static void saveGame(Vector<Game> savedGame) throws IOException
+    {
+	try{
+            FileWriter fw = new FileWriter("game.txt", true);
+            BufferedWriter output = new BufferedWriter(fw);
+            output.write("CurrentShape afaire ");
+            output.write("NextShape afaire ");
+            output.write("Score "+savedGame.get(0).score);
+            output.write("Level "+savedGame.get(0).level);
+            output.flush();	
+            output.close();
+            
 	}
+            catch(IOException ioe){
+		System.out.print("Erreur : ");
+		ioe.printStackTrace();
+            }
+        /*ObjectOutputStream output = null;
+          try {
+            output = new ObjectOutputStream(
+                    new BufferedOutputStream(
+                            new FileOutputStream(
+                                    new File("game.txt"))));
+            output.writeObject(savedGame.get(0));
+            output.close();
+        } catch (FileNotFoundException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }*/
+
+        }
 
 	public static Game[] readGame()
 	{ 

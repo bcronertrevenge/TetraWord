@@ -11,11 +11,12 @@ package fr.univ.tetraword;
  * @author bruno
  */
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.FileInputStream;
+import java.io.Serializable;
 import java.util.HashSet;
 public class Dictionary {
 	HashSet<String> line;

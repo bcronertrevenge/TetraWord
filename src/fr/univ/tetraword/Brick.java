@@ -6,11 +6,13 @@
 
 package fr.univ.tetraword;
 
+import java.io.Serializable;
+
 /**
  *
  * @author bruno
  */
-public class Brick {
+public class Brick{
     char lettre;
     double rarity;
     
