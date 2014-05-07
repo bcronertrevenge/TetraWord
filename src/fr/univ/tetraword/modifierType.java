@@ -2,7 +2,9 @@ package fr.univ.tetraword;
 
 import java.io.Serializable;
 
-
+/**
+    * modifierType est une énumération qui contient les différents types de modificateurs
+ **/
 public enum modifierType{
        speedFall, //Acceleration de la chute
        slowFall, // Ralentissement de la chute

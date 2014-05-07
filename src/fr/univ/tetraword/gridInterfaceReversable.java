@@ -7,15 +7,26 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JPanel;
 
+/**
+    * gridInterfaceReversable est la classe qui permet d'inverser le sens de la grille
+ **/
 public class gridInterfaceReversable extends JPanel {
     
     boolean reverse;
-    
+ 
+/**
+    * Constructeur par défaut
+    * @param g
+    * la grille initiale que l'on souhaite renverser
+ **/
     public gridInterfaceReversable(GridLayout g){
         super(g);
         reverse=false;
     }
-    
+
+/**
+    * Permet d'afficher le résultat
+ **/
      @Override
     public void paintComponent(Graphics g) {
         
