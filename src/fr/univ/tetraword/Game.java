@@ -62,6 +62,7 @@ public class Game extends Thread implements ActionListener{
     boolean pause;
     boolean reverse;
     Game other;
+    boolean gameOver;
     
     public Game(JFrame window, Dictionary dictionary,  HashMap<String,JButton> composants, boolean ia){  
         this.other=null;
@@ -95,6 +96,7 @@ public class Game extends Thread implements ActionListener{
         this.window=window;
         mot="";
         this.dictionary=dictionary;
+        gameOver=false;
         
         // Initialisation de grid
         gridInterface = new JPanel(new GridLayout(20,10));
@@ -133,23 +135,7 @@ public class Game extends Thread implements ActionListener{
     public void rafraichir(){
         
         gridInterface.repaint();
-       
-        //Reverse
-        if(reverse){
-            for (int i=0; i<10;++i){
-                    for (int j=0; j<10; ++j){
-                           if(grid[i][j]!=null){   
-                                    grid[i][j].boxChange(grid[19-i][j]);
-                                     
-                                    grid[i][j].rafraichir();
-                                    grid[19-i][j].rafraichir();
-                                    
-                                    grid[i][j].boxChange(grid[19-i][j]);
-                           }      
-                    }
-            }
-        }    
-        else {
+ 
             for (int i=0; i<20;++i){
                for (int j=0; j<10; ++j){
                                if(grid[i][j]!=null){   
@@ -157,7 +143,7 @@ public class Game extends Thread implements ActionListener{
                                }      
                  }
             }
-        }
+        
         
         if(composants.containsKey("Niveau")){
             composants.get("Niveau").setForeground(Color.white);
@@ -228,7 +214,7 @@ public class Game extends Thread implements ActionListener{
     
     @Override
     public void run(){
-        boolean end=false;
+        
         
         //Boucle principale
         try {
@@ -239,7 +225,7 @@ public class Game extends Thread implements ActionListener{
         int nbShape=1;
         boolean modif=false;
                 
-        while(!end){
+        while(!gameOver){
      
                 if(pause){
                     
@@ -250,13 +236,13 @@ public class Game extends Thread implements ActionListener{
                         modif=false;
                         beginTime=verifLigne();
                         if(mode == 0){
-                            end=newShapeInGame();                    
+                            gameOver=newShapeInGame();                    
                             
                             score+=2;
                             if(nbShape%10==0){
                                 levelUp();
                             }
-                            if(end) break;
+                            if(gameOver) break;
                         }
                     }
                     else{
@@ -276,7 +262,7 @@ public class Game extends Thread implements ActionListener{
                         window.requestFocusInWindow();
                         mot="";
                         anagLine=-1;
-                        end=newShapeInGame();
+                        gameOver=newShapeInGame();
                     }
                 }else if(mode == 2){
                         if(intelligence!=null)
