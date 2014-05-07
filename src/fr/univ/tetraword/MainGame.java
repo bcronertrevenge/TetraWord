@@ -683,11 +683,6 @@ public class MainGame extends JFrame {
             game.start();
             Games.add(game);
             
-            // Si on perdj
-            if (Games.get(0).gameOver){
-                JOptionPane.showMessageDialog(this,"GAME OVER !");
-            }
-            
             // Grille de Jeu        
             JPanel grille=Games.get(0).getGridInterface();
             

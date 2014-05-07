@@ -35,9 +35,8 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 
 /**
- *
- * @author bruno
- */
+    * Game est la classe représentant un jeu de Tetra Word
+ **/
 public class Game extends Thread implements ActionListener{
     Shape currentShape;
     Shape nextShape;
@@ -63,7 +62,18 @@ public class Game extends Thread implements ActionListener{
     boolean reverse;
     Game other;
     boolean gameOver;
-    
+
+/**
+    * Constructeur d'un Game
+    * @param window
+    * la fenêtre qui contiendra le jeu
+    * @param dictionary
+    * le dictionnaire qui vérifie l'existence des mots
+    * @param composants
+    * les JButton à mettre à jour (saisie, score, niveau)
+    * @param ia
+    * Si on a besoin de l'intelligence artificielle
+ **/
     public Game(JFrame window, Dictionary dictionary,  HashMap<String,JButton> composants, boolean ia){  
         this.other=null;
         
@@ -102,11 +112,19 @@ public class Game extends Thread implements ActionListener{
         gridInterface = new JPanel(new GridLayout(20,10));
         nextInterface = new JPanel(new GridLayout(4,4));
     }
-    
+
+/**
+    * Permet de connaître l'autre jeu s'il y en a un
+    * @param other
+    * Le deuxième jeu qu'on veut connaître
+ **/
     public void setOther(Game other){
         this.other=other;
     }
-    
+
+/**
+    * Permet d'initialiser le jeu
+ **/
     public void init(){
                 // Initialisation de gridInterface
         Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
@@ -132,6 +150,10 @@ public class Game extends Thread implements ActionListener{
         }
         
     }
+
+/**
+    * Permet de mettre à jour les données du jeu
+ **/
     public void rafraichir(){
         
         gridInterface.repaint();
@@ -181,7 +203,10 @@ public class Game extends Thread implements ActionListener{
             }
         }
     }
-    
+
+/**
+    * Permet de mettre à jour la shape suivante
+ **/
     public void rafraichirNextShape(){
         nextInterface.repaint();
         for (int i=0; i<4;++i){
@@ -191,27 +216,45 @@ public class Game extends Thread implements ActionListener{
                }
             }
     }
-    
+
+/**
+    * Permet de récupérer le niveau du jeu
+ **/
     public int getLevel(){
         return level;
     }
-    
+
+/**
+    * Permet de récupérer la grille du jeu
+ **/
     public Box[][] getGrid(){
         return grid;
     }
-    
+
+/**
+    * Permet de récupérer le mode du jeu (Tetris, Anagramme, Worddle)
+ **/
     public int getMode(){
         return mode;
     }
     
+/**
+    * Permet de récupérer le JPanel de la grille
+ **/   
     public JPanel getGridInterface(){
         return gridInterface;
     }
-    
+
+/**
+    * Permet de récupérer le JPanel de la prochaine pièce
+ **/
     public JPanel getNextInterface(){
         return nextInterface;
     }
-    
+
+/**
+    * Permet de lancer le jeu
+ **/
     @Override
     public void run(){
         
@@ -287,12 +330,17 @@ public class Game extends Thread implements ActionListener{
                   
         }
         System.out.println("GAME OVER");
+        JOptionPane.showMessageDialog(window,"GAME OVER !");
+
         } catch (InterruptedException ex) {
                 Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
             }
         
     }
-    
+
+/**
+    * Permet de supprimer les cases que l'on utilisé en mode Worddle
+ **/
     public void suppressionWorddle(){
         int fall;
         boolean quit=true;
@@ -322,7 +370,10 @@ public class Game extends Thread implements ActionListener{
             if(quit) break;
         }
     }
-    
+
+/**
+    * Permet d'activer le mode Worddle
+ **/
     public void worddle(){
         if(mode != 0 || System.currentTimeMillis()-worddleLast<worddleReload || pause){
             return;
@@ -362,13 +413,19 @@ public class Game extends Thread implements ActionListener{
         worddleLast=System.currentTimeMillis();
         mot+=firstBox.getBrick().lettre;
     }
-    
+
+/**
+    * Permet d'enlever les cases surlignées et de vider le Worddle
+ **/
     public void clean(){
            whiteOut();
            worddleStartX.clear();
            worddleStartY.clear();
     }
-    
+
+/**
+    * Permet d'enlever les propriétés des cases
+ **/
     public void clearBox(){
             for(int i=0;i<20;++i){
                 for(int j=0;j<10;++j){
@@ -379,7 +436,12 @@ public class Game extends Thread implements ActionListener{
                 }
             }
     }
-    
+
+/**
+    * Permet de désélectionner une ligne
+    *@param ligne
+    * numéro de la ligne que l'on souhaite déselectionner
+ **/
     public void unSelected(int ligne){
         if(ligne < 0){
             boolean quit;
@@ -398,7 +460,10 @@ public class Game extends Thread implements ActionListener{
                 grid[ligne][i].isSelected=false;
         }
     }
-    
+
+/**
+    * Permet de remettre les bordures en blanc une fois un mot validé
+ **/
     public void whiteOut(){
         Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
         for(int i=0;i<20;++i){
@@ -407,7 +472,12 @@ public class Game extends Thread implements ActionListener{
             }
         }
     }
-    
+
+/**
+    * Permet d'activer le mode anagramme
+    * @param ligne
+    * numéro de la ligne sur laquelle on active le mode anagramme
+ **/
     public long anagramme(int ligne){
         
         Border yellowline = BorderFactory.createLineBorder(Color.YELLOW,1);
@@ -422,7 +492,10 @@ public class Game extends Thread implements ActionListener{
         return System.currentTimeMillis(); 
         
     }
-    
+
+/**
+    * Permet de valider un mot
+ **/
     public void validate(){
         if(mode == 1){
             mot=mot.toLowerCase();
