@@ -18,16 +18,29 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 
+/**
+    * MainGame est la classe représentant le jeu principal 
+ **/
+
 public class MainGame extends JFrame {
     Vector<Game> Games;
     HashMap<String,JButton> Composants;
     HashMap<String,JButton> Composants2;
-    
+ 
+/**
+    * Constructeur du jeu principal
+ **/
     public MainGame(){
         addKeyListener(new ClavierListener());
     }
     
-    /* Fonction pour mettre une image en arrière plan */
+/**
+    * Permet d'appliquer une image de fond
+    * @param frame
+    * la fenêtre sur laquelle on souhaite appliquer l'image
+    * @param img
+    * l'image que l'on souhaite mettre en fond
+ **/
     public JPanel setBackgroundImage(JFrame frame, final File img) throws IOException{
 	JPanel panel = new JPanel(){
             private static final long serialVersionUID = 1;
@@ -43,36 +56,60 @@ public class MainGame extends JFrame {
 	this.setContentPane(panel);
 	return panel;
     }
-    
+ 
+/**
+    * Lorsque l'on clique sur "Nouveau jeu"
+ **/
     public void jouerActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
         gameMode();
     }
-    
+
+/**
+    * Lorsque l'on clique sur "Jouer en solo"
+ **/
     public void soloActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
         gameSolo();
     }
-    
+ 
+/**
+    * Lorsque l'on clique sur "Jouer contre l'ordinateur"
+ **/
     public void ordiActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
         gameMulti(true);
     }
-    
+
+/**
+    * Lorsque l'on clique sur "Options"
+ **/
     public void optionsActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
         gameOptions();
     }
-    
+ 
+/**
+    * Lorsque l'on clique sur "Jouer contre un ami"
+ **/
     public void amiActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
         gameMulti(false);
     }
-    
+
+ /**
+    * Lorsque l'on clique sur "Retour"
+ **/
     public void retourActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
         welcomePage();
     }
-    
+ 
+/**
+    * Lorsque l'on clique sur "Sauvegarder"
+ **/
     public void sauvegardeActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
         JOptionPane.showMessageDialog(this,"Partie sauvegardée !");
         Game.saveGame(Games);
     }
-    
+
+/**
+    * Lorsque l'on clique sur "Charger un partie"
+ **/
     public void chargerPartieActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
         JFileChooser dialogue = new JFileChooser(new File("."));
 	PrintWriter sortie;
@@ -87,7 +124,10 @@ public class MainGame extends JFrame {
 	    sortie.close();
 	}
     }
-    
+
+/**
+    * Lorsque l'on clique sur "Règles"
+ **/
     public void firstReglesActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
         reglesPage(1);
     }
@@ -100,12 +140,16 @@ public class MainGame extends JFrame {
         reglesPage(3);
     }
     
-        
+/**
+    * Lorsque l'on clique sur "Quitter"
+ **/       
     public void quitter(java.awt.event.ActionEvent evt) throws IOException{                                         
         this.dispose();
     }
-    
-    /* Page d'accueil */
+  
+/**
+    * Permet de créer la page d'accueil
+ **/  
     public void welcomePage() throws IOException{
             // Création de la fenêtre
             this.setTitle("Bienvenue sur Tetra Word");
@@ -240,12 +284,17 @@ public class MainGame extends JFrame {
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
-    /* Page d'accueil */
+/**
+    * Affiche une fenêtre lorsque l'on met le jeu en pause
+ **/ 
     public void pausePage() throws IOException{
             if (Games.get(0).pause)
                 JOptionPane.showMessageDialog(this,"Le jeu est en pause");
     }
-    
+
+/**
+    * Permet de créer la page de choix du mode de jeu
+ **/ 
     public void gameMode() throws IOException{
             // Création de la fenêtre
             this.setTitle("Jouer à Tetra Word");
@@ -387,7 +436,10 @@ public class MainGame extends JFrame {
             this.setVisible(true);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    
+ 
+/**
+    * Permet de créer les pages avec les règles du jeu
+ **/ 
     public void reglesPage(int a) throws IOException{
             // Création de la fenêtre
             JPanel panel;
@@ -528,7 +580,9 @@ public class MainGame extends JFrame {
     }
     
     
-    /* Jeu en solo */
+ /**
+    * Permet de créer la page de jeu en mode solitaire
+ **/ 
     public void gameSolo() throws IOException{
             // Changement du titre
             this.setTitle("Vous jouez à Tetra Word en Solo");
@@ -629,11 +683,18 @@ public class MainGame extends JFrame {
             game.start();
             Games.add(game);
             
+            // Si on perdj
+            if (Games.get(0).gameOver){
+                JOptionPane.showMessageDialog(this,"GAME OVER !");
+            }
+            
             // Grille de Jeu        
             JPanel grille=Games.get(0).getGridInterface();
             
             // Prochaine piece        
             JPanel buttonPiece = Games.get(0).getNextInterface();
+            
+            
                        
             // Labels
             JLabel labelTime = new JLabel();
@@ -756,7 +817,9 @@ public class MainGame extends JFrame {
             this.requestFocusInWindow();
     }
     
-  /* Jeu contre l'ordinateur */
+ /**
+    * Permet de créer la page de jeu en mode multijoueur (ordinateur ou contre un ami)
+ **/ 
     public void gameMulti(boolean ia) throws IOException{
             // Changement du titre
             if(ia)
@@ -1073,7 +1136,9 @@ public class MainGame extends JFrame {
             this.requestFocusInWindow();
     }
     
-    /* Page Principale */
+ /**
+    * Permet de créer la fenêtre de chargement d'une partie
+ **/ 
     public void loadGamePage() throws IOException{
             // On change le titre
             this.setTitle("Charger une partie");
@@ -1093,7 +1158,10 @@ public class MainGame extends JFrame {
             this.setVisible(true);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    
+
+ /**
+    * Permet de créer la fenêtre qui contient les options du jeu
+ **/ 
     public void gameOptions() throws IOException{
             // Création de la fenêtre
             this.setTitle("Options du jeu");
@@ -1236,7 +1304,9 @@ public class MainGame extends JFrame {
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
    
-    //Lecture clavier
+ /**
+    * Contient tous les évènements clavier
+ **/ 
    class ClavierListener implements KeyListener{
 
         public void keyPressed(KeyEvent event) {
@@ -1338,7 +1408,10 @@ public class MainGame extends JFrame {
          
         }   	
     }  
-    
+   
+ /**
+    * Permet de mettre le jeu en pause
+ **/ 
    public void pauseGames(){
        for(Game g:Games){
                             if(g.pause)
@@ -1347,7 +1420,10 @@ public class MainGame extends JFrame {
                                 g.pause=true;
                         }
    }
-    /* Programme Principal */
+
+ /**
+    * Programme principal
+ **/ 
     public static void main(String[] args) throws IOException{
         MainGame game=new MainGame();
         game.welcomePage();
