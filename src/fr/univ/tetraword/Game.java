@@ -8,8 +8,11 @@ package fr.univ.tetraword;
 
 import com.sun.corba.se.impl.orbutil.ObjectWriter;
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.awt.geom.AffineTransform;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -46,7 +49,7 @@ public class Game extends Thread implements ActionListener{
     Dictionary dictionary;
     private final Box grid[][];
     private final Box nextgrid[][];
-    JPanel gridInterface;
+    gridInterfaceReversable gridInterface;
     JPanel nextInterface;
     private int mode; //0 : mode Tetris, 1 : mode Anagramme, 2 : Worddle
     JFrame window;
@@ -60,7 +63,7 @@ public class Game extends Thread implements ActionListener{
     HashMap<String,JButton> composants;
     IA intelligence;
     boolean pause;
-    boolean reverse;
+ 
     Game other;
     boolean gameOver;
     
@@ -71,7 +74,6 @@ public class Game extends Thread implements ActionListener{
             exit(1);
         if(ia)
             intelligence=new IA(this);
-        reverse=false;
         pause=false;
         //Difficulte
         worddleTime=40000; //Le temps en mode Worddle
@@ -99,7 +101,7 @@ public class Game extends Thread implements ActionListener{
         gameOver=false;
         
         // Initialisation de grid
-        gridInterface = new JPanel(new GridLayout(20,10));
+        gridInterface = new gridInterfaceReversable(new GridLayout(20,10));
         nextInterface = new JPanel(new GridLayout(4,4));
     }
     
@@ -134,8 +136,6 @@ public class Game extends Thread implements ActionListener{
     }
     public void rafraichir(){
         
-        gridInterface.repaint();
- 
             for (int i=0; i<20;++i){
                for (int j=0; j<10; ++j){
                                if(grid[i][j]!=null){   
@@ -143,7 +143,7 @@ public class Game extends Thread implements ActionListener{
                                }      
                  }
             }
-        
+        gridInterface.repaint();   
         
         if(composants.containsKey("Niveau")){
             composants.get("Niveau").setForeground(Color.white);
@@ -204,7 +204,7 @@ public class Game extends Thread implements ActionListener{
         return mode;
     }
     
-    public JPanel getGridInterface(){
+    public gridInterfaceReversable getGridInterface(){
         return gridInterface;
     }
     
@@ -412,9 +412,6 @@ public class Game extends Thread implements ActionListener{
         
         Border yellowline = BorderFactory.createLineBorder(Color.YELLOW,1);
             for(int j=0;j<10;++j){
-                if(reverse)
-                    grid[19-ligne][j].setBorder(yellowline);
-                else
                     grid[ligne][j].setBorder(yellowline);
             }
         anagLine=ligne;
@@ -866,7 +863,7 @@ public class Game extends Thread implements ActionListener{
         for(int i=0;i<20;++i){
             for(int j=0;j<10;++j){
                 if(grid[i][j]==b)
-                    return grid[19-i][j];
+                    return grid[19-i][9-j];
             }
         }
         return null;
@@ -874,14 +871,14 @@ public class Game extends Thread implements ActionListener{
     
     public void actionPerformed(java.awt.event.ActionEvent evt) {
              if(evt.getSource() instanceof Box){
-                 if(mode==1){
-                    Box box;
-                    if(reverse)
-                        box=getInverse((Box)evt.getSource());
-                    else
-                        box=(Box)evt.getSource();
-                    
-                    if(box.isEmpty()) return;
+                if(mode==1){
+                   Box box;
+                   if(gridInterface.reverse)
+                       box=getInverse((Box)evt.getSource());
+                   else
+                       box=(Box)evt.getSource();
+                   
+                   if(box.isEmpty()) return;
                     
                     if(!box.isSelected){
                         for(int i=0;i<10;++i){
