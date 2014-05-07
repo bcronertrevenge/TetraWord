@@ -89,12 +89,17 @@ public class MainGame extends JFrame {
     }
     
     public void firstReglesActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
-        firstRegles();
+        reglesPage(1);
     }
     
     public void secondReglesActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
-        secondRegles();
+        reglesPage(2);
     }
+    
+     public void thirdReglesActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
+        reglesPage(3);
+    }
+    
         
     public void quitter(java.awt.event.ActionEvent evt) throws IOException{                                         
         this.dispose();
@@ -383,16 +388,34 @@ public class MainGame extends JFrame {
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
-    public void firstRegles() throws IOException{
+    public void reglesPage(int a) throws IOException{
             // Création de la fenêtre
-            this.setTitle("Règles du Tetra Word");
+            JPanel panel;
             this.setPreferredSize(new Dimension(1024,768));
-                        
-            // Arrière plan
-            JPanel panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/regles1.jpg"));
+            
+            // en fonction de la page
+            switch(a){
+                case 1 :
+                    this.setTitle("Règles du Tetra Word");
+                    panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/regles1.jpg"));
+                    break;
+                case 2 :
+                    this.setTitle("Règles du Tetra Word (2)");
+                    panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/regles2.jpg"));
+                    break;
+                case 3 :
+                    this.setTitle("Règles du Tetra Word (3)");
+                    panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/regles3.jpg"));
+                    break;
+                default :
+                    this.setTitle("Règles du Tetra Word");
+                    panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/regles1.jpg"));
+            }
+            
             panel.setMaximumSize(new Dimension(1024, 768));
             panel.setMinimumSize(new Dimension(600, 400));
             panel.setPreferredSize(new Dimension(1024, 768));
+            
             
             // Fonts
             Font century = new Font("Century Gothic",0,16);
@@ -418,17 +441,36 @@ public class MainGame extends JFrame {
             buttonSuivant.setFont(century);
             buttonSuivant.setForeground(Color.WHITE);
             buttonSuivant.setFocusPainted(false);
-            buttonSuivant.addActionListener(new java.awt.event.ActionListener() {
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    try {
-                        secondReglesActionPerformed(evt);
-                    } catch (IOException ex) {
-                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+            switch (a){
+                case 1:
+                    buttonSuivant.addActionListener(new java.awt.event.ActionListener() {
+                        @Override
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                            try {
+                                secondReglesActionPerformed(evt);
+                            } catch (IOException ex) {
+                                Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                            }
 
-                }
-            });
+                        }
+                });
+                break;
+                case 2:
+                    buttonSuivant.addActionListener(new java.awt.event.ActionListener() {
+                        @Override
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                            try {
+                                thirdReglesActionPerformed(evt);
+                            } catch (IOException ex) {
+                                Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+
+                        }
+                });
+                break;
+            }
+                    
+            
             
             javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(panel);
                 panel.setLayout(jPanel1Layout);
@@ -456,78 +498,6 @@ public class MainGame extends JFrame {
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
-    public void secondRegles() throws IOException{
-            // Création de la fenêtre
-            this.setTitle("Règles du Tetra Word (2)");
-            this.setPreferredSize(new Dimension(1024,768));
-                        
-            // Arrière plan
-            JPanel panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/regles2.jpg"));
-            panel.setMaximumSize(new Dimension(1024, 768));
-            panel.setMinimumSize(new Dimension(600, 400));
-            panel.setPreferredSize(new Dimension(1024, 768));
-            
-            // Fonts
-            Font century = new Font("Century Gothic",0,16);
-                       
-            // Boutons
-            JWelcomeButton buttonRetour = new JWelcomeButton("Précédent");
-            buttonRetour.setFont(century);
-            buttonRetour.setForeground(Color.WHITE);
-            buttonRetour.setFocusPainted(false);
-            buttonRetour.addActionListener(new java.awt.event.ActionListener() {
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    try {
-                        firstReglesActionPerformed(evt);
-                    } catch (IOException ex) {
-                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                }
-            });
-            
-            JWelcomeButton buttonSuivant = new JWelcomeButton("Suivant");
-            buttonSuivant.setFont(century);
-            buttonSuivant.setForeground(Color.WHITE);
-            buttonSuivant.setFocusPainted(false);
-            /*buttonSuivant.addActionListener(new java.awt.event.ActionListener() {
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    try {
-                        secondReglesActionPerformed(evt);
-                    } catch (IOException ex) {
-                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                }
-            });*/
-            
-            javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(panel);
-                panel.setLayout(jPanel1Layout);
-                jPanel1Layout.setHorizontalGroup(
-                    jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(buttonRetour, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 751, Short.MAX_VALUE)
-                        .addComponent(buttonSuivant, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(42, 42, 42))
-                );
-                jPanel1Layout.setVerticalGroup(
-                    jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(51, 51, 51)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(buttonRetour, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(buttonSuivant, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(683, Short.MAX_VALUE))
-                );
-
-            this.pack();
-            this.setVisible(true);
-            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
     
     /* Jeu en solo */
     public void gameSolo() throws IOException{
