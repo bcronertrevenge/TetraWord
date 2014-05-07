@@ -12,6 +12,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
@@ -40,7 +42,7 @@ import javax.swing.border.Border;
 /**
     * Game est la classe représentant un jeu de Tetra Word
  **/
-public class Game extends Thread implements ActionListener{
+public class Game extends Thread implements ActionListener, MouseListener  {
     Shape currentShape;
     Shape nextShape;
     public double score;
@@ -148,6 +150,7 @@ public class Game extends Thread implements ActionListener{
                 grid[i][j].setBorder(whiteline);
                 gridInterface.add(grid[i][j]);
                 grid[i][j].addActionListener(this); 
+                grid[i][j].addMouseListener(this); 
             } 
         }
         
@@ -997,5 +1000,31 @@ public class Game extends Thread implements ActionListener{
 
     void setMode(int i) {
         mode=i;
+    }
+    
+        
+    @Override
+    public void mouseClicked(MouseEvent me) {
+        
+    }
+
+    @Override
+    public void mousePressed(MouseEvent me) {
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent me) {
+        
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent me) {
+        gridInterface.repaint();   
+    }
+
+    @Override
+    public void mouseExited(MouseEvent me) {
+        
     }
 }

@@ -7,7 +7,6 @@
 package fr.univ.tetraword;
 
 import java.awt.Color;
-import java.io.Serializable;
 import javax.swing.JButton;
 
 public class Box extends JButton {
@@ -83,10 +82,6 @@ public class Box extends JButton {
         return false;
     }
     
-    public static Box getItself(Box itself, Box dummy)
-    {
-        return itself;
-    }
     public void boxChange(Box bo){
         Shape s=shape;
         Brick b=brick;
@@ -200,5 +195,6 @@ public class Box extends JButton {
     public void changeColor(Color color){
         setBackground(color);
     }
+
     
 }
