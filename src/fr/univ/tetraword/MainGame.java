@@ -425,17 +425,46 @@ public class MainGame extends JFrame {
             buttonRetour.setFont(century);
             buttonRetour.setForeground(Color.WHITE);
             buttonRetour.setFocusPainted(false);
-            buttonRetour.addActionListener(new java.awt.event.ActionListener() {
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    try {
-                        retourActionPerformed(evt);
-                    } catch (IOException ex) {
-                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+            switch (a){
+                case 1:
+                    buttonRetour.addActionListener(new java.awt.event.ActionListener() {
+                        @Override
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                            try {
+                                retourActionPerformed(evt);
+                            } catch (IOException ex) {
+                                Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                            }
 
-                }
-            });
+                        }
+                });
+                break;
+                case 2:
+                    buttonRetour.addActionListener(new java.awt.event.ActionListener() {
+                        @Override
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                            try {
+                                firstReglesActionPerformed(evt);
+                            } catch (IOException ex) {
+                                Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+
+                        }
+                });
+                break;
+                case 3:
+                    buttonRetour.addActionListener(new java.awt.event.ActionListener() {
+                        @Override
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                            try {
+                                secondReglesActionPerformed(evt);
+                            } catch (IOException ex) {
+                                Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+
+                        }
+                });
+            }
             
             JWelcomeButton buttonSuivant = new JWelcomeButton("Suivant");
             buttonSuivant.setFont(century);
