@@ -81,7 +81,7 @@ public class IA {
     }
 
  /**
-    * Permet de chercher le chemin qu'une pièce peut faire pour se positionner le mieux possible
+    * Permet d'enregistrer tous les mouvements possibles d' une pièce
  **/
     public void lookPath(){
         Vector<Moves> moves=new Vector<Moves>();
@@ -144,7 +144,9 @@ public class IA {
     }
 
  /**
-    * Permet de chercher le chemin qu'une pièce peut faire pour se positionner le mieux possible
+    * Permet de trouver le meilleur chemin d'une pièce à positionner en fonction des mouvements possibles
+    * @param moves
+    * mouvements possibles de la pièce courante
  **/
     public void chooseBestMove(Vector<Moves> moves){
         
@@ -189,6 +191,10 @@ public class IA {
         
         move=moveRes;
     }
+    
+ /**
+    * Permet de nettoyer les derniers mouvements de la pièce courante
+ **/
     public void clearLastMove(){
         
         for(int i=game.currentShape.y;i<=game.currentShape.y+game.currentShape.height;++i){
@@ -205,7 +211,9 @@ public class IA {
         game.currentShape.y=0;
     }
     
-    ////////////////////////////// ANAGRAMME ////////////////////////////////////
+ /**
+    * Permet à l'IA de jouer en mode Anagramme
+ **/
     public void anagramme(){
         if(game.anagLine==-1 || !find) return;
         
@@ -217,7 +225,12 @@ public class IA {
 
        
     }
-    
+
+ /**
+    * Permet à l'IA de trouver un anagramme en fonction de lettres
+    * @param mot
+    * les lettres à utiliser pour trouver un anagramme
+ **/
     private boolean findWordAnagramme(String mot){
         boolean res;
         char lettre;
@@ -242,7 +255,10 @@ public class IA {
         }
         return false;
     }
-        ////////////////////////////// WORDDLE ////////////////////////////////////
+
+/**
+    * Permet à l'IA de jouer en mode Worddle
+ **/
     public void worddle(){
                
         boolean word;
@@ -260,7 +276,16 @@ public class IA {
         System.out.println("Je trouve plus de mot :/ ");
         game.validate();
     }
-    
+
+/**
+    * Permet à l'IA de trouver un mot en mode Worddle en fonction de lettres et de leurs positions
+    * @param mot
+    * le mot qui est en train d'être composé
+    * @param x
+    * la position en x de la dernière lettre sélectionnée
+    * * @param x
+    * la position en y de la dernière lettre sélectionnée
+ **/
     public boolean findWordWorddle(String mot,int x, int y){
         char lettre;
         boolean res;
