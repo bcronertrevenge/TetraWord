@@ -255,7 +255,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
         long beginTime=0;
         int nbShape=1;
         boolean modif=false;
-                
+        
         while(!gameOver){
      
                 if(pause){
@@ -766,8 +766,11 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     public boolean canRotate(){
         if(currentShape.x+currentShape.height>=10 || currentShape.y+currentShape.width>=20)
             return false;
-        for(int i=0;i<=currentShape.width;++i){
-            for(int j=0;j<=currentShape.height;++j){
+        int taille=currentShape.width;
+        if(taille < currentShape.height) taille=currentShape.height;
+        
+        for(int i=0;i<=taille;++i){
+            for(int j=0;j<=taille;++j){
                 if(!grid[currentShape.y+i][currentShape.x+j].isEmpty() && grid[currentShape.y+i][currentShape.x+j].getShape()!=currentShape)
                     return false;
             }
