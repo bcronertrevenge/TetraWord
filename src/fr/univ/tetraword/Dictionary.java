@@ -1,25 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package fr.univ.tetraword;
 
-/**
- *
- * @author bruno
- */
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.util.HashSet;
+
+/**
+    * Dictionary est la classe qui contient la liste des mots autorisés
+ **/
 public class Dictionary {
 	HashSet<String> line;
+        
+/**
+    * Constructeur par défaut
+ **/
 	public Dictionary() {
  		line = new HashSet<String>();
 		String fichier ="data/dictionnaire.txt";
@@ -40,7 +35,13 @@ public class Dictionary {
 		}
 		
 	}
-        
+
+/**
+    * Permet de tester l'expression regulière
+    * @param regex
+    * l'expression regulière que l'on souhaite tester
+     * @return 
+ **/
         public boolean containsRegEx( String regex ) {
             for( String string : line ) {
                 if( string.matches( regex ) ) {
@@ -50,15 +51,4 @@ public class Dictionary {
             return false;
         }
 
-
-	public static void main(String[] args){
-		Dictionary dictionary = new Dictionary();
-		String mot = "hello";
-		if( dictionary.containsRegEx(mot+".") ){
-		      System.out.println("Mot correct");
-		}
-		else{
-		      System.out.println("Mot incorrect");
-		}
-}
 }

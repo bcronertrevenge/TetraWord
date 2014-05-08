@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package fr.univ.tetraword;
 
 import java.awt.Graphics;
@@ -14,18 +8,25 @@ import java.awt.event.MouseListener;
 import javax.swing.JPanel;
 
 /**
- *
- * @author bruno
- */
+    * gridInterfaceReversable est la classe qui permet d'inverser (ou pas) le sens de la grille
+ **/
 public class gridInterfaceReversable extends JPanel {
     
     boolean reverse;
-    
+ 
+/**
+    * Constructeur par défaut
+    * @param g
+    * la grille initiale que l'on souhaite renverser (ou pas)
+ **/
     public gridInterfaceReversable(GridLayout g){
         super(g);
         reverse=false;
     }
-    
+
+/**
+    * Permet d'afficher la grille (renversé ou pas)
+ **/
      @Override
     public void paintComponent(Graphics g) {
         

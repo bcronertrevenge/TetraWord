@@ -1,17 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package fr.univ.tetraword;
 
 import java.io.Serializable;
 
 /**
- *
- * @author bruno
- */
+    * shapeType est une énumération qui contient les différents types de forme d'une pièce
+ **/
 public enum shapeType{
         T(3),
         square(2),
@@ -23,10 +16,18 @@ public enum shapeType{
         
         private final int taille;
         
+/**
+    * Constructeur par défaut
+    * @param taille
+    * taille maximale de la pièce
+ **/
         private shapeType(int taille){
             this.taille=taille;
         }
-        
+
+/**
+    * Retourne la taille de la pièce
+ **/
         public int getTaille(){
             return taille;
         }

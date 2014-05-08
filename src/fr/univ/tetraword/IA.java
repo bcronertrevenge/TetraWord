@@ -1,32 +1,32 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package fr.univ.tetraword;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Vector;
 
 /**
- *
- * @author bruno
- */
+    * IA est la classe représentant l'intelligence artificielle de l'ordinateur
+ **/
 public class IA {
     Game game;
     private boolean find;
     Moves move;
     Shape currentShapeIA;
-    
+  
+/**
+    * Constructeur par défaut
+    * @param game
+    * le jeu dans lequel on souhaite incorporer l'IA
+ **/
     public IA(Game game){
         this.game=game;
         find=true;
         move=new Moves();
         currentShapeIA=null;
     }
-    
+ 
+/**
+    * Boucle generale de l'intelligence artificielle
+ **/
     public void play(){
         
         switch(game.getMode()){
@@ -48,7 +48,9 @@ public class IA {
         }
     }
     
-    ////////////////////////////// TETRIS ////////////////////////////////////
+/**
+    * Permet à l'IA de jouer en mode Tetris
+ **/
     public void tetris(){
         if(currentShapeIA!=game.currentShape){
             //Recherche chemin et rempli le vecteur de mouvements à faire
@@ -76,7 +78,10 @@ public class IA {
             game.shapeFall(game.currentShape,true);
         }
     }
-    
+
+ /**
+    * Enregistre tous les mouvements possibles qu'une pièce peut faire
+ **/
     public void lookPath(){
         Vector<Moves> moves=new Vector<Moves>();
         int Ox=game.currentShape.x;
@@ -136,7 +141,12 @@ public class IA {
         }
         chooseBestMove(moves);
     }
-    
+
+ /**
+    * Permet de trouver le meilleur chemin d'une pièce à positionner, parmi tous les mouvements possibles
+    * @param moves
+    * mouvements possibles de la pièce courante
+ **/
     public void chooseBestMove(Vector<Moves> moves){
         
         if(moves.isEmpty()) return;
@@ -180,6 +190,10 @@ public class IA {
         
         move=moveRes;
     }
+    
+ /**
+    * Permet de nettoyer le dernier mouvement de la pièce courante
+ **/
     public void clearLastMove(){
         
         for(int i=game.currentShape.y;i<=game.currentShape.y+game.currentShape.height;++i){
@@ -196,7 +210,9 @@ public class IA {
         game.currentShape.y=0;
     }
     
-    ////////////////////////////// ANAGRAMME ////////////////////////////////////
+ /**
+    * Permet à l'IA de jouer en mode Anagramme
+ **/
     public void anagramme(){
         if(game.anagLine==-1 || !find) return;
         
@@ -208,7 +224,12 @@ public class IA {
 
        
     }
-    
+
+ /**
+    * Permet à l'IA de trouver un anagramme en fonction des lettres présentes sur la ligne
+    * @param mot
+    * les lettres à utiliser pour trouver un anagramme
+ **/
     private boolean findWordAnagramme(String mot){
         boolean res;
         char lettre;
@@ -233,7 +254,10 @@ public class IA {
         }
         return false;
     }
-        ////////////////////////////// WORDDLE ////////////////////////////////////
+
+/**
+    * Permet à l'IA de jouer en mode Worddle
+ **/
     public void worddle(){
                
         boolean word;
@@ -251,7 +275,16 @@ public class IA {
         System.out.println("Je trouve plus de mot :/ ");
         game.validate();
     }
-    
+
+/**
+    * Permet à l'IA de trouver un mot en mode Worddle en fonction de lettres et de leurs positions
+    * @param mot
+    * le mot qui est en train d'être composé
+    * @param x
+    * la position en x de la dernière Box sélectionnée
+    * * @param x
+    * la position en y de la dernière Box sélectionnée
+ **/
     public boolean findWordWorddle(String mot,int x, int y){
         char lettre;
         boolean res;

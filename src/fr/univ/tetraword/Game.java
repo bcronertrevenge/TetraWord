@@ -1,33 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package fr.univ.tetraword;
 
 import com.sun.corba.se.impl.orbutil.ObjectWriter;
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.AffineTransform;
-import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import static java.lang.System.exit;
-import static java.lang.System.out;
 import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -77,7 +62,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     * @param composants
     * les JButton à mettre à jour (saisie, score, niveau)
     * @param ia
-    * Si on a besoin de l'intelligence artificielle
+    * Si le jeu courant est contrôlé par une intelligence artificielle
  **/
     public Game(JFrame window, Dictionary dictionary,  HashMap<String,JButton> composants, boolean ia){  
         this.other=null;
@@ -157,7 +142,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     }
 
 /**
-    * Permet de mettre à jour les données du jeu
+    * Permet de mettre à jour les données du jeu (Composants Swing)
  **/
     public void rafraichir(){
         
@@ -208,7 +193,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     }
 
 /**
-    * Permet de mettre à jour la shape suivante
+    * Permet de mettre à jour la shape suivante (Composants Swing)
  **/
     public void rafraichirNextShape(){
         nextInterface.repaint();
@@ -235,7 +220,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     }
 
 /**
-    * Permet de récupérer le mode du jeu (Tetris, Anagramme, Worddle)
+    * Permet de récupérer le mode actuel du jeu (Tetris, Anagramme, Worddle)
  **/
     public int getMode(){
         return mode;
@@ -256,7 +241,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     }
 
 /**
-    * Permet de lancer le jeu
+    * La boucle principale du jeu
  **/
     @Override
     public void run(){
@@ -418,7 +403,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     }
 
 /**
-    * Permet d'enlever les cases surlignées et de vider le Worddle
+    * Permet d'enlever les cases surlignées et de vider les cases de départ Worddle
  **/
     public void clean(){
            whiteOut();
@@ -494,7 +479,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     }
 
 /**
-    * Permet de valider un mot
+    * Permet de valider un mot (ou de finir le mode actuel si le mot est vide)
  **/
     public void validate(){
         if(mode == 1){
@@ -581,6 +566,11 @@ public class Game extends Thread implements ActionListener, MouseListener  {
         }
     }
     
+/**
+    * Permet de supprimer une ligne
+    * @param ligne
+    * numéro de la ligne à supprimer
+ **/    
     public void eraseLine(int ligne){
         for(int i=ligne;i>0;--i){
             for(int j=0;j<10;++j){
@@ -590,7 +580,9 @@ public class Game extends Thread implements ActionListener, MouseListener  {
         }
     }
     
-    //Verif ligne
+/**
+    * Permet de vérifier si il y a une ligne complète dans la grille
+ **/  
     public long verifLigne(){
         int ligne=-1;
         boolean end;        
@@ -618,7 +610,10 @@ public class Game extends Thread implements ActionListener, MouseListener  {
 
         return -1;
     }
-    
+
+/**
+    * Permet de créer une nouvelle forme dans le jeu
+ **/ 
     public boolean newShapeInGame(){
         
         currentShape=nextShape;
@@ -637,7 +632,13 @@ public class Game extends Thread implements ActionListener, MouseListener  {
         return false;
     }
     
-    //Bouge la piece a gauche(-1) ou a droite(1)
+/**
+    * Permet de bouger la piece a gauche(-1) ou a droite(1)
+    * @param sens
+    * le sens du mouvement
+    * @param takeModifier
+    * Si il doit prendre en compte les modificateurs ou pas
+ **/
     public void moveShapeAside(int sens, boolean takeModifier){
         
         if(mode == 1 || pause)
@@ -726,7 +727,9 @@ public class Game extends Thread implements ActionListener, MouseListener  {
         }
     }
     
-    //Teste si le mouvement est possible
+/**
+    * Permet de tester si le mouvement est possible ou pas
+ **/
     public boolean canMoveAside(int sens){          
 
           //Mouvement a gauche
@@ -756,7 +759,10 @@ public class Game extends Thread implements ActionListener, MouseListener  {
           }
           return true;
     }
-    
+
+/**
+    * Permet de tester si la pièce courante peut tourner ou pas
+ **/
     public boolean canRotate(){
         if(currentShape.x+currentShape.height>=10 || currentShape.y+currentShape.width>=20)
             return false;
@@ -768,7 +774,10 @@ public class Game extends Thread implements ActionListener, MouseListener  {
         }
         return true;
     }
-    
+
+/**
+    * Permet de tourner la pièce courante ou de monter en mode Worddle
+ **/
     public void rotateUp(){
         
         if(mode == 1 || pause)
@@ -805,7 +814,14 @@ public class Game extends Thread implements ActionListener, MouseListener  {
             }
         }
     }
-      
+
+/**
+    * Permet de faire tomber la pièce courante
+    * @param shape
+    * La forme que l'on veut faire tomber
+    * @param modifierTake
+    * Si la forme doit prendre le modificateur ou pas
+ **/
     public int shapeFall(Shape shape, boolean modifierTake){
         
         if(mode == 1 || pause)
@@ -863,7 +879,11 @@ public class Game extends Thread implements ActionListener, MouseListener  {
         return 0;
     }
     
-    //Teste si la piece peut tomber
+/**
+    * Permet de tester si une pièce peut tomber
+    * @param shape
+    * la pièce que l'on souhaite tester
+ **/
     public boolean canFall(Shape shape){
        
         if(shape.y+shape.height+1>=20){
@@ -887,6 +907,12 @@ public class Game extends Thread implements ActionListener, MouseListener  {
         }
         return true;
     }
+
+/**
+    * Permet la sauvegarde d'un ou plusieurs jeux
+    * @param savedGame
+    * Vecteurs qui contient un ou plusieurs jeux
+ **/
     public static void saveGame(Vector<Game> savedGame) throws IOException
     {
 	try{
@@ -922,6 +948,9 @@ public class Game extends Thread implements ActionListener, MouseListener  {
 
         }
 
+ /**
+    * Permet de charger un jeu déjà existant
+ **/
 	public static Game[] readGame()
 	{ 
 		Game[] game=new Game[0];
@@ -934,7 +963,12 @@ public class Game extends Thread implements ActionListener, MouseListener  {
 		catch (ClassNotFoundException e) {e.printStackTrace();}
 		return game;
 	}
-    
+
+/**
+    * Permet d'avoir la Box inverse d'une box passée en paramètre
+    * @param b
+    * La Box dont on veut l'inverse
+ **/ 
     public Box getInverse(Box b){
         for(int i=0;i<20;++i){
             for(int j=0;j<10;++j){
@@ -944,6 +978,12 @@ public class Game extends Thread implements ActionListener, MouseListener  {
         }
         return null;
     }
+    
+/**
+    * La méthode actionPerformed de l'interface ActionListener, appelé quand l'on clique sur une Box
+    * @param evt
+    * La Box sur laquelle l'utilisateur a cliqué
+ **/
     
     public void actionPerformed(java.awt.event.ActionEvent evt) {
              if(evt.getSource() instanceof Box){
@@ -969,7 +1009,10 @@ public class Game extends Thread implements ActionListener, MouseListener  {
              }
              window.requestFocusInWindow();
     }
-    
+
+/**
+    * Permet d'augmenter le niveau du jeu
+ **/ 
     public void levelUp(){
         
         level++;
@@ -986,7 +1029,10 @@ public class Game extends Thread implements ActionListener, MouseListener  {
             composants.get("Niveau").repaint();
         }
     }
-    
+ 
+/**
+    * Ajoute un modificateur au hasard dans une case vide de la grille
+ **/
     public void addModifier(){
         int x,y;
         do {
@@ -998,26 +1044,29 @@ public class Game extends Thread implements ActionListener, MouseListener  {
         grid[y+5][x].setModifier(modifier);
     }
 
+/**
+    * Permet de définir le mode du jeu
+    * @param i
+    * Si i=0 mode Tetris, i=1 mode Anagramme, i=2 mode Worddle
+ **/
     void setMode(int i) {
         mode=i;
     }
     
-        
     @Override
-    public void mouseClicked(MouseEvent me) {
-        
-    }
+    public void mouseClicked(MouseEvent me) {}
 
     @Override
-    public void mousePressed(MouseEvent me) {
-        
-    }
+    public void mousePressed(MouseEvent me) {}
 
     @Override
-    public void mouseReleased(MouseEvent me) {
-        
-    }
+    public void mouseReleased(MouseEvent me) {}
 
+    /**
+    * Permet de recharger la grille
+    * @param me
+    * L'event MouseEvent de l'interface MouseListener
+ **/        
     @Override
     public void mouseEntered(MouseEvent me) {
         gridInterface.repaint();   

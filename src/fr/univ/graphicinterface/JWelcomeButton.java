@@ -10,20 +10,30 @@ import java.awt.RenderingHints;
 import java.awt.geom.RoundRectangle2D;
  
 import javax.swing.JButton;
- 
+
+/**
+    * JWelcomeButton est la classe représentant les boutons principaux de l'application
+ **/
 public class JWelcomeButton extends JButton {
  
 	private static final long serialVersionUID = 1671314658637614873L;
 	private int inset = 5;
 	private Color buttonColor = (new Color(33,91,201)).darker().darker();
  
- 
+/**
+    * Constructeur par défaut
+    * @param aNameString
+    * titre du JWelcomeButton
+ **/
 	public JWelcomeButton(String aNameString){
 		super(aNameString);
 		setContentAreaFilled(false);
 		setForeground(Color.white);
 	}
 
+/**
+    * Permet d'afficher le JWelcomeButton
+ **/
 	protected void paintComponent(Graphics g)
 	{
  

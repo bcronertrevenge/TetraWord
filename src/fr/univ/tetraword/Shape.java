@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package fr.univ.tetraword;
 
 import static fr.univ.tetraword.shapeType.T;
@@ -16,10 +10,8 @@ import static fr.univ.tetraword.shapeType.square;
 import java.io.Serializable;
 
 /**
- *
- * @author bruno
- */
-
+    * Shape est la classe représentant une pièce du jeu
+ **/
 public class Shape implements Serializable {
     
     
@@ -28,7 +20,12 @@ public class Shape implements Serializable {
     public int x,y;
     public int couleur;
     public int width,height;
-    
+
+/**
+    * Constructeur par défaut
+    * @param type
+    * la forme de la pièce (carré, Z, T, L ou ligne)
+ **/
     public Shape(shapeType type){
         this.type=type;
         bricks=new Brick[4][4];
@@ -116,6 +113,9 @@ public class Shape implements Serializable {
 
     }
     
+/**
+    * Permet une rotation de la pièce courante
+ **/   
     public void rotateShape(){
         
         Brick res[][] = new Brick[type.getTaille()][type.getTaille()];
@@ -134,7 +134,10 @@ public class Shape implements Serializable {
         refreshShape();
         
     }
-    
+ 
+/**
+    * Permet l'affichage de la pièce avec ses lettres (dans la console)
+ **/ 
     public void printShape(){
         for(int i=0;i<4;++i){
             for(int j=0;j<4;++j){
@@ -147,7 +150,12 @@ public class Shape implements Serializable {
         }
         
     }
-    
+ 
+/**
+    * Permet d'obtenir la rareté d'une lettre
+    * @param lettre
+    * lettre dont on veut connaître la rareté
+ **/ 
     public static double getRarityFromLetter(char lettre){
         switch(lettre){
             case 'A':
@@ -207,7 +215,12 @@ public class Shape implements Serializable {
         }
         
     }
-    
+
+/**
+    * Permet de donner à l'utilisateur une lettre en fonction de probabilités
+    * @param prob
+    * probabilité
+ **/ 
     public static char getLetterFromProb(double prob){
         double total=0;
         char a;
@@ -217,13 +230,19 @@ public class Shape implements Serializable {
         }
         return a;
     }
-    
+
+/**
+    * Permet de mettre à jour la position, la largeur, la hauteur de la pièce courante
+ **/ 
     public void refreshShape(){
         rePosition();
         width=getRightSide();
         height=getLowestLine();
     }
-    
+ 
+/**
+    * Permet de repositionner une pièce si la place au dessus et/ou à gauche est vide
+ **/ 
     public void rePosition(){
         boolean done=false;
         
@@ -266,7 +285,10 @@ public class Shape implements Serializable {
             }
         }
     }
-    
+
+/**
+    * Retourne l'indice de la ligne la plus basse qu'occupe la pièce
+ **/ 
     public int getLowestLine(){
         for(int i=3;i>=0;--i){
             for(int j=0;j<4;++j){
@@ -277,7 +299,9 @@ public class Shape implements Serializable {
         return -1;
     }
     
-    //Retourne le côté de la pièce concerné
+/**
+    * Retourne le côté droit de la pièce concernée
+ **/ 
     public int getRightSide(){
          
         for(int i=3;i>=0;--i){
@@ -288,7 +312,10 @@ public class Shape implements Serializable {
         }
         return -1;     
     }
-    
+
+/**
+    * Permet de créer une pièce aléatoire
+ **/ 
     public static Shape getRandomShape(){
         char random = (char) (Math.random() * 7);
         
@@ -312,18 +339,19 @@ public class Shape implements Serializable {
         }
         return null;
     }
-    
+ 
+/**
+    * Retourne le tableau de briques contenues dans la pièce courante
+ **/ 
     public Brick[][] getBricks(){
         return bricks;    
     }
-    
+
+/**
+    * Retourne le type (la forme) de la pièce courante
+ **/ 
     public shapeType getType(){
         return type;
     }    
     
-    public static void main (String[] args){
-        Shape s=new Shape(line);
-        s.printShape();
-        System.out.println("couleur"+s.couleur);
-    }
 }

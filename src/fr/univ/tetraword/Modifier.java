@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package fr.univ.tetraword;
 
 import static fr.univ.tetraword.modifierType.allowWorddle;
@@ -19,16 +13,21 @@ import static fr.univ.tetraword.modifierType.switchGrid;
 import java.awt.Color;
 import java.io.Serializable;
 
-
-
 /**
- *
- * @author bruno
- */
+    * Modifier est la classe représentant un modificateur du jeu
+ **/
 public class Modifier {
     modifierType type;
     Game game;
     Game other;
+ 
+/**
+    * Constructeur avec paramètres
+    * @param other
+    * deuxième jeu si on est en mode multijoueur, il sera nul sinon
+    * @param game
+    * le jeu principal
+ **/
     public Modifier(Game other, Game game){
         this.game=game;
         this.other=other;
@@ -38,7 +37,7 @@ public class Modifier {
             a=(int)(Math.random()*10);
         else
             a=(int)(Math.random()*8);
-        a=3;
+        
         switch(a){
             case 0:
                 type=speedFall;
@@ -74,7 +73,13 @@ public class Modifier {
                 break;
         }
     }
-    
+
+/**
+    *Permet d'activer un modificateur existant
+    * @param from
+    * indique comment la pièce a attrapé le modificateur
+    * 0 si elle vient du haut, 1 si elle vient de la droite, 2 si elle vient de la gauche
+ **/
     public boolean activate(int from){ //0 : shapeFall, 1 : MoveAside : right, 2 : MoveAside : left
         boolean terminate=false;
         
