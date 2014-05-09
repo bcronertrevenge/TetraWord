@@ -82,7 +82,7 @@ public class MainGame extends JFrame {
     * Lorsque l'on clique sur "Options"
  **/
     public void optionsActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
-        gameOptions();
+        shapeEditor();
     }
  
 /**
@@ -307,15 +307,15 @@ public class MainGame extends JFrame {
             panel.setPreferredSize(new Dimension(1024, 768));
             
             // Fonts
-            /*Font copperplate = new Font("Copperplate Gothic Bold",0,26);*/
             Font copperplate  = null;
-            try
-            {
-                 File fis = new File("data/COPRGTB.TTF");
-                 copperplate = Font.createFont(Font.TRUETYPE_FONT, fis);
-                 copperplate = copperplate.deriveFont((float)26.0);
+            try{
+                File fis = new File("data/COPRGTB.TTF");
+                copperplate = Font.createFont(Font.TRUETYPE_FONT, fis);
+                copperplate = copperplate.deriveFont((float)26.0);
             }
-            catch (Exception e) {} 
+            catch (Exception e) {
+                System.out.println("Police non chargée");
+            } 
             
             Font century = new Font("Century Gothic",0,26);
                        
@@ -604,7 +604,16 @@ public class MainGame extends JFrame {
             panel.setPreferredSize(new Dimension(1024, 768));
             
             // Fonts
-            Font copperplate = new Font("Copperplate Gothic Bold",0,22);
+            Font copperplate  = new Font("Copperplate Gothic Bold",0,22);
+            try{
+                File fis = new File("data/COPRGTB.TTF");
+                copperplate = Font.createFont(Font.TRUETYPE_FONT, fis);
+                copperplate = copperplate.deriveFont((float)22.0);
+            }
+            catch (Exception e) {
+                System.out.println("Police non chargée");
+            }
+            
             Font bigCentury = new Font("Century Gothic",0,26);
             Font smallCentury = new Font("Century Gothic",0,18);
             
@@ -843,8 +852,18 @@ public class MainGame extends JFrame {
             panel.setPreferredSize(new Dimension(1280, 768));
             
             // Fonts
-            Font bigCopperplate = new Font("Copperplate Gothic Bold",0,24);
-            Font smallCopperplate = new Font("Copperplate Gothic Bold",0,18);
+            Font bigCopperplate  = new Font("Copperplate Gothic Bold",0,24);
+            Font smallCopperplate  = new Font("Copperplate Gothic Bold",0,18);
+            try{
+                File fis = new File("data/COPRGTB.TTF");
+                bigCopperplate = Font.createFont(Font.TRUETYPE_FONT, fis);
+                smallCopperplate = Font.createFont(Font.TRUETYPE_FONT, fis);
+                bigCopperplate = bigCopperplate.deriveFont((float)24.0);
+                smallCopperplate = bigCopperplate.deriveFont((float)18.0);
+            }
+            catch (Exception e) {
+                System.out.println("Police non chargée");
+            }
             Font century = new Font("Century Gothic",0,20);
             
             
@@ -1146,34 +1165,11 @@ public class MainGame extends JFrame {
     }
     
  /**
-    * Permet de créer la fenêtre de chargement d'une partie
- **/ 
-    public void loadGamePage() throws IOException{
-            // On change le titre
-            this.setTitle("Charger une partie");
-            this.setPreferredSize(new Dimension(1024,768));
-                        
-            // Arrière plan
-            JPanel panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/game.jpg"));
-            panel.setMaximumSize(new Dimension(1024, 768));
-            panel.setMinimumSize(new Dimension(600, 400));
-            panel.setPreferredSize(new Dimension(1024, 768));
-            
-            // Fonts
-            Font copperplate = new Font("Copperplate Gothic Bold",0,26);
-            Font century = new Font("Century Gothic",0,26);
-                   
-            this.pack();
-            this.setVisible(true);
-            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
-
- /**
     * Permet de créer la fenêtre qui contient les options du jeu
  **/ 
-    public void gameOptions() throws IOException{
+    public void shapeEditor() throws IOException{
             // Création de la fenêtre
-            this.setTitle("Options du jeu");
+            this.setTitle("Editeur de piece");
             this.setPreferredSize(new Dimension(1024,768));
                         
             // Arrière plan
@@ -1183,7 +1179,16 @@ public class MainGame extends JFrame {
             panel.setPreferredSize(new Dimension(1024, 768));
             
             // Fonts
-            Font copperplate = new Font("Copperplate Gothic Bold",0,26);
+            Font Copperplate  = new Font("Copperplate Gothic Bold",0,24);
+            try{
+                File fis = new File("data/COPRGTB.TTF");
+                Copperplate = Font.createFont(Font.TRUETYPE_FONT, fis);
+                Copperplate = Copperplate.deriveFont((float)24.0);
+            }
+            catch (Exception e) {
+                System.out.println("Police non chargée");
+            }
+            
             Font century = new Font("Century Gothic",0,26);
                        
             // Boutons
@@ -1203,109 +1208,7 @@ public class MainGame extends JFrame {
                 }
             });
             
-            JWelcomeButton buttonSolo = new JWelcomeButton("Editer une pièce");
-            buttonSolo.setFont(century);
-            buttonSolo.setForeground(Color.WHITE);
-            buttonSolo.setFocusPainted(false);
-            buttonSolo.addActionListener(new java.awt.event.ActionListener() {
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    try {
-                        soloActionPerformed(evt);
-                    } catch (IOException ex) {
-                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                }
-            });
             
-            JWelcomeButton buttonOrdi = new JWelcomeButton("Contre l'ordinateur");
-            buttonOrdi.setFont(century);
-            buttonOrdi.setForeground(Color.WHITE);
-            buttonOrdi.setFocusPainted(false);
-            buttonOrdi.addActionListener(new java.awt.event.ActionListener() {
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    try {
-                        ordiActionPerformed(evt);
-                    } catch (IOException ex) {
-                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                }
-            });
-            
-            JWelcomeButton buttonAmi = new JWelcomeButton("Contre un ami");
-            buttonAmi.setFont(century);
-            buttonAmi.setForeground(Color.WHITE);
-            buttonAmi.setFocusPainted(false);
-            buttonAmi.addActionListener(new java.awt.event.ActionListener() {
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    try {
-                        amiActionPerformed(evt);
-                    } catch (IOException ex) {
-                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                }
-            });
-            
-            // Labels
-            JLabel labelTitre = new JLabel();
-            labelTitre.setFont(copperplate);
-            labelTitre.setForeground(new Color(33,91,201));
-            labelTitre.setText("Modes de Jeu");
-            labelTitre.setHorizontalAlignment(SwingConstants.CENTER);
-
-            JLabel labelSolo = new JLabel();
-            labelSolo.setFont(copperplate);
-            labelSolo.setForeground(new Color(33,91,201));
-            labelSolo.setText("En Solitaire");
-            labelSolo.setHorizontalAlignment(SwingConstants.CENTER);
-            
-            JLabel labelMulti = new JLabel();
-            labelMulti.setFont(copperplate);
-            labelMulti.setForeground(new Color(33,91,201));
-            labelMulti.setText("En Multijoueur");
-            labelMulti.setHorizontalAlignment(SwingConstants.CENTER);
-            
-            javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(panel);
-            panel.setLayout(jPanel1Layout);
-            jPanel1Layout.setHorizontalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(38, 38, 38)
-                            .addComponent(buttonRetour))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(81, 81, 81)
-                            .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                .addComponent(buttonSolo, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(buttonOrdi, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(buttonAmi, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(labelMulti,GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(labelSolo, GroupLayout.PREFERRED_SIZE, 259, GroupLayout.PREFERRED_SIZE))))
-                    .addContainerGap(652, Short.MAX_VALUE))
-            );
-            jPanel1Layout.setVerticalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(15, 15, 15)
-                    .addComponent(buttonRetour)
-                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 188, Short.MAX_VALUE)
-                    .addComponent(labelSolo, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
-                    .addGap(31, 31, 31)
-                    .addComponent(buttonSolo, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
-                    .addGap(73, 73, 73)
-                    .addComponent(labelMulti, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
-                    .addGap(27, 27, 27)
-                    .addComponent(buttonOrdi, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
-                    .addGap(38, 38, 38)
-                    .addComponent(buttonAmi, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
-                    .addGap(101, 101, 101))
-            );
             
             
             this.pack();
