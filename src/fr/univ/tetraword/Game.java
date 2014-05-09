@@ -21,6 +21,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
@@ -50,7 +51,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     HashMap<String,JComponent> composants;
     IA intelligence;
     boolean pause;
- 
+    long beginTime;
     Game other;
     boolean gameOver;
 
@@ -84,7 +85,8 @@ public class Game extends Thread implements ActionListener, MouseListener  {
         worddleBoxPosY=-1;
         worddleStartX=new Vector<Integer>();
         worddleStartY=new Vector<Integer>();
-        
+        beginTime=0;
+                
         this.composants=composants;
         anagLine=-1;
         score=0;
@@ -195,6 +197,24 @@ public class Game extends Thread implements ActionListener, MouseListener  {
                 b.repaint();
             }
         }
+        if(composants.containsKey("Temps")){
+            JLabel l=(JLabel) composants.get("Temps");
+            switch(mode){
+                case 0:
+                        l.setForeground(new Color(33,91,201));
+                        l.setText("Temps");
+                    break;
+                case 1:
+                        l.setForeground(new Color(33,91,201));
+                        l.setText(String.valueOf((anagTime-(System.currentTimeMillis()-beginTime))/1000)+" s restantes");
+                    break;
+                case 2:
+                        l.setForeground(new Color(33,91,201));
+                        l.setText(String.valueOf((worddleTime-(System.currentTimeMillis()-worddleLast))/1000)+" s restantes");
+                    
+                    break;
+            }
+        }
     }
 
 /**
@@ -257,7 +277,6 @@ public class Game extends Thread implements ActionListener, MouseListener  {
         init();
         nextShape=Shape.getRandomShape();
         newShapeInGame();
-        long beginTime=0;
         int nbShape=1;
         boolean modif=false;
         
@@ -472,6 +491,9 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     * numéro de la ligne sur laquelle on active le mode anagramme
  **/
     public long anagramme(int ligne){
+        
+        //Si l'autre joueur est en anagramme, il ne peut pas jouer l'anagramme tout de suite
+        if(other.getMode()==1) return System.currentTimeMillis();
         
         Border yellowline = BorderFactory.createLineBorder(Color.YELLOW,1);
             for(int j=0;j<10;++j){
