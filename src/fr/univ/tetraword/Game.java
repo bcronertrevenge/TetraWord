@@ -120,7 +120,12 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     public void init(){
                 // Initialisation de gridInterface
         Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
-        
+        shapeType.readShapes();
+        try {
+            shapeType.saveShapes();
+        } catch (IOException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
         for(int i=0;i<4;++i){
             for(int j=0;j<4;++j){
                 nextgrid[i][j]=new Box();
@@ -837,8 +842,11 @@ public class Game extends Thread implements ActionListener, MouseListener  {
         currentShape.rotateShape();
         currentShape.refreshShape();
         
-        for(int i=0;i<currentShape.getType().getTaille();++i){
-            for(int j=0;j<currentShape.getType().getTaille();++j){                
+        int taille=currentShape.width+1;
+        if(taille <= currentShape.height) taille=currentShape.height+1;
+        
+        for(int i=0;i<taille;++i){
+            for(int j=0;j<taille;++j){                
                 
                 grid[currentShape.y+i][currentShape.x+j].setShapeBrick(currentShape,currentShape.getBricks()[i][j]);
             }

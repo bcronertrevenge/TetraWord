@@ -1,12 +1,5 @@
 package fr.univ.tetraword;
 
-import static fr.univ.tetraword.shapeType.T;
-import static fr.univ.tetraword.shapeType.leftL;
-import static fr.univ.tetraword.shapeType.leftZ;
-import static fr.univ.tetraword.shapeType.line;
-import static fr.univ.tetraword.shapeType.rightL;
-import static fr.univ.tetraword.shapeType.rightZ;
-import static fr.univ.tetraword.shapeType.square;
 import java.io.Serializable;
 
 /**
@@ -14,8 +7,6 @@ import java.io.Serializable;
  **/
 public class Shape implements Serializable {
     
-    
-    private shapeType type;
     private Brick bricks[][];
     public int x,y;
     public int couleur;
@@ -23,90 +14,23 @@ public class Shape implements Serializable {
 
 /**
     * Constructeur par défaut
-    * @param type
-    * la forme de la pièce (carré, Z, T, L ou ligne)
  **/
-    public Shape(shapeType type){
-        this.type=type;
-        bricks=new Brick[4][4];
-        
-        x=7-type.getTaille();
-        y=0;
+    public Shape(){
+       bricks=shapeType.getBricksWithType();
+       width=0;
+       height=0;
+       for(int i=0;i<4;++i){
+           for(int j=0;j<4;++j){
+               if(bricks[i][j]!=null){
+                   if(height < i) height=i;
+                   if(width < j) width=j;
+               }
+           }
+       }
        
-        double totalProb=0;
-        for(int i=65;i<65+26;++i)
-            totalProb+=getRarityFromLetter((char) i);
+       x=3;
+        y=0;
         
-        char random = getLetterFromProb((int)(Math.random() * totalProb));
-        Brick case1=new Brick(random,getRarityFromLetter(random));
-        random = getLetterFromProb((int)(Math.random() * totalProb));
-        Brick case2=new Brick(random,getRarityFromLetter(random));
-        random = getLetterFromProb((int)(Math.random() * totalProb));
-        Brick case3=new Brick(random,getRarityFromLetter(random));
-        random = getLetterFromProb((int)(Math.random() * totalProb));
-        Brick case4=new Brick(random,getRarityFromLetter(random));
-        
-        switch(type){
-            case T:
-                 bricks[1][0]=case1;
-                 bricks[0][1]=case2;
-                 bricks[1][1]=case3;
-                 bricks[1][2]=case4;
-                 width=2;
-                 height=1;
-                break;
-            case square:
-                 bricks[0][0]=case1;
-                 bricks[0][1]=case2;
-                 bricks[1][0]=case3;
-                 bricks[1][1]=case4;
-                 width=1;
-                 height=1;
-                break;
-            case rightZ:
-                 bricks[1][0]=case1;
-                 bricks[1][1]=case2;
-                 bricks[0][1]=case3;
-                 bricks[0][2]=case4;
-                 width=2;
-                 height=1;
-                break;
-            case leftZ:
-                 bricks[0][0]=case1;
-                 bricks[0][1]=case2;
-                 bricks[1][1]=case3;
-                 bricks[1][2]=case4;
-                 width=2;
-                 height=1;
-                break;
-            case rightL:
-                 bricks[0][1]=case1;
-                 bricks[0][0]=case2;
-                 bricks[1][0]=case3;
-                 bricks[2][0]=case4;
-                 width=1;
-                 height=2;
-                break;
-            case leftL:
-                 bricks[0][0]=case1;
-                 bricks[0][1]=case2;
-                 bricks[1][1]=case3;
-                 bricks[2][1]=case4;
-                 width=1;
-                 height=2;
-                break;
-            case line:
-                 bricks[0][0]=case1;
-                 bricks[1][0]=case2;
-                 bricks[2][0]=case3;
-                 bricks[3][0]=case4;
-                 width=0;
-                 height=3;
-                break;
-            default:
-                System.out.println("Not a Shape");
-                break;
-        }
         
         //couleurs
         couleur = (int)((Math.random() * (6)));
@@ -118,15 +42,18 @@ public class Shape implements Serializable {
  **/   
     public void rotateShape(){
         
-        Brick res[][] = new Brick[type.getTaille()][type.getTaille()];
-        for (int i = 0; i < type.getTaille(); ++i) {
-            for (int j = 0; j < type.getTaille(); ++j) {
-                res[i][j] = bricks[type.getTaille() - j - 1][i];
+        int taille=width+1;
+        if(taille <= height) taille=height+1;
+                
+        Brick res[][] = new Brick[taille][taille];
+        for (int i = 0; i < taille; ++i) {
+            for (int j = 0; j < taille; ++j) {
+                res[i][j] = bricks[taille - j - 1][i];
             }
         }
         
-        for (int i = 0; i < type.getTaille(); ++i) {
-            for (int j = 0; j < type.getTaille(); ++j) {
+        for (int i = 0; i < taille; ++i) {
+            for (int j = 0; j < taille; ++j) {
                 bricks[i][j]=res[i][j];
             }
         }
@@ -245,10 +172,12 @@ public class Shape implements Serializable {
  **/ 
     public void rePosition(){
         boolean done=false;
+        int taille=width+1;
+        if(taille <= height) taille=height+1;
         
         while(!done){
             //La 1ere ligne est-elle vide ?
-            for(int i=0;i<type.getTaille();++i){
+            for(int i=0;i<taille;++i){
                 if(bricks[0][i]!=null)
                     done=true;
             }
@@ -256,11 +185,11 @@ public class Shape implements Serializable {
             //Si oui, on remonte tout
             if(!done){
 
-                for(int i=0;i<type.getTaille();++i){
-                    for(int j=0;j<type.getTaille()-1;++j){
+                for(int i=0;i<taille;++i){
+                    for(int j=0;j<taille-1;++j){
                         bricks[j][i]=bricks[j+1][i];
                     }
-                    bricks[type.getTaille()-1][i]=null;
+                    bricks[taille-1][i]=null;
                 }
             }
         }
@@ -269,18 +198,18 @@ public class Shape implements Serializable {
         
         while(!done){
             //La 1ere colonne est-elle vide ?
-            for(int i=0;i<type.getTaille();++i){
+            for(int i=0;i<taille;++i){
                 if(bricks[i][0]!=null)
                     done=true;
             }
 
             //Si oui, on decale tout
             if(!done){
-                for(int i=0;i<type.getTaille();++i){
-                    for(int j=0;j<type.getTaille()-1;++j){
+                for(int i=0;i<taille;++i){
+                    for(int j=0;j<taille-1;++j){
                         bricks[i][j]=bricks[i][j+1];
                     }
-                    bricks[i][type.getTaille()-1]=null;
+                    bricks[i][taille-1]=null;
                 }
             }
         }
@@ -317,27 +246,7 @@ public class Shape implements Serializable {
     * Permet de créer une pièce aléatoire
  **/ 
     public static Shape getRandomShape(){
-        char random = (char) (Math.random() * 7);
-        
-        switch(random){
-            case 0:
-                return (new Shape(T));
-            case 1:
-                return (new Shape(square));
-            case 2:
-                return (new Shape(rightZ));
-            case 3:
-                return (new Shape(leftZ));
-            case 4:
-                return (new Shape(rightL));
-            case 5:
-                return (new Shape(leftL));
-            case 6:
-                return (new Shape(line));
-            default:
-                break;
-        }
-        return null;
+        return (new Shape());
     }
  
 /**
@@ -350,8 +259,5 @@ public class Shape implements Serializable {
 /**
     * Retourne le type (la forme) de la pièce courante
  **/ 
-    public shapeType getType(){
-        return type;
-    }    
     
 }
