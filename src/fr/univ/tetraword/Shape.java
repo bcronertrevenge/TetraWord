@@ -136,7 +136,7 @@ public class Shape implements Serializable {
     }
  
 /**
-    * Permet l'affichage de la pièce avec ses lettres
+    * Permet l'affichage de la pièce avec ses lettres (dans la console)
  **/ 
     public void printShape(){
         for(int i=0;i<4;++i){
@@ -219,7 +219,7 @@ public class Shape implements Serializable {
 /**
     * Permet de donner à l'utilisateur une lettre en fonction de probabilités
     * @param prob
-    * probabilité d'apparition de la lettre
+    * probabilité
  **/ 
     public static char getLetterFromProb(double prob){
         double total=0;
@@ -241,7 +241,7 @@ public class Shape implements Serializable {
     }
  
 /**
-    * Permet de repositionner une pièce si la place en dessous est vide
+    * Permet de repositionner une pièce si la place au dessus et/ou à gauche est vide
  **/ 
     public void rePosition(){
         boolean done=false;
@@ -300,7 +300,7 @@ public class Shape implements Serializable {
     }
     
 /**
-    * Retourne le côté de la pièce concernée
+    * Retourne le côté droit de la pièce concernée
  **/ 
     public int getRightSide(){
          
@@ -341,7 +341,7 @@ public class Shape implements Serializable {
     }
  
 /**
-    * Retourne un tableau de briques contenues dans la pièce courante
+    * Retourne le tableau de briques contenues dans la pièce courante
  **/ 
     public Brick[][] getBricks(){
         return bricks;    

@@ -34,7 +34,7 @@ public class Box extends JButton {
  /**
     * Constructeur de Box
     * @param shape
-    * la forme que contiendra la box (et les box adjacentes)
+    * la forme que contiendra la box
     * @param brick
     * la brique que contiendra la box
     * 
@@ -90,6 +90,7 @@ public class Box extends JButton {
 
  /**
     * Permet d'obtenir la forme associée à la Box courante
+     * @return 
  **/
     public Shape getShape(){
             return shape;
@@ -97,6 +98,7 @@ public class Box extends JButton {
 
  /**
     * Permet d'obtenir la brique associée à la Box courante
+     * @return 
  **/
     public Brick getBrick(){
             return brick;
@@ -104,6 +106,7 @@ public class Box extends JButton {
 
 /**
     * Permet d'obtenir le modificateur associé à la Box courante
+     * @return 
  **/
     public Modifier getModifier(){
             return modifier;
@@ -111,6 +114,7 @@ public class Box extends JButton {
 
 /**
     * Permet de savoir si une Box est vide ou pas
+     * @return 
  **/
     public boolean isEmpty(){
         if(this==null)
@@ -121,9 +125,9 @@ public class Box extends JButton {
     }
 
 /**
-    * Permet de modifier la Box courante en fonction d'une autre Box existante
+    * Permet d'échanger la Box courante avec une autre Box existante
     * @param bo
-    * La box que l'on souhaite copier
+    * La box avec laquelle on souhaite échanger
  **/
     public void boxChange(Box bo){
         Shape s=shape;
@@ -154,7 +158,7 @@ public class Box extends JButton {
     }
 
 /**
-    * Permet de mettre à jour la Box courante
+    * Permet de mettre à jour la Box courante (Composant Swing)
  **/
     public void rafraichir(){
 
@@ -236,14 +240,5 @@ public class Box extends JButton {
             setBackground(Color.gray);
             setText(String.valueOf(""));
         }
-    }
-
-/**
-    * Permet de changer la couleur de fond d'une Box
- **/
-    public void changeColor(Color color){
-        setBackground(color);
-    }
-
-    
+    }  
 }

@@ -2,11 +2,8 @@ package fr.univ.tetraword;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.util.HashSet;
 
 /**
@@ -40,9 +37,10 @@ public class Dictionary {
 	}
 
 /**
-    * Permet de vérifier l'existence d'un mot dans le dictionnaire
+    * Permet de tester l'expression regulière
     * @param regex
-    * le mot que l'on souhaite faire vérifier
+    * l'expression regulière que l'on souhaite tester
+     * @return 
  **/
         public boolean containsRegEx( String regex ) {
             for( String string : line ) {

@@ -24,8 +24,8 @@ import javax.swing.border.Border;
 
 public class MainGame extends JFrame {
     Vector<Game> Games;
-    HashMap<String,JButton> Composants;
-    HashMap<String,JButton> Composants2;
+    HashMap<String,JComponent> Composants;
+    HashMap<String,JComponent> Composants2;
  
 /**
     * Constructeur du jeu principal
@@ -599,7 +599,7 @@ public class MainGame extends JFrame {
             Font bigCentury = new Font("Century Gothic",0,26);
             Font smallCentury = new Font("Century Gothic",0,18);
             
-            Composants=new HashMap<String,JButton>(); 
+            Composants=new HashMap<String,JComponent>(); 
             
             // Boutons
             JWelcomeButton buttonRetour = new JWelcomeButton("Retour");
@@ -659,6 +659,12 @@ public class MainGame extends JFrame {
             buttonSaisie.setFocusPainted(false);
             Composants.put("Saisie",buttonSaisie);
             
+            JLabel labelTime = new JLabel();
+            labelTime.setFont(copperplate);
+            labelTime.setForeground(new Color(33,91,201));
+            labelTime.setText("Temps");
+            Composants.put("Temps",labelTime);
+            
             JWelcomeButton buttonSauvegarde = new JWelcomeButton("Sauvegarder la partie");
             buttonSauvegarde.setFont(smallCentury);
             buttonSauvegarde.setForeground(Color.WHITE);
@@ -692,10 +698,7 @@ public class MainGame extends JFrame {
             
                        
             // Labels
-            JLabel labelTime = new JLabel();
-            labelTime.setFont(copperplate);
-            labelTime.setForeground(new Color(33,91,201));
-            labelTime.setText("Temps");
+
             
             JLabel labelWorddle = new JLabel();
             labelWorddle.setFont(copperplate);
@@ -837,7 +840,7 @@ public class MainGame extends JFrame {
             
             
             /***** JEU 1 *****/
-            Composants=new HashMap<String,JButton>(); 
+            Composants=new HashMap<String,JComponent>(); 
             
             // Boutons
             JWelcomeButton buttonRetour = new JWelcomeButton("Retour");
@@ -905,6 +908,7 @@ public class MainGame extends JFrame {
             labelTime1.setFont(smallCopperplate);
             labelTime1.setForeground(new Color(33,91,201));
             labelTime1.setText("Temps");
+            Composants.put("Temps",labelTime1);
             
             JLabel labelWorddle1 = new JLabel();
             labelWorddle1.setFont(smallCopperplate);
@@ -932,7 +936,7 @@ public class MainGame extends JFrame {
             
             
             /***** JEU 2 *****/
-            Composants2=new HashMap<String,JButton>(); 
+            Composants2=new HashMap<String,JComponent>(); 
             
             // Boutons
             
@@ -986,6 +990,7 @@ public class MainGame extends JFrame {
             labelTime2.setFont(smallCopperplate);
             labelTime2.setForeground(new Color(33,91,201));
             labelTime2.setText("Temps");
+            Composants2.put("Temps",labelTime2);
             
             JLabel labelWorddle2 = new JLabel();
             labelWorddle2.setFont(smallCopperplate);

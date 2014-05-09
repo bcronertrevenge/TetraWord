@@ -2,33 +2,26 @@ package fr.univ.tetraword;
 
 import com.sun.corba.se.impl.orbutil.ObjectWriter;
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.AffineTransform;
-import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import static java.lang.System.exit;
-import static java.lang.System.out;
 import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
@@ -55,10 +48,10 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     int worddleBoxPosX,worddleBoxPosY;
     long worddleTime, worddleReload, worddleLast, anagTime, fallTime;
     int anagLettres;
-    HashMap<String,JButton> composants;
+    HashMap<String,JComponent> composants;
     IA intelligence;
     boolean pause;
- 
+    long beginTime;
     Game other;
     boolean gameOver;
 
@@ -71,9 +64,9 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     * @param composants
     * les JButton à mettre à jour (saisie, score, niveau)
     * @param ia
-    * Si on a besoin de l'intelligence artificielle
+    * Si le jeu courant est contrôlé par une intelligence artificielle
  **/
-    public Game(JFrame window, Dictionary dictionary,  HashMap<String,JButton> composants, boolean ia){  
+    public Game(JFrame window, Dictionary dictionary,  HashMap<String,JComponent> composants, boolean ia){  
         this.other=null;
         
         if(composants==null)
@@ -92,7 +85,8 @@ public class Game extends Thread implements ActionListener, MouseListener  {
         worddleBoxPosY=-1;
         worddleStartX=new Vector<Integer>();
         worddleStartY=new Vector<Integer>();
-        
+        beginTime=0;
+                
         this.composants=composants;
         anagLine=-1;
         score=0;
@@ -151,7 +145,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     }
 
 /**
-    * Permet de mettre à jour les données du jeu
+    * Permet de mettre à jour les données du jeu (Composants Swing)
  **/
     public void rafraichir(){
         
@@ -163,46 +157,68 @@ public class Game extends Thread implements ActionListener, MouseListener  {
                  }
             }
         gridInterface.repaint();   
-        
+        JButton b;
         if(composants.containsKey("Niveau")){
-            composants.get("Niveau").setForeground(Color.white);
-            composants.get("Niveau").setText(String.valueOf(level));
-            composants.get("Niveau").repaint();
+            b=(JButton) composants.get("Niveau");
+            b.setForeground(Color.white);
+            b.setText(String.valueOf(level));
+            b.repaint();
         }
         if(composants.containsKey("Score")){
-            composants.get("Score").setForeground(Color.white);
-            composants.get("Score").setText(String.valueOf((int)score));
-            composants.get("Score").repaint();
+            b=(JButton) composants.get("Score");
+            b.setForeground(Color.white);
+            b.setText(String.valueOf((int)score));
+            b.repaint();
         }
         if(composants.containsKey("Saisie")){
-            composants.get("Saisie").setForeground(Color.white);
-            composants.get("Saisie").setText(String.valueOf(mot));
-            composants.get("Saisie").repaint();
+            b=(JButton) composants.get("Saisie");
+            b.setForeground(Color.white);
+            b.setText(String.valueOf(mot));
+            b.repaint();
         }
         if(composants.containsKey("Worddle")){
+            b=(JButton) composants.get("Worddle");
             if(System.currentTimeMillis()-worddleLast>=worddleReload){
-                composants.get("Worddle").setBackground(new Color(49,177,19));
-                composants.get("Worddle").setFocusPainted(false);
-                composants.get("Worddle").setText("");
-                composants.get("Worddle").repaint();
+                b.setBackground(new Color(49,177,19));
+                b.setFocusPainted(false);
+                b.setText("");
+                b.repaint();
             }
             else if(mode==2){
-                composants.get("Worddle").setBackground(new Color(221,128,17));
-                composants.get("Worddle").setFocusPainted(false);
-                composants.get("Worddle").setText("");
-                composants.get("Worddle").repaint();
+                b.setBackground(new Color(221,128,17));
+                b.setFocusPainted(false);
+                b.setText("");
+                b.repaint();
             }
             else{
-                composants.get("Worddle").setBackground(new Color(209,7,7));
-                composants.get("Worddle").setFocusPainted(false);
-                composants.get("Worddle").setText("");
-                composants.get("Worddle").repaint();
+                b.setBackground(new Color(209,7,7));
+                b.setFocusPainted(false);
+                b.setText("");
+                b.repaint();
+            }
+        }
+        if(composants.containsKey("Temps")){
+            JLabel l=(JLabel) composants.get("Temps");
+            switch(mode){
+                case 0:
+                        l.setForeground(new Color(33,91,201));
+                        l.setText("Temps");
+                    break;
+                case 1:
+                        l.setForeground(new Color(33,91,201));
+                        l.setText(String.valueOf((anagTime-(System.currentTimeMillis()-beginTime))/1000)+" s restantes");
+                    break;
+                case 2:
+                        l.setForeground(new Color(33,91,201));
+                        l.setText(String.valueOf((worddleTime-(System.currentTimeMillis()-worddleLast))/1000)+" s restantes");
+                    
+                    break;
             }
         }
     }
 
 /**
-    * Permet de mettre à jour la shape suivante
+    * Permet de mettre à jour la shape suivante (Composants Swing)
  **/
     public void rafraichirNextShape(){
         nextInterface.repaint();
@@ -229,7 +245,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     }
 
 /**
-    * Permet de récupérer le mode du jeu (Tetris, Anagramme, Worddle)
+    * Permet de récupérer le mode actuel du jeu (Tetris, Anagramme, Worddle)
  **/
     public int getMode(){
         return mode;
@@ -250,7 +266,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     }
 
 /**
-    * Permet de lancer le jeu
+    * La boucle principale du jeu
  **/
     @Override
     public void run(){
@@ -261,10 +277,9 @@ public class Game extends Thread implements ActionListener, MouseListener  {
         init();
         nextShape=Shape.getRandomShape();
         newShapeInGame();
-        long beginTime=0;
         int nbShape=1;
         boolean modif=false;
-                
+        
         while(!gameOver){
      
                 if(pause){
@@ -412,7 +427,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     }
 
 /**
-    * Permet d'enlever les cases surlignées et de vider le Worddle
+    * Permet d'enlever les cases surlignées et de vider les cases de départ Worddle
  **/
     public void clean(){
            whiteOut();
@@ -477,6 +492,9 @@ public class Game extends Thread implements ActionListener, MouseListener  {
  **/
     public long anagramme(int ligne){
         
+        //Si l'autre joueur est en anagramme, il ne peut pas jouer l'anagramme tout de suite
+        if(other.getMode()==1) return System.currentTimeMillis();
+        
         Border yellowline = BorderFactory.createLineBorder(Color.YELLOW,1);
             for(int j=0;j<10;++j){
                     grid[ligne][j].setBorder(yellowline);
@@ -488,7 +506,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     }
 
 /**
-    * Permet de valider un mot
+    * Permet de valider un mot (ou de finir le mode actuel si le mot est vide)
  **/
     public void validate(){
         if(mode == 1){
@@ -770,13 +788,16 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     }
 
 /**
-    * Permet de tester si la pièce courante peut rotater ou pas
+    * Permet de tester si la pièce courante peut tourner ou pas
  **/
     public boolean canRotate(){
         if(currentShape.x+currentShape.height>=10 || currentShape.y+currentShape.width>=20)
             return false;
-        for(int i=0;i<=currentShape.width;++i){
-            for(int j=0;j<=currentShape.height;++j){
+        int taille=currentShape.width;
+        if(taille < currentShape.height) taille=currentShape.height;
+        
+        for(int i=0;i<=taille;++i){
+            for(int j=0;j<=taille;++j){
                 if(!grid[currentShape.y+i][currentShape.x+j].isEmpty() && grid[currentShape.y+i][currentShape.x+j].getShape()!=currentShape)
                     return false;
             }
@@ -785,7 +806,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     }
 
 /**
-    * Permet de rotater la pièce courante
+    * Permet de tourner la pièce courante ou de monter en mode Worddle
  **/
     public void rotateUp(){
         
@@ -974,9 +995,9 @@ public class Game extends Thread implements ActionListener, MouseListener  {
 	}
 
 /**
-    * Permet d'inverser la place d'une Box dans la grille
+    * Permet d'avoir la Box inverse d'une box passée en paramètre
     * @param b
-    * La Box que l'on souhaite inverser
+    * La Box dont on veut l'inverse
  **/ 
     public Box getInverse(Box b){
         for(int i=0;i<20;++i){
@@ -987,6 +1008,12 @@ public class Game extends Thread implements ActionListener, MouseListener  {
         }
         return null;
     }
+    
+/**
+    * La méthode actionPerformed de l'interface ActionListener, appelé quand l'on clique sur une Box
+    * @param evt
+    * La Box sur laquelle l'utilisateur a cliqué
+ **/
     
     public void actionPerformed(java.awt.event.ActionEvent evt) {
              if(evt.getSource() instanceof Box){
@@ -1027,14 +1054,15 @@ public class Game extends Thread implements ActionListener, MouseListener  {
             anagLettres++; //Le nombre de lettres minimum en anagramme
         }
         if(composants.containsKey("Niveau")){
-            composants.get("Niveau").setForeground(Color.white);
-            composants.get("Niveau").setText(String.valueOf(level));
-            composants.get("Niveau").repaint();
+            JButton b=(JButton) composants.get("Niveau");
+            b.setForeground(Color.white);
+            b.setText(String.valueOf(level));
+            b.repaint();
         }
     }
  
 /**
-    * Permet l'ajout d'un modificateur
+    * Ajoute un modificateur au hasard dans une case vide de la grille
  **/
     public void addModifier(){
         int x,y;
@@ -1056,22 +1084,20 @@ public class Game extends Thread implements ActionListener, MouseListener  {
         mode=i;
     }
     
-        
     @Override
-    public void mouseClicked(MouseEvent me) {
-        
-    }
+    public void mouseClicked(MouseEvent me) {}
 
     @Override
-    public void mousePressed(MouseEvent me) {
-        
-    }
+    public void mousePressed(MouseEvent me) {}
 
     @Override
-    public void mouseReleased(MouseEvent me) {
-        
-    }
+    public void mouseReleased(MouseEvent me) {}
 
+    /**
+    * Permet de recharger la grille
+    * @param me
+    * L'event MouseEvent de l'interface MouseListener
+ **/        
     @Override
     public void mouseEntered(MouseEvent me) {
         gridInterface.repaint();   

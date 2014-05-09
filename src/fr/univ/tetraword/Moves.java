@@ -27,7 +27,7 @@ public class Moves {
  /**
         * Constructeur avec paramètres
         * @param deplacement
-        * indique le nombre de déplacements latéraux (gauche-droite) du mouvement
+        * indique le déplacement latéral (gauche-droite) du mouvement
         * @param rotate
         * indique le nombre de rotations du mouvement
         * @param nblignes
@@ -35,7 +35,7 @@ public class Moves {
         * @param hauteurMax
         * indique la hauteur maximale qu'un mouvement peut atteindre
         * @param trous
-        * nombre de trous que l'on peut faire sous la pièce concernée par le mouvement
+        * nombre de trous que l'on fait sous la pièce concernée par le mouvement
  **/
     public Moves(int deplacement, int rotate,int nblignes,int hauteurMax, int trous){
         Moves=new HashMap<String,Integer>();
@@ -56,28 +56,28 @@ public class Moves {
     }
     
 /**
-        Permet de savoir si on peut rotater une pièce
+        On recupere le nombre de rotations du mouvement
  **/   
     public int getRotation(){
         return Moves.get("Rotate");
     }
     
 /**
-        Permet de savoir si on peut déplacer une pièce
+        On recupere le deplacement latéral du mouvement
  **/  
     public int getDeplacement(){
         return Moves.get("Deplacement");
     }
 
 /**
-        Permet d'autoriser la rotation d'une pièce
+        Permet d'inscrire un nombre de rotations au mouvement
  **/  
     public void setRotation(int rotate){
         Moves.put("Rotate",rotate);
     }
 
 /**
-        Permet d'autoriser le déplacement latéral d'une pièce
+        Permet d'inscrire un nombre de deplacement au mouvement
  **/
     public void setDeplacement(int deplacement){
         Moves.put("Deplacement",deplacement);

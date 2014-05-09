@@ -1,7 +1,6 @@
 package fr.univ.tetraword;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Vector;
 
 /**
@@ -26,7 +25,7 @@ public class IA {
     }
  
 /**
-    * Permet de lancer le jeu de l'intelligence artificielle
+    * Boucle generale de l'intelligence artificielle
  **/
     public void play(){
         
@@ -81,7 +80,7 @@ public class IA {
     }
 
  /**
-    * Permet d'enregistrer tous les mouvements possibles d' une pièce
+    * Enregistre tous les mouvements possibles qu'une pièce peut faire
  **/
     public void lookPath(){
         Vector<Moves> moves=new Vector<Moves>();
@@ -144,7 +143,7 @@ public class IA {
     }
 
  /**
-    * Permet de trouver le meilleur chemin d'une pièce à positionner en fonction des mouvements possibles
+    * Permet de trouver le meilleur chemin d'une pièce à positionner, parmi tous les mouvements possibles
     * @param moves
     * mouvements possibles de la pièce courante
  **/
@@ -193,7 +192,7 @@ public class IA {
     }
     
  /**
-    * Permet de nettoyer les derniers mouvements de la pièce courante
+    * Permet de nettoyer le dernier mouvement de la pièce courante
  **/
     public void clearLastMove(){
         
@@ -227,7 +226,7 @@ public class IA {
     }
 
  /**
-    * Permet à l'IA de trouver un anagramme en fonction de lettres
+    * Permet à l'IA de trouver un anagramme en fonction des lettres présentes sur la ligne
     * @param mot
     * les lettres à utiliser pour trouver un anagramme
  **/
@@ -282,9 +281,9 @@ public class IA {
     * @param mot
     * le mot qui est en train d'être composé
     * @param x
-    * la position en x de la dernière lettre sélectionnée
+    * la position en x de la dernière Box sélectionnée
     * * @param x
-    * la position en y de la dernière lettre sélectionnée
+    * la position en y de la dernière Box sélectionnée
  **/
     public boolean findWordWorddle(String mot,int x, int y){
         char lettre;
