@@ -19,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -46,7 +47,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     int worddleBoxPosX,worddleBoxPosY;
     long worddleTime, worddleReload, worddleLast, anagTime, fallTime;
     int anagLettres;
-    HashMap<String,JButton> composants;
+    HashMap<String,JComponent> composants;
     IA intelligence;
     boolean pause;
  
@@ -64,7 +65,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     * @param ia
     * Si le jeu courant est contrôlé par une intelligence artificielle
  **/
-    public Game(JFrame window, Dictionary dictionary,  HashMap<String,JButton> composants, boolean ia){  
+    public Game(JFrame window, Dictionary dictionary,  HashMap<String,JComponent> composants, boolean ia){  
         this.other=null;
         
         if(composants==null)
@@ -154,40 +155,44 @@ public class Game extends Thread implements ActionListener, MouseListener  {
                  }
             }
         gridInterface.repaint();   
-        
+        JButton b;
         if(composants.containsKey("Niveau")){
-            composants.get("Niveau").setForeground(Color.white);
-            composants.get("Niveau").setText(String.valueOf(level));
-            composants.get("Niveau").repaint();
+            b=(JButton) composants.get("Niveau");
+            b.setForeground(Color.white);
+            b.setText(String.valueOf(level));
+            b.repaint();
         }
         if(composants.containsKey("Score")){
-            composants.get("Score").setForeground(Color.white);
-            composants.get("Score").setText(String.valueOf((int)score));
-            composants.get("Score").repaint();
+            b=(JButton) composants.get("Score");
+            b.setForeground(Color.white);
+            b.setText(String.valueOf((int)score));
+            b.repaint();
         }
         if(composants.containsKey("Saisie")){
-            composants.get("Saisie").setForeground(Color.white);
-            composants.get("Saisie").setText(String.valueOf(mot));
-            composants.get("Saisie").repaint();
+            b=(JButton) composants.get("Saisie");
+            b.setForeground(Color.white);
+            b.setText(String.valueOf(mot));
+            b.repaint();
         }
         if(composants.containsKey("Worddle")){
+            b=(JButton) composants.get("Worddle");
             if(System.currentTimeMillis()-worddleLast>=worddleReload){
-                composants.get("Worddle").setBackground(new Color(49,177,19));
-                composants.get("Worddle").setFocusPainted(false);
-                composants.get("Worddle").setText("");
-                composants.get("Worddle").repaint();
+                b.setBackground(new Color(49,177,19));
+                b.setFocusPainted(false);
+                b.setText("");
+                b.repaint();
             }
             else if(mode==2){
-                composants.get("Worddle").setBackground(new Color(221,128,17));
-                composants.get("Worddle").setFocusPainted(false);
-                composants.get("Worddle").setText("");
-                composants.get("Worddle").repaint();
+                b.setBackground(new Color(221,128,17));
+                b.setFocusPainted(false);
+                b.setText("");
+                b.repaint();
             }
             else{
-                composants.get("Worddle").setBackground(new Color(209,7,7));
-                composants.get("Worddle").setFocusPainted(false);
-                composants.get("Worddle").setText("");
-                composants.get("Worddle").repaint();
+                b.setBackground(new Color(209,7,7));
+                b.setFocusPainted(false);
+                b.setText("");
+                b.repaint();
             }
         }
     }
@@ -1027,9 +1032,10 @@ public class Game extends Thread implements ActionListener, MouseListener  {
             anagLettres++; //Le nombre de lettres minimum en anagramme
         }
         if(composants.containsKey("Niveau")){
-            composants.get("Niveau").setForeground(Color.white);
-            composants.get("Niveau").setText(String.valueOf(level));
-            composants.get("Niveau").repaint();
+            JButton b=(JButton) composants.get("Niveau");
+            b.setForeground(Color.white);
+            b.setText(String.valueOf(level));
+            b.repaint();
         }
     }
  

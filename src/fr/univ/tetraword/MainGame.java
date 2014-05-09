@@ -24,8 +24,8 @@ import javax.swing.border.Border;
 
 public class MainGame extends JFrame {
     Vector<Game> Games;
-    HashMap<String,JButton> Composants;
-    HashMap<String,JButton> Composants2;
+    HashMap<String,JComponent> Composants;
+    HashMap<String,JComponent> Composants2;
  
 /**
     * Constructeur du jeu principal
@@ -599,7 +599,7 @@ public class MainGame extends JFrame {
             Font bigCentury = new Font("Century Gothic",0,26);
             Font smallCentury = new Font("Century Gothic",0,18);
             
-            Composants=new HashMap<String,JButton>(); 
+            Composants=new HashMap<String,JComponent>(); 
             
             // Boutons
             JWelcomeButton buttonRetour = new JWelcomeButton("Retour");
@@ -837,7 +837,7 @@ public class MainGame extends JFrame {
             
             
             /***** JEU 1 *****/
-            Composants=new HashMap<String,JButton>(); 
+            Composants=new HashMap<String,JComponent>(); 
             
             // Boutons
             JWelcomeButton buttonRetour = new JWelcomeButton("Retour");
@@ -932,7 +932,7 @@ public class MainGame extends JFrame {
             
             
             /***** JEU 2 *****/
-            Composants2=new HashMap<String,JButton>(); 
+            Composants2=new HashMap<String,JComponent>(); 
             
             // Boutons
             

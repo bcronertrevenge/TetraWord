@@ -12,6 +12,7 @@ import static fr.univ.tetraword.modifierType.speedFall;
 import static fr.univ.tetraword.modifierType.switchGrid;
 import java.awt.Color;
 import java.io.Serializable;
+import javax.swing.JButton;
 
 /**
     * Modifier est la classe représentant un modificateur du jeu
@@ -132,17 +133,19 @@ public class Modifier {
             case bonus:
                 game.score+=50;
                 if(game.composants.containsKey("Score")){
-                    game.composants.get("Score").setForeground(Color.green);
-                    game.composants.get("Score").setText(String.valueOf((int)game.score));
-                    game.composants.get("Score").repaint();
+                    JButton b=(JButton) game.composants.get("Score");
+                    b.setForeground(Color.green);
+                    b.setText(String.valueOf((int)game.score));
+                    b.repaint();
                 }
                 break;
             case malus:
                 game.score-=50;
                 if(game.composants.containsKey("Score")){
-                    game.composants.get("Score").setForeground(Color.red);
-                    game.composants.get("Score").setText(String.valueOf((int)game.score));
-                    game.composants.get("Score").repaint();
+                    JButton b=(JButton) game.composants.get("Score");
+                    b.setForeground(Color.red);
+                    b.setText(String.valueOf((int)game.score));
+                    b.repaint();
                 }
                 break;
             case explode:
