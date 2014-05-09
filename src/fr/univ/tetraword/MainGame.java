@@ -197,7 +197,7 @@ public class MainGame extends JFrame {
                 }
             });
                         
-            JWelcomeButton options = new JWelcomeButton("Options");
+            JWelcomeButton options = new JWelcomeButton("Editeur de pièce");
             options.setPreferredSize(new Dimension(220,60));
             options.setForeground(Color.white);
             options.setFont(century);
@@ -307,7 +307,16 @@ public class MainGame extends JFrame {
             panel.setPreferredSize(new Dimension(1024, 768));
             
             // Fonts
-            Font copperplate = new Font("Copperplate Gothic Bold",0,26);
+            /*Font copperplate = new Font("Copperplate Gothic Bold",0,26);*/
+            Font copperplate  = null;
+            try
+            {
+                 File fis = new File("data/COPRGTB.TTF");
+                 copperplate = Font.createFont(Font.TRUETYPE_FONT, fis);
+                 copperplate = copperplate.deriveFont((float)26.0);
+            }
+            catch (Exception e) {} 
+            
             Font century = new Font("Century Gothic",0,26);
                        
             // Boutons
