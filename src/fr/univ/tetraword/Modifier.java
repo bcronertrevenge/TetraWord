@@ -38,7 +38,7 @@ public class Modifier {
             a=(int)(Math.random()*10);
         else
             a=(int)(Math.random()*8);
-
+a=5;
         switch(a){
             case 0:
                 type=speedFall;
@@ -132,21 +132,9 @@ public class Modifier {
                 break;
             case bonus:
                 game.score+=50;
-                if(game.composants.containsKey("Score")){
-                    JButton b=(JButton) game.composants.get("Score");
-                    b.setForeground(Color.green);
-                    b.setText(String.valueOf((int)game.score));
-                    b.repaint();
-                }
                 break;
             case malus:
                 game.score-=50;
-                if(game.composants.containsKey("Score")){
-                    JButton b=(JButton) game.composants.get("Score");
-                    b.setForeground(Color.red);
-                    b.setText(String.valueOf((int)game.score));
-                    b.repaint();
-                }
                 break;
             case explode:
                 //Dans la shape

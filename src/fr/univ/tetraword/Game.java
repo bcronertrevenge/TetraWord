@@ -208,12 +208,20 @@ public class Game extends Thread implements ActionListener, MouseListener  {
                         l.setText("Temps");
                     break;
                 case 1:
-                        l.setForeground(new Color(33,91,201));
-                        l.setText(String.valueOf((anagTime-(System.currentTimeMillis()-beginTime))/1000)+" s restantes");
+                        long timeAnag=anagTime-(System.currentTimeMillis()-beginTime);
+                        if(timeAnag < 6000)
+                            l.setForeground(Color.red);
+                        else
+                            l.setForeground(new Color(33,91,201));
+                        l.setText(String.valueOf(timeAnag/1000)+" s restantes");
                     break;
                 case 2:
-                        l.setForeground(new Color(33,91,201));
-                        l.setText(String.valueOf((worddleTime-(System.currentTimeMillis()-worddleLast))/1000)+" s restantes");
+                        long timeWorddle=worddleTime-(System.currentTimeMillis()-worddleLast);
+                        if(timeWorddle < 6000)
+                            l.setForeground(Color.red);
+                        else
+                            l.setForeground(new Color(33,91,201));
+                        l.setText(String.valueOf(timeWorddle/1000)+" s restantes");
                     
                     break;
             }
