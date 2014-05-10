@@ -27,7 +27,7 @@ public class MainGame extends JFrame {
     Vector<Game> Games;
     HashMap<String,JComponent> Composants;
     HashMap<String,JComponent> Composants2;
- 
+    Options options;
 /**
     * Constructeur du jeu principal
  **/
@@ -370,6 +370,7 @@ public class MainGame extends JFrame {
         
             //Lecture des shapes
             shapeType.readShapes();
+            options=new Options();
             
             // Création de la fenêtre
             this.setTitle("Bienvenue sur Tetra Word");
@@ -923,7 +924,7 @@ public class MainGame extends JFrame {
             Dictionary dictionary=new Dictionary();
             Games=new Vector<Game>();
             
-            Game game=new Game(this,dictionary,Composants,false);
+            Game game=new Game(this,dictionary,Composants,false,options);
             game.start();
             Games.add(game);
             
@@ -1138,7 +1139,7 @@ public class MainGame extends JFrame {
             Dictionary dictionary=new Dictionary();
             Games=new Vector<Game>();
             
-            Game game1=new Game(this,dictionary,Composants,false);
+            Game game1=new Game(this,dictionary,Composants,false,options);
             game1.start();
             Games.add(game1);
             
@@ -1216,7 +1217,7 @@ public class MainGame extends JFrame {
             Composants2.put("Saisie",buttonSaisie2);
             
             // Création du jeu
-            Game game2=new Game(this,dictionary,Composants2,ia);
+            Game game2=new Game(this,dictionary,Composants2,ia,options);
             game2.start();
             Games.add(game2);
             

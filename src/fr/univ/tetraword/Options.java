@@ -15,15 +15,24 @@ public class Options {
         long worddleReload; //Le temps de rechargement de Worddle
         long anagTime; //Le temps en mode anagramme
         long fallTime; //Le temps de chute des pièces
-        int anagLettres; // lettres minimales pour l'anagramme
+        int anagLettresMax; // lettres minimales pour l'anagramme
         int frequenceModif; // frequence des modificateurs
         
-    public Options(long worddleTime, long worddleReload, long anagTime, long fallTime, int anagLettres, int frequenceModif){
+        public Options(){
+            worddleTime=40000;
+            worddleReload=20000;
+            anagTime=30000;
+            fallTime=1000;
+            anagLettresMax=2;
+            frequenceModif=3;
+        }
+        
+    public Options(long worddleTime, long worddleReload, long anagTime, long fallTime, int anagLettresMax, int frequenceModif){
         this.worddleTime=worddleTime;
         this.worddleReload=worddleReload;
         this.anagTime=anagTime;
         this.fallTime=fallTime;
-        this.anagLettres=anagLettres;
+        this.anagLettresMax=anagLettresMax;
         this.frequenceModif=frequenceModif;
     }
 }
