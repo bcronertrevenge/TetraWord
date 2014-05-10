@@ -1075,7 +1075,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
         worddleReload=options.worddleReload+level*50; //Le temps de rechargement de Worddle
         anagTime=options.anagTime-level*50; //Le temps en mode anagramme
         fallTime=options.fallTime-level*5; //Le temps de chute des pièces
-        if(anagLettres<options.anagLettresMax && level%3==0){
+        if(anagLettres<4 && level%3==0){
             anagLettres++; //Le nombre de lettres minimum en anagramme
         }
         if(composants.containsKey("Niveau")){

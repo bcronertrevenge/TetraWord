@@ -1481,7 +1481,21 @@ public class MainGame extends JFrame {
             JLabel labelSlider1 = new JLabel();
             labelSlider1.setHorizontalAlignment(SwingConstants.CENTER);
             labelSlider1.setText(String.valueOf(jSlider1.getValue()));
-            jSlider1.addChangeListener(new SliderListener());
+            jSlider1.addChangeListener(new SliderListener(labelSlider1,options){
+                            @Override   
+                public void stateChanged(ChangeEvent e) {
+                    JSlider source = (JSlider)e.getSource();
+                    if (!source.getValueIsAdjusting()) {
+                        int value = (int)source.getValue();
+                        if (label!=null){
+                            label.setText(String.valueOf(value));
+                            label.repaint();
+                            
+                        }
+                        options.worddleTime=value*1000;
+                    }    
+                }
+            });
 
             
             // Temps rechargement Worddle
@@ -1492,7 +1506,21 @@ public class MainGame extends JFrame {
             JLabel labelSlider2 = new JLabel();
             labelSlider2.setHorizontalAlignment(SwingConstants.CENTER);
             labelSlider2.setText(String.valueOf(jSlider2.getValue()));
-            jSlider2.addChangeListener(new SliderListener());
+            jSlider2.addChangeListener(new SliderListener(labelSlider2,options){
+                            @Override   
+                public void stateChanged(ChangeEvent e) {
+                    JSlider source = (JSlider)e.getSource();
+                    if (!source.getValueIsAdjusting()) {
+                        int value = (int)source.getValue();
+                        if (label!=null){
+                            label.setText(String.valueOf(value));
+                            label.repaint();
+                            
+                        }
+                        options.worddleReload=value*1000;
+                    }    
+                }
+            });
             
             // Mode Anagramme
             JSlider jSlider3 = new JSlider();
@@ -1502,7 +1530,21 @@ public class MainGame extends JFrame {
             JLabel labelSlider3 = new JLabel();
             labelSlider3.setHorizontalAlignment(SwingConstants.CENTER);
             labelSlider3.setText(String.valueOf(jSlider3.getValue()));
-            jSlider3.addChangeListener(new SliderListener());
+            jSlider3.addChangeListener(new SliderListener(labelSlider3,options){
+                            @Override   
+                public void stateChanged(ChangeEvent e) {
+                    JSlider source = (JSlider)e.getSource();
+                    if (!source.getValueIsAdjusting()) {
+                        int value = (int)source.getValue();
+                        if (label!=null){
+                            label.setText(String.valueOf(value));
+                            label.repaint();
+                            
+                        }
+                        options.anagTime=value*1000;
+                    }    
+                }
+            });
             
             // Chute d'une pièce
             JSlider jSlider4 = new JSlider();
@@ -1512,7 +1554,20 @@ public class MainGame extends JFrame {
             JLabel labelSlider4 = new JLabel();
             labelSlider4.setHorizontalAlignment(SwingConstants.CENTER);
             labelSlider4.setText(String.valueOf(jSlider4.getValue()));
-            jSlider4.addChangeListener(new SliderListener());
+            jSlider4.addChangeListener(new SliderListener(labelSlider4,options){
+                            @Override   
+                public void stateChanged(ChangeEvent e) {
+                    JSlider source = (JSlider)e.getSource();
+                    if (!source.getValueIsAdjusting()) {
+                        int value = (int)source.getValue();
+                        if (label!=null){
+                            label.setText(String.valueOf(value));
+                            label.repaint();
+                        }
+                        options.fallTime=value*1000;
+                    }    
+                }
+            });
             
             // Fréquence Modificateurs
             JSlider jSlider5 = new JSlider();
@@ -1522,7 +1577,22 @@ public class MainGame extends JFrame {
             JLabel labelSlider5 = new JLabel();
             labelSlider5.setHorizontalAlignment(SwingConstants.CENTER);
             labelSlider5.setText(String.valueOf(jSlider5.getValue()));
-            jSlider5.addChangeListener(new SliderListener());
+            jSlider5.addChangeListener(new SliderListener(labelSlider5,options){
+                            @Override   
+                public void stateChanged(ChangeEvent e) {
+                    JSlider source = (JSlider)e.getSource();
+                    if (!source.getValueIsAdjusting()) {
+                        int value = (int)source.getValue();
+                        if (label!=null){
+                            label.setText(String.valueOf(value));
+                            label.repaint();
+                        }
+                        
+                        options.frequenceModif=value;
+                        
+                    }    
+                }
+            });
             
             javax.swing.GroupLayout layout = new javax.swing.GroupLayout(panel);
             panel.setLayout(layout);
