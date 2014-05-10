@@ -1301,7 +1301,7 @@ public class MainGame extends JFrame {
                 @Override
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     int r = (int) (Math.random() * shapeTypes.size());
-                    System.out.println(shapeTypes.size());
+                    
                     for(int i=0;i<4;++i){
                         for(int j=0;j<4;++j){
                             tab[i][j]=shapeTypes.get(r)[i][j];
