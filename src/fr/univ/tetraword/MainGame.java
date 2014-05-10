@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.event.ChangeEvent;
 
 /**
     * MainGame est la classe représentant le jeu principal 
@@ -83,6 +84,13 @@ public class MainGame extends JFrame {
     * Lorsque l'on clique sur "Options"
  **/
     public void optionsActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
+        options();
+    }
+
+/**
+    * Lorsque l'on clique sur "Editeur de pièces"
+ **/
+    public void shapeEditorActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
         shapeEditor();
     }
  
@@ -417,7 +425,7 @@ public class MainGame extends JFrame {
                 }
             });
                         
-            JWelcomeButton options = new JWelcomeButton("Editeur de pièce");
+            JWelcomeButton options = new JWelcomeButton("Options");
             options.setPreferredSize(new Dimension(220,60));
             options.setForeground(Color.white);
             options.setFont(century);
@@ -1383,6 +1391,223 @@ public class MainGame extends JFrame {
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.requestFocusInWindow();
     }
+
+/**
+    * Fenêtre avec les options du jeu
+ **/ 
+    public void options() throws IOException{
+            // Création de la fenêtre
+            this.setTitle("Options du jeu");
+            this.setPreferredSize(new Dimension(1024,768));
+                        
+            // Arrière plan
+            JPanel panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/options.jpg"));
+            panel.setMaximumSize(new Dimension(1024, 768));
+            panel.setMinimumSize(new Dimension(600, 400));
+            panel.setPreferredSize(new Dimension(1024, 768));
+            
+            // Fonts            
+            Font smallCentury = new Font("Century Gothic",0,18);
+            Font bigCentury = new Font("Century Gothic",0,24);
+                                  
+            // Boutons
+            JWelcomeButton buttonRetour = new JWelcomeButton("Retour");
+            buttonRetour.setFont(smallCentury);
+            buttonRetour.setForeground(Color.WHITE);
+            buttonRetour.setFocusPainted(false);
+            buttonRetour.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        retourActionPerformed(evt);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+            });
+            
+            JWelcomeButton buttonEditor = new JWelcomeButton("Editeur de pièces");
+            buttonEditor.setFont(bigCentury);
+            buttonEditor.setForeground(Color.WHITE);
+            buttonEditor.setFocusPainted(false);
+            buttonEditor.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        shapeEditorActionPerformed(evt);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+            });
+            
+            // Labels
+            JLabel TimeWorddle = new JLabel();
+            TimeWorddle.setFont(smallCentury);
+            TimeWorddle.setForeground(new Color(33,91,201));
+            TimeWorddle.setText("Temps du mode Worddle (s)");
+            
+            JLabel LoadWorddle = new JLabel();
+            LoadWorddle.setFont(smallCentury);
+            LoadWorddle.setForeground(new Color(33,91,201));
+            LoadWorddle.setText("Rechargement du mode Worddle (s)");
+            
+            JLabel TimeAnag = new JLabel();
+            TimeAnag.setFont(smallCentury);
+            TimeAnag.setForeground(new Color(33,91,201));
+            TimeAnag.setText("Temps du mode Anagramme (s)");
+            
+            JLabel TimeChute = new JLabel();
+            TimeChute.setFont(smallCentury);
+            TimeChute.setForeground(new Color(33,91,201));
+            TimeChute.setText("Temps de chute d'une pièce (s)");
+            
+            JLabel FreqModif = new JLabel();
+            FreqModif.setFont(smallCentury);
+            FreqModif.setForeground(new Color(33,91,201));
+            FreqModif.setText("Fréquence des modificateurs (nb de pièces)");
+            
+            // Sliders
+            
+            // Temps mode Worddle
+            JSlider jSlider1 = new JSlider();
+            jSlider1.setMaximum(40);
+            jSlider1.setMinimum(20);
+            jSlider1.setValue(30);
+            JLabel labelSlider1 = new JLabel();
+            labelSlider1.setHorizontalAlignment(SwingConstants.CENTER);
+            labelSlider1.setText(String.valueOf(jSlider1.getValue()));
+            jSlider1.addChangeListener(new SliderListener());
+
+            
+            // Temps rechargement Worddle
+            JSlider jSlider2 = new JSlider();
+            jSlider2.setMaximum(40);
+            jSlider2.setMinimum(20);
+            jSlider2.setValue(30);
+            JLabel labelSlider2 = new JLabel();
+            labelSlider2.setHorizontalAlignment(SwingConstants.CENTER);
+            labelSlider2.setText(String.valueOf(jSlider2.getValue()));
+            jSlider2.addChangeListener(new SliderListener());
+            
+            // Mode Anagramme
+            JSlider jSlider3 = new JSlider();
+            jSlider3.setMaximum(40);
+            jSlider3.setMinimum(20);
+            jSlider3.setValue(30);
+            JLabel labelSlider3 = new JLabel();
+            labelSlider3.setHorizontalAlignment(SwingConstants.CENTER);
+            labelSlider3.setText(String.valueOf(jSlider3.getValue()));
+            jSlider3.addChangeListener(new SliderListener());
+            
+            // Chute d'une pièce
+            JSlider jSlider4 = new JSlider();
+            jSlider4.setMaximum(40);
+            jSlider4.setMinimum(20);
+            jSlider4.setValue(30);
+            JLabel labelSlider4 = new JLabel();
+            labelSlider4.setHorizontalAlignment(SwingConstants.CENTER);
+            labelSlider4.setText(String.valueOf(jSlider4.getValue()));
+            jSlider4.addChangeListener(new SliderListener());
+            
+            // Fréquence Modificateurs
+            JSlider jSlider5 = new JSlider();
+            jSlider5.setMaximum(5);
+            jSlider5.setMinimum(1);
+            jSlider5.setValue(3);
+            JLabel labelSlider5 = new JLabel();
+            labelSlider5.setHorizontalAlignment(SwingConstants.CENTER);
+            labelSlider5.setText(String.valueOf(jSlider5.getValue()));
+            jSlider5.addChangeListener(new SliderListener());
+            
+            javax.swing.GroupLayout layout = new javax.swing.GroupLayout(panel);
+            panel.setLayout(layout);
+            layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(65, 65, 65)
+                            .addComponent(buttonRetour, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(135, 135, 135)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(buttonEditor, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(FreqModif, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(TimeChute, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(TimeAnag, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(LoadWorddle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(TimeWorddle, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(114, 114, 114)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(labelSlider5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jSlider2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jSlider1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jSlider3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jSlider4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jSlider5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(labelSlider1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(labelSlider2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(labelSlider3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(labelSlider4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))))
+                    .addContainerGap(275, Short.MAX_VALUE))
+            );
+            layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(42, 42, 42)
+                    .addComponent(buttonRetour, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(104, 104, 104)
+                                    .addComponent(labelSlider1)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addGap(117, 117, 117)
+                                    .addComponent(TimeWorddle, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGap(46, 46, 46)
+                            .addComponent(LoadWorddle, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(labelSlider2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jSlider2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGap(46, 46, 46)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(TimeAnag, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(labelSlider3)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jSlider3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGap(40, 40, 40)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(TimeChute, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(labelSlider4)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jSlider4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGap(34, 34, 34)
+                    .addComponent(labelSlider5)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(FreqModif)
+                        .addComponent(jSlider5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(44, 44, 44)
+                    .addComponent(buttonEditor, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(120, Short.MAX_VALUE))
+            );
+            this.pack();
+            this.setVisible(true);
+            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
     
  /**
     * Fenêtre d'édition de pièce
@@ -1411,7 +1636,7 @@ public class MainGame extends JFrame {
                 @Override
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     try {
-                        retourActionPerformed(evt);
+                        optionsActionPerformed(evt);
                     } catch (IOException ex) {
                         Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
                     }
