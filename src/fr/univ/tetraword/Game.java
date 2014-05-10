@@ -9,9 +9,11 @@ import java.awt.event.MouseListener;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import static java.lang.System.exit;
 import java.util.HashMap;
 import java.util.Vector;
@@ -948,56 +950,56 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     * @param savedGame
     * Vecteurs qui contient un ou plusieurs jeux
  **/
-    public static void saveGame(Vector<Game> savedGame) throws IOException
+  public static void saveGame(Vector<Game> savedGame) throws IOException
     {
-	try{
-            FileWriter fw = new FileWriter("game.txt", true);
-            BufferedWriter output = new BufferedWriter(fw);
-            output.write("CurrentShape afaire ");
-            output.write("NextShape afaire ");
-            output.write("Score "+savedGame.get(0).score);
-            output.write("Level "+savedGame.get(0).level);
-            output.flush();	
-            output.close();
-            
-	}
-            catch(IOException ioe){
-		System.out.print("Erreur : ");
-		ioe.printStackTrace();
-            }
-        /*ObjectOutputStream output = null;
-          try {
-            output = new ObjectOutputStream(
-                    new BufferedOutputStream(
-                            new FileOutputStream(
-                                    new File("game.txt"))));
-            output.writeObject(savedGame.get(0));
-            output.close();
-        } catch (FileNotFoundException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        } catch (IOException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }*/
+    try {
 
+        FileOutputStream file = new FileOutputStream("save.txt");
+        ObjectOutputStream object= new ObjectOutputStream(file);
+        try {
+            object.writeObject(savedGame);
+            object.flush();
         }
+        finally{
+            try{
+                object.close();
+            }
+            finally { 
+                file.close();
+            }
+        }
+    } 
+    catch(IOException ioe) {}
+ 
+    }
 
  /**
     * Permet de charger un jeu déjà existant
  **/
-	public static Game[] readGame()
+	public static Vector<Game> readGame()
 	{ 
-		Game[] game=new Game[0];
-		try 
-		{
-			ObjectInputStream save=new ObjectInputStream(new FileInputStream("SavedGame.dat"));
-			game=(Game[]) save.readObject();
-		} catch (FileNotFoundException e) {} 
-		catch (IOException e) {e.printStackTrace();} 
-		catch (ClassNotFoundException e) {e.printStackTrace();}
-		return game;
-	}
+		 Vector<Game> loadGames=null;
+ 
+            try {
+                FileInputStream file2 = new FileInputStream("save.txt");
+                ObjectInputStream object2= new ObjectInputStream(file2);
+                try {
+                    System.out.println("Chargement en cour...");
+                    loadGames = (Vector<Game>) object2.readObject();
+                }
+                finally{
+                    try{
+                        object2.close();
+                    }
+                    finally {
+                        file2.close();
+                    }
+                }
+            }
+            catch(IOException ioe) {}
+            catch(ClassNotFoundException cnfe) {}
+         return loadGames;
+        }
 
 /**
     * Permet d'avoir la Box inverse d'une box passée en paramètre
