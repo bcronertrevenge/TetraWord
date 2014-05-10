@@ -1,6 +1,7 @@
 package fr.univ.tetraword;
 
 import fr.univ.graphicinterface.JWelcomeButton;
+import static fr.univ.tetraword.shapeType.shapeTypes;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -111,18 +112,233 @@ public class MainGame extends JFrame {
     * Lorsque l'on clique sur "Charger un partie"
  **/
     public void chargerPartieActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
-        JFileChooser dialogue = new JFileChooser(new File("."));
-	PrintWriter sortie;
-	File fichier;
-	
-	if (dialogue.showOpenDialog(null)== 
-	    JFileChooser.APPROVE_OPTION) {
-	    fichier = dialogue.getSelectedFile();
-	    sortie = new PrintWriter
-		(new FileWriter(fichier.getPath(), true));
-	    sortie.println("Fichier chargé");
-	    sortie.close();
-	}
+        // Changement du titre
+            this.setTitle("Vous jouez à Tetra Word en Solo");
+            this.setPreferredSize(new Dimension(1024,768));
+                        
+            // Arrière plan
+            JPanel panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/game.jpg"));
+            panel.setMaximumSize(new Dimension(1024, 768));
+            panel.setMinimumSize(new Dimension(600, 400));
+            panel.setPreferredSize(new Dimension(1024, 768));
+            
+            // Fonts
+            Font copperplate = new Font("Copperplate Gothic Bold",0,22);
+            Font bigCentury = new Font("Century Gothic",0,26);
+            Font smallCentury = new Font("Century Gothic",0,18);
+            
+            Composants=new HashMap<>(); 
+            
+            // Boutons
+            JWelcomeButton buttonRetour = new JWelcomeButton("Retour");
+            buttonRetour.setFont(bigCentury);
+            buttonRetour.setForeground(Color.WHITE);
+            buttonRetour.setFocusPainted(false);
+            buttonRetour.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        retourActionPerformed(evt);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+            });
+            
+            JWelcomeButton buttonRegles = new JWelcomeButton("?");
+            buttonRegles.setFont(smallCentury);
+            buttonRegles.setForeground(Color.WHITE);
+            buttonRegles.setFocusPainted(false);
+            buttonRegles.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        firstReglesActionPerformed(evt);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+            });
+            
+            JButton buttonWorddle = new JButton("");
+            if(buttonWorddle==null)exit(1);
+            buttonWorddle.setFocusPainted(false);
+            Composants.put("Worddle",buttonWorddle);
+            
+            JWelcomeButton buttonNiveau = new JWelcomeButton("");
+            if(buttonNiveau==null)exit(1);
+            buttonNiveau.setFont(bigCentury);
+            buttonNiveau.setForeground(Color.WHITE);
+            buttonNiveau.setFocusPainted(false);
+            Composants.put("Niveau",buttonNiveau);
+            
+            JWelcomeButton buttonScore = new JWelcomeButton("");
+            if(buttonScore==null)exit(1);
+            buttonScore.setFont(bigCentury);
+            buttonScore.setForeground(Color.WHITE);
+            buttonScore.setFocusPainted(false);
+            Composants.put("Score",buttonScore);
+            
+            JWelcomeButton buttonSaisie = new JWelcomeButton("");
+            buttonSaisie.setFont(bigCentury);
+            buttonSaisie.setForeground(Color.WHITE);
+            buttonSaisie.setFocusPainted(false);
+            Composants.put("Saisie",buttonSaisie);
+            
+            JWelcomeButton buttonSauvegarde = new JWelcomeButton("Sauvegarder la partie");
+            buttonSauvegarde.setFont(smallCentury);
+            buttonSauvegarde.setForeground(Color.WHITE);
+            buttonSauvegarde.setFocusPainted(false);
+            buttonSauvegarde.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        sauvegardeActionPerformed(evt);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+            });
+            
+            // Création du jeu
+          Dictionary dictionary=new Dictionary();
+           Games=new Vector<Game>();
+             
+         /*   Game game=new Game(this,dictionary,Composants,false);
+           game.start();
+          Games.add(game);*/
+         
+          
+            Games=Game.readGame();
+            
+            // Grille de Jeu        
+            JPanel grille=Games.get(0).getGridInterface();
+            
+            // Prochaine piece        
+            JPanel buttonPiece = Games.get(0).getNextInterface();
+                       
+            // Labels
+            JLabel labelTime = new JLabel();
+            labelTime.setFont(copperplate);
+            labelTime.setForeground(new Color(33,91,201));
+            labelTime.setText("Temps");
+            
+            JLabel labelWorddle = new JLabel();
+            labelWorddle.setFont(copperplate);
+            labelWorddle.setForeground(new Color(33,91,201));
+            labelWorddle.setText("Worddle");
+            
+            JLabel labelNiveau = new JLabel();
+            labelNiveau.setFont(copperplate);
+            labelNiveau.setForeground(new Color(33,91,201));
+            labelNiveau.setText("Niveau");
+
+            JLabel labelScore = new JLabel();
+            labelScore.setFont(copperplate);
+            labelScore.setForeground(new Color(33,91,201));
+            labelScore.setText("Score");
+            
+            
+            JLabel labelSaisie = new JLabel();
+            labelSaisie.setFont(copperplate);
+            labelSaisie.setForeground(new Color(33,91,201));
+            labelSaisie.setText("Saisie");
+  
+               javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(panel);
+                panel.setLayout(jPanel1Layout);
+                jPanel1Layout.setHorizontalGroup(
+                    jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(91, 91, 91)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(grille, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                    .addComponent(labelSaisie, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(labelScore, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(labelNiveau, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE))
+                                                .addGap(18, 18, 18)
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addComponent(buttonNiveau, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                                                    .addComponent(buttonScore, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(buttonSaisie, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(19, 19, 19)
+                                                .addComponent(labelTime, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(162, 162, 162))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(140, 140, 140)
+                                                .addComponent(buttonSauvegarde, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(160, 160, 160)
+                                                .addComponent(buttonPiece, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(152, 152, 152)
+                                                .addComponent(labelWorddle, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(buttonWorddle, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(buttonRetour, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(buttonRegles, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(63, 63, 63))))
+                );
+                jPanel1Layout.setVerticalGroup(
+                    jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addComponent(buttonRetour, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(53, 53, 53)
+                                .addComponent(labelTime, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(buttonRegles, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(23, 23, 23)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(buttonPiece, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(49, 49, 49)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(labelWorddle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(buttonWorddle, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(50, 50, 50)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(labelNiveau, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(buttonNiveau, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(labelScore, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(buttonScore, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(labelSaisie, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(buttonSaisie, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(50, 50, 50)
+                                .addComponent(buttonSauvegarde, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(grille, javax.swing.GroupLayout.PREFERRED_SIZE, 590, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(67, Short.MAX_VALUE))
+                );
+       
+            
+       
+            this.pack();
+            this.setVisible(true);
+            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            this.requestFocusInWindow();
     }
 
 /**
@@ -151,6 +367,10 @@ public class MainGame extends JFrame {
     * Permet de créer la page d'accueil
  **/  
     public void welcomePage() throws IOException{
+        
+            //Lecture des shapes
+            shapeType.readShapes();
+            
             // Création de la fenêtre
             this.setTitle("Bienvenue sur Tetra Word");
             this.setPreferredSize(new Dimension(1024,768));
@@ -1213,30 +1433,102 @@ public class MainGame extends JFrame {
             savePiece.setFont(bigCentury);
             savePiece.setForeground(Color.WHITE);
             savePiece.setFocusPainted(false);
-            savePiece.addActionListener(new java.awt.event.ActionListener() {
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    try {
-                        shapeType.saveShapes();
-                    } catch (IOException ex) {
-                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                }
-            });
             
             JPanel grillePiece = new JPanel(new GridLayout(4,4));
             Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
-        
+            final Integer [][]tab=new Integer[4][4];
+            final JButton [][]tabButton=new JButton[4][4];
             for(int i=0;i<4;++i){
                 for(int j=0;j<4;++j){
                     JButton but=new JButton("");
                     but.setBackground(Color.GRAY);
                     but.setBorder(whiteline);
+                    tabButton[i][j]=but;
+                    tab[i][j]=0;
                     grillePiece.add(but);
+                    but.addActionListener(new java.awt.event.ActionListener() {
+                        @Override
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                            if(evt.getSource() instanceof JButton){
+                                JButton b=(JButton)evt.getSource();
+                                
+                                boolean quit=false;
+                                for(int i=0;i<4;++i){
+                                    for(int j=0;j<4;++j){
+                                        if(tabButton[i][j]==b){
+                                            if(tab[i][j]==0){
+                                                b.setBackground(Color.red);
+                                                tab[i][j]=1;
+                                            }
+                                            else{
+                                                b.setBackground(Color.gray);
+                                                tab[i][j]=0;
+                                            }
+                                        }
+                                    }
+                                    if(quit) break;
+                                }
+                            }
+
+                        }
+                    });
                 }
             }
             
+            savePiece.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        boolean quit=false;
+                        for(int i=0;i<4;++i){
+                            for(int j=0;j<4;++j){
+                                if(tab[i][j]!=0){
+                                    quit=true;
+                                    break;
+                                }
+                            }
+                            if(quit) break;
+                        }
+                        //Pièce vide
+                        if(!quit) return;
+                        
+                        shapeType.shapeTypes.put(shapeType.shapeTypes.size(),tab);
+                        shapeType.saveShapes();
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+            
+            buttonNewPiece.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    for(int i=0;i<4;++i){
+                        for(int j=0;j<4;++j){
+                            tab[i][j]=0;
+                            tabButton[i][j].setBackground(Color.gray);
+                        }
+                    }
+                }
+            });
+                    
+            chargerPiece.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    int r = (int) (Math.random() * shapeTypes.size());
+                    
+                    for(int i=0;i<4;++i){
+                        for(int j=0;j<4;++j){
+                            tab[i][j]=shapeTypes.get(r)[i][j];
+                            if(tab[i][j]==0)
+                                tabButton[i][j].setBackground(Color.gray);
+                            else
+                                tabButton[i][j].setBackground(Color.red);
+                        }
+                    }
+                }
+            });
+                    
             javax.swing.GroupLayout layout = new javax.swing.GroupLayout(panel);
             panel.setLayout(layout);
             layout.setHorizontalGroup(
