@@ -1213,6 +1213,17 @@ public class MainGame extends JFrame {
             savePiece.setFont(bigCentury);
             savePiece.setForeground(Color.WHITE);
             savePiece.setFocusPainted(false);
+            savePiece.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        shapeType.saveShapes();
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+            });
             
             JPanel grillePiece = new JPanel(new GridLayout(4,4));
             Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
