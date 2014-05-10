@@ -121,11 +121,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
                 // Initialisation de gridInterface
         Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
         shapeType.readShapes();
-        try {
-            shapeType.saveShapes();
-        } catch (IOException ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         for(int i=0;i<4;++i){
             for(int j=0;j<4;++j){
                 nextgrid[i][j]=new Box();
@@ -498,7 +494,9 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     public long anagramme(int ligne){
         
         //Si l'autre joueur est en anagramme, il ne peut pas jouer l'anagramme tout de suite
-        if(other.getMode()==1) return System.currentTimeMillis();
+        if(other!=null){
+            if(other.getMode()==1) return System.currentTimeMillis();
+        }
         
         Border yellowline = BorderFactory.createLineBorder(Color.YELLOW,1);
             for(int j=0;j<10;++j){

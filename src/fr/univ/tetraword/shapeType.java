@@ -2,11 +2,19 @@ package fr.univ.tetraword;
 
 import static fr.univ.tetraword.Shape.getLetterFromProb;
 import static fr.univ.tetraword.Shape.getRarityFromLetter;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
     * shapeType est une énumération qui contient les différents types de forme d'une pièce
@@ -41,114 +49,69 @@ public class shapeType {
         }
         
         public static void readShapes(){
-            //T
             shapeTypes=new HashMap<Integer,Integer[][]>();
-            Integer [][]T=new Integer[4][4];
-            for(int i=0;i<4;++i){
-                for(int j=0;j<4;++j){
-                    T[i][j]=0;
-                }
-            }
-            T[1][0]=1;
-            T[0][1]=1;
-            T[1][1]=1;
-            T[1][2]=1;
-            shapeTypes.put(0,T);
             
-            //square
-            Integer [][]square=new Integer[4][4];
-            for(int i=0;i<4;++i){
-                for(int j=0;j<4;++j){
-                    square[i][j]=0;
-                }
-            }
-            square[0][0]=1;
-            square[0][1]=1;
-            square[1][0]=1;
-            square[1][1]=1;
-            shapeTypes.put(1,square);
+            	try 
+		{
+                        InputStream ips=new FileInputStream("data/Shapes.txt"); 
+			InputStreamReader ipsr=new InputStreamReader(ips);
+			BufferedReader br=new BufferedReader(ipsr);
+                        String ligne;
+                        String str[];
+                        int i=0,j=0;
+                        int numPiece=-1;
+                        Integer [][]bricks=null;
+                        int numLignes=0;
+			while ((ligne=br.readLine())!=null){
+                            numLignes++;
+                            if(ligne.length()==0){
+                                numPiece++;
+                                bricks=new Integer[4][4];
+                                j=0;
+                            }
+                            if(ligne.length()==8 || ligne.length()==7){
+                                str=ligne.split(" ");
+                                for(i=0;i<4;++i)
+                                    bricks[j][i]=Integer.valueOf(str[i]);
+                                j++;
+                                
+                                if(j==4){
+                                    shapeTypes.put(numPiece,bricks);
+                                }
+                                else if(j>4 || str.length>4){
+                                    throw new Exception("Mauvaise pièce");
+                                }
+                            }
+                            else if(ligne.length()!=0){
+				throw new Exception("Mauvaise ligne " +numLignes);
+                            }
+                                
+			}
+			br.close(); 
+		} catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    System.exit(1);
+                } 
+                catch (Exception ex) { 
+                Logger.getLogger(shapeType.class.getName()).log(Level.SEVERE, null, ex);
+                System.exit(1);
+            } 
             
-            //rightZ
-            Integer [][]rightZ=new Integer[4][4];
-            for(int i=0;i<4;++i){
-                for(int j=0;j<4;++j){
-                    rightZ[i][j]=0;
-                }
-            }
-            rightZ[1][0]=1;
-            rightZ[1][1]=1;
-            rightZ[0][1]=1;
-            rightZ[0][2]=1;
-            shapeTypes.put(2,rightZ);
-            
-            //leftZ
-            Integer [][]leftZ=new Integer[4][4];
-            for(int i=0;i<4;++i){
-                for(int j=0;j<4;++j){
-                    leftZ[i][j]=0;
-                }
-            }
-            leftZ[0][0]=1;
-            leftZ[0][1]=1;
-            leftZ[1][1]=1;
-            leftZ[1][2]=1;
-            shapeTypes.put(3,leftZ);
-            
-            //rightL
-            Integer [][]rightL=new Integer[4][4];
-            for(int i=0;i<4;++i){
-                for(int j=0;j<4;++j){
-                    rightL[i][j]=0;
-                }
-            }
-            rightL[0][1]=1;
-            rightL[0][0]=1;
-            rightL[1][0]=1;
-            rightL[2][0]=1;
-            shapeTypes.put(4,rightL);
-            
-            //leftL
-            Integer [][]leftL=new Integer[4][4];
-            for(int i=0;i<4;++i){
-                for(int j=0;j<4;++j){
-                    leftL[i][j]=0;
-                }
-            }
-            leftL[0][0]=1;
-            leftL[0][1]=1;
-            leftL[1][1]=1;
-            leftL[2][1]=1;
-            shapeTypes.put(5,leftL);
-            
-            //line
-            Integer [][]line=new Integer[4][4];
-            for(int i=0;i<4;++i){
-                for(int j=0;j<4;++j){
-                    line[i][j]=0;
-                }
-            }
-            line[0][0]=1;
-            line[1][0]=1;
-            line[2][0]=1;
-            line[3][0]=1;
-            shapeTypes.put(6,line);
-
         }
         
         public static void saveShapes() throws IOException
     {
 	try{
-            FileWriter fw = new FileWriter("shapes.txt", false);
+            FileWriter fw = new FileWriter("data/Shapes.txt", false);
             BufferedWriter output = new BufferedWriter(fw);
             for(int i=0;i<shapeTypes.size();++i){
-                output.write(String.valueOf(i)+"\n");
+                output.write("\n");
                 for(int j=0;j<4;++j){
                     for(int l=0;l<4;++l){
                         output.write(shapeTypes.get(i)[j][l] + " ");
                     }
                     output.write("\n");
                 }
-                output.write("\n");
             }
             
             output.flush();	
