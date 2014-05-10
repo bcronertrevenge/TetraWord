@@ -9,9 +9,11 @@ import java.awt.event.MouseListener;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import static java.lang.System.exit;
 import java.util.HashMap;
 import java.util.Vector;
@@ -948,7 +950,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     * @param savedGame
     * Vecteurs qui contient un ou plusieurs jeux
  **/
-  /*public static void saveGame(Vector<Game> savedGame) throws IOException
+  public static void saveGame(Vector<Game> savedGame) throws IOException
     {
     try {
 
@@ -970,11 +972,11 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     catch(IOException ioe) {}
  
     }
-*/
+
  /**
     * Permet de charger un jeu déjà existant
  **/
-/*	public static Vector<Game> readGame()
+	public static Vector<Game> readGame()
 	{ 
 		 Vector<Game> loadGames=null;
  
@@ -998,7 +1000,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
             catch(ClassNotFoundException cnfe) {}
          return loadGames;
         }
-*/
+
 /**
     * Permet d'avoir la Box inverse d'une box passée en paramètre
     * @param b
