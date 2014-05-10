@@ -120,7 +120,6 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     public void init(){
                 // Initialisation de gridInterface
         Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
-        shapeType.readShapes();
         
         for(int i=0;i<4;++i){
             for(int j=0;j<4;++j){

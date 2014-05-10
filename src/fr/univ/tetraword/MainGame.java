@@ -1,6 +1,7 @@
 package fr.univ.tetraword;
 
 import fr.univ.graphicinterface.JWelcomeButton;
+import static fr.univ.tetraword.shapeType.shapeTypes;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -151,6 +152,10 @@ public class MainGame extends JFrame {
     * Permet de créer la page d'accueil
  **/  
     public void welcomePage() throws IOException{
+        
+            //Lecture des shapes
+            shapeType.readShapes();
+            
             // Création de la fenêtre
             this.setTitle("Bienvenue sur Tetra Word");
             this.setPreferredSize(new Dimension(1024,768));
@@ -1213,30 +1218,102 @@ public class MainGame extends JFrame {
             savePiece.setFont(bigCentury);
             savePiece.setForeground(Color.WHITE);
             savePiece.setFocusPainted(false);
-            savePiece.addActionListener(new java.awt.event.ActionListener() {
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    try {
-                        shapeType.saveShapes();
-                    } catch (IOException ex) {
-                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                }
-            });
             
             JPanel grillePiece = new JPanel(new GridLayout(4,4));
             Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
-        
+            final Integer [][]tab=new Integer[4][4];
+            final JButton [][]tabButton=new JButton[4][4];
             for(int i=0;i<4;++i){
                 for(int j=0;j<4;++j){
                     JButton but=new JButton("");
                     but.setBackground(Color.GRAY);
                     but.setBorder(whiteline);
+                    tabButton[i][j]=but;
+                    tab[i][j]=0;
                     grillePiece.add(but);
+                    but.addActionListener(new java.awt.event.ActionListener() {
+                        @Override
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                            if(evt.getSource() instanceof JButton){
+                                JButton b=(JButton)evt.getSource();
+                                
+                                boolean quit=false;
+                                for(int i=0;i<4;++i){
+                                    for(int j=0;j<4;++j){
+                                        if(tabButton[i][j]==b){
+                                            if(tab[i][j]==0){
+                                                b.setBackground(Color.red);
+                                                tab[i][j]=1;
+                                            }
+                                            else{
+                                                b.setBackground(Color.gray);
+                                                tab[i][j]=0;
+                                            }
+                                        }
+                                    }
+                                    if(quit) break;
+                                }
+                            }
+
+                        }
+                    });
                 }
             }
             
+            savePiece.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        boolean quit=false;
+                        for(int i=0;i<4;++i){
+                            for(int j=0;j<4;++j){
+                                if(tab[i][j]!=0){
+                                    quit=true;
+                                    break;
+                                }
+                            }
+                            if(quit) break;
+                        }
+                        //Pièce vide
+                        if(!quit) return;
+                        
+                        shapeType.shapeTypes.put(shapeType.shapeTypes.size(),tab);
+                        shapeType.saveShapes();
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+            
+            buttonNewPiece.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    for(int i=0;i<4;++i){
+                        for(int j=0;j<4;++j){
+                            tab[i][j]=0;
+                            tabButton[i][j].setBackground(Color.gray);
+                        }
+                    }
+                }
+            });
+                    
+            chargerPiece.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    int r = (int) (Math.random() * shapeTypes.size());
+                    System.out.println(shapeTypes.size());
+                    for(int i=0;i<4;++i){
+                        for(int j=0;j<4;++j){
+                            tab[i][j]=shapeTypes.get(r)[i][j];
+                            if(tab[i][j]==0)
+                                tabButton[i][j].setBackground(Color.gray);
+                            else
+                                tabButton[i][j].setBackground(Color.red);
+                        }
+                    }
+                }
+            });
+                    
             javax.swing.GroupLayout layout = new javax.swing.GroupLayout(panel);
             panel.setLayout(layout);
             layout.setHorizontalGroup(

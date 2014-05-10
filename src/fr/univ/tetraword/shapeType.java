@@ -20,7 +20,7 @@ import java.util.logging.Logger;
     * shapeType est une énumération qui contient les différents types de forme d'une pièce
  **/
 public class shapeType {
-        static HashMap<Integer,Integer[][]> shapeTypes;
+        static HashMap<Integer,Integer[][]> shapeTypes=null;
         
         public static Brick[][] getBricksWithType(){
             
@@ -49,7 +49,8 @@ public class shapeType {
         }
         
         public static void readShapes(){
-            shapeTypes=new HashMap<Integer,Integer[][]>();
+
+                shapeTypes=new HashMap<Integer,Integer[][]>();
             
             	try 
 		{
