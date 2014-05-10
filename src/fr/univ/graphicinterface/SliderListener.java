@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package fr.univ.tetraword;
+package fr.univ.graphicinterface;
 
 import javax.swing.JLabel;
 import javax.swing.JSlider;

@@ -1,5 +1,6 @@
 package fr.univ.tetraword;
 
+import fr.univ.graphicinterface.SliderListener;
 import fr.univ.graphicinterface.JWelcomeButton;
 import static fr.univ.tetraword.shapeType.shapeTypes;
 import java.awt.*;
