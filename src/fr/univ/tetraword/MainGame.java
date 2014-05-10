@@ -293,7 +293,7 @@ public class MainGame extends JFrame {
     }
 
 /**
-    * Permet de créer la page de choix du mode de jeu
+    * Permet de créer la page pour choisir son mode de jeu
  **/ 
     public void gameMode() throws IOException{
             // Création de la fenêtre
@@ -1165,7 +1165,7 @@ public class MainGame extends JFrame {
     }
     
  /**
-    * Permet de créer la fenêtre qui contient les options du jeu
+    * Fenêtre d'édition de pièce
  **/ 
     public void shapeEditor() throws IOException{
             // Création de la fenêtre
@@ -1173,27 +1173,18 @@ public class MainGame extends JFrame {
             this.setPreferredSize(new Dimension(1024,768));
                         
             // Arrière plan
-            JPanel panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/mode.jpg"));
+            JPanel panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/editeurPiece.jpg"));
             panel.setMaximumSize(new Dimension(1024, 768));
             panel.setMinimumSize(new Dimension(600, 400));
             panel.setPreferredSize(new Dimension(1024, 768));
             
-            // Fonts
-            Font Copperplate  = new Font("Copperplate Gothic Bold",0,24);
-            try{
-                File fis = new File("data/COPRGTB.TTF");
-                Copperplate = Font.createFont(Font.TRUETYPE_FONT, fis);
-                Copperplate = Copperplate.deriveFont((float)24.0);
-            }
-            catch (Exception e) {
-                System.out.println("Police non chargée");
-            }
-            
-            Font century = new Font("Century Gothic",0,26);
+            // Fonts            
+            Font smallCentury = new Font("Century Gothic",0,18);
+            Font bigCentury = new Font("Century Gothic",0,24);
                        
             // Boutons
             JWelcomeButton buttonRetour = new JWelcomeButton("Retour");
-            buttonRetour.setFont(century);
+            buttonRetour.setFont(smallCentury);
             buttonRetour.setForeground(Color.WHITE);
             buttonRetour.setFocusPainted(false);
             buttonRetour.addActionListener(new java.awt.event.ActionListener() {
@@ -1208,8 +1199,70 @@ public class MainGame extends JFrame {
                 }
             });
             
+            JWelcomeButton buttonNewPiece = new JWelcomeButton("Nouvelle pièce");
+            buttonNewPiece.setFont(bigCentury);
+            buttonNewPiece.setForeground(Color.WHITE);
+            buttonNewPiece.setFocusPainted(false);
             
+            JWelcomeButton chargerPiece = new JWelcomeButton("Charger pièce");
+            chargerPiece.setFont(bigCentury);
+            chargerPiece.setForeground(Color.WHITE);
+            chargerPiece.setFocusPainted(false);
             
+            JWelcomeButton savePiece = new JWelcomeButton("Sauvegarder");
+            savePiece.setFont(bigCentury);
+            savePiece.setForeground(Color.WHITE);
+            savePiece.setFocusPainted(false);
+            
+            JPanel grillePiece = new JPanel(new GridLayout(4,4));
+            Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
+        
+            for(int i=0;i<4;++i){
+                for(int j=0;j<4;++j){
+                    JButton but=new JButton("");
+                    but.setBackground(Color.GRAY);
+                    but.setBorder(whiteline);
+                    grillePiece.add(but);
+                }
+            }
+            
+            javax.swing.GroupLayout layout = new javax.swing.GroupLayout(panel);
+            panel.setLayout(layout);
+            layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(55, 55, 55)
+                            .addComponent(buttonRetour, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(119, 119, 119)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(buttonNewPiece, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(chargerPiece, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(savePiece, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(156, 156, 156)
+                            .addComponent(grillePiece, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addContainerGap(219, Short.MAX_VALUE))
+            );
+            layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(40, 40, 40)
+                    .addComponent(buttonRetour, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(207, 207, 207)
+                            .addComponent(buttonNewPiece, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(50, 50, 50)
+                            .addComponent(chargerPiece, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(52, 52, 52)
+                            .addComponent(savePiece, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(185, 185, 185)
+                            .addComponent(grillePiece, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addContainerGap(228, Short.MAX_VALUE))
+            );
             
             this.pack();
             this.setVisible(true);
