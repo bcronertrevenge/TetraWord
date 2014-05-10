@@ -1,6 +1,5 @@
 package fr.univ.tetraword;
 
-import fr.univ.graphicinterface.SliderListener;
 import fr.univ.graphicinterface.JWelcomeButton;
 import static fr.univ.tetraword.shapeType.shapeTypes;
 import java.awt.*;
@@ -20,6 +19,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
     * MainGame est la classe représentant le jeu principal 
@@ -379,7 +379,8 @@ public class MainGame extends JFrame {
         
             //Lecture des shapes
             shapeType.readShapes();
-            options=new Options();
+            if(options==null)
+                options=new Options();
             
             // Création de la fenêtre
             this.setTitle("Bienvenue sur Tetra Word");
@@ -1421,6 +1422,7 @@ public class MainGame extends JFrame {
                 @Override
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     try {
+                        System.out.println(options.frequenceModif);
                         retourActionPerformed(evt);
                     } catch (IOException ex) {
                         Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
@@ -1478,19 +1480,18 @@ public class MainGame extends JFrame {
             jSlider1.setMaximum(40);
             jSlider1.setMinimum(20);
             jSlider1.setValue(30);
-            JLabel labelSlider1 = new JLabel();
+            final JLabel labelSlider1 = new JLabel();
             labelSlider1.setHorizontalAlignment(SwingConstants.CENTER);
             labelSlider1.setText(String.valueOf(jSlider1.getValue()));
-            jSlider1.addChangeListener(new SliderListener(labelSlider1,options){
+            jSlider1.addChangeListener(new ChangeListener(){
                             @Override   
                 public void stateChanged(ChangeEvent e) {
                     JSlider source = (JSlider)e.getSource();
                     if (!source.getValueIsAdjusting()) {
                         int value = (int)source.getValue();
-                        if (label!=null){
-                            label.setText(String.valueOf(value));
-                            label.repaint();
-                            
+                        if (labelSlider1!=null){
+                            labelSlider1.setText(String.valueOf(value));
+                            labelSlider1.repaint();
                         }
                         options.worddleTime=value*1000;
                     }    
@@ -1503,19 +1504,18 @@ public class MainGame extends JFrame {
             jSlider2.setMaximum(40);
             jSlider2.setMinimum(20);
             jSlider2.setValue(30);
-            JLabel labelSlider2 = new JLabel();
+            final JLabel labelSlider2 = new JLabel();
             labelSlider2.setHorizontalAlignment(SwingConstants.CENTER);
             labelSlider2.setText(String.valueOf(jSlider2.getValue()));
-            jSlider2.addChangeListener(new SliderListener(labelSlider2,options){
+            jSlider2.addChangeListener(new ChangeListener(){
                             @Override   
                 public void stateChanged(ChangeEvent e) {
                     JSlider source = (JSlider)e.getSource();
                     if (!source.getValueIsAdjusting()) {
                         int value = (int)source.getValue();
-                        if (label!=null){
-                            label.setText(String.valueOf(value));
-                            label.repaint();
-                            
+                        if (labelSlider2!=null){
+                            labelSlider2.setText(String.valueOf(value));
+                            labelSlider2.repaint();
                         }
                         options.worddleReload=value*1000;
                     }    
@@ -1527,19 +1527,18 @@ public class MainGame extends JFrame {
             jSlider3.setMaximum(40);
             jSlider3.setMinimum(20);
             jSlider3.setValue(30);
-            JLabel labelSlider3 = new JLabel();
+            final JLabel labelSlider3 = new JLabel();
             labelSlider3.setHorizontalAlignment(SwingConstants.CENTER);
             labelSlider3.setText(String.valueOf(jSlider3.getValue()));
-            jSlider3.addChangeListener(new SliderListener(labelSlider3,options){
+            jSlider3.addChangeListener(new ChangeListener(){
                             @Override   
                 public void stateChanged(ChangeEvent e) {
                     JSlider source = (JSlider)e.getSource();
                     if (!source.getValueIsAdjusting()) {
                         int value = (int)source.getValue();
-                        if (label!=null){
-                            label.setText(String.valueOf(value));
-                            label.repaint();
-                            
+                        if (labelSlider3!=null){
+                            labelSlider3.setText(String.valueOf(value));
+                            labelSlider3.repaint();
                         }
                         options.anagTime=value*1000;
                     }    
@@ -1551,18 +1550,18 @@ public class MainGame extends JFrame {
             jSlider4.setMaximum(40);
             jSlider4.setMinimum(20);
             jSlider4.setValue(30);
-            JLabel labelSlider4 = new JLabel();
+            final JLabel labelSlider4 = new JLabel();
             labelSlider4.setHorizontalAlignment(SwingConstants.CENTER);
             labelSlider4.setText(String.valueOf(jSlider4.getValue()));
-            jSlider4.addChangeListener(new SliderListener(labelSlider4,options){
+            jSlider4.addChangeListener(new ChangeListener(){
                             @Override   
                 public void stateChanged(ChangeEvent e) {
                     JSlider source = (JSlider)e.getSource();
                     if (!source.getValueIsAdjusting()) {
                         int value = (int)source.getValue();
-                        if (label!=null){
-                            label.setText(String.valueOf(value));
-                            label.repaint();
+                        if (labelSlider4!=null){
+                            labelSlider4.setText(String.valueOf(value));
+                            labelSlider4.repaint();
                         }
                         options.fallTime=value*1000;
                     }    
@@ -1574,22 +1573,20 @@ public class MainGame extends JFrame {
             jSlider5.setMaximum(5);
             jSlider5.setMinimum(1);
             jSlider5.setValue(3);
-            JLabel labelSlider5 = new JLabel();
+            final JLabel labelSlider5 = new JLabel();
             labelSlider5.setHorizontalAlignment(SwingConstants.CENTER);
             labelSlider5.setText(String.valueOf(jSlider5.getValue()));
-            jSlider5.addChangeListener(new SliderListener(labelSlider5,options){
+            jSlider5.addChangeListener(new ChangeListener(){
                             @Override   
                 public void stateChanged(ChangeEvent e) {
                     JSlider source = (JSlider)e.getSource();
                     if (!source.getValueIsAdjusting()) {
                         int value = (int)source.getValue();
-                        if (label!=null){
-                            label.setText(String.valueOf(value));
-                            label.repaint();
+                        if (labelSlider5!=null){
+                            labelSlider5.setText(String.valueOf(value));
+                            labelSlider5.repaint();
                         }
-                        
                         options.frequenceModif=value;
-                        
                     }    
                 }
             });
