@@ -56,7 +56,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     long beginTime;
     Game other;
     boolean gameOver;
-
+    Options options;
 /**
     * Constructeur d'un Game
     * @param window
@@ -68,8 +68,9 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     * @param ia
     * Si le jeu courant est contrôlé par une intelligence artificielle
  **/
-    public Game(JFrame window, Dictionary dictionary,  HashMap<String,JComponent> composants, boolean ia){  
+    public Game(JFrame window, Dictionary dictionary,  HashMap<String,JComponent> composants, boolean ia, Options options){  
         this.other=null;
+        this.options=options;
         
         if(composants==null)
             exit(1);
@@ -77,10 +78,10 @@ public class Game extends Thread implements ActionListener, MouseListener  {
             intelligence=new IA(this);
         pause=false;
         //Difficulte
-        worddleTime=40000; //Le temps en mode Worddle
-        worddleReload=20000; //Le temps de rechargement de Worddle
-        anagTime=30000; //Le temps en mode anagramme
-        fallTime=1000; //Le temps de chute des pièces
+        worddleTime=options.worddleTime; //Le temps en mode Worddle
+        worddleReload=options.worddleReload; //Le temps de rechargement de Worddle
+        anagTime=options.anagTime; //Le temps en mode anagramme
+        fallTime=options.fallTime; //Le temps de chute des pièces
         anagLettres=2; //Le nombre de lettres minimum en anagramme
         worddleLast=0; //Le temps du dernier worddle
         worddleBoxPosX=-1;
@@ -337,7 +338,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
                     }
                 }
                 
-              if(nbShape%3==0 && !modif){
+              if(nbShape%options.frequenceModif==0 && !modif){
                   modif=true;
                   addModifier();
               }
@@ -986,6 +987,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
                 try {
                     System.out.println("Chargement en cour...");
                     loadGames = (Vector<Game>) object2.readObject();
+
                 }
                 finally{
                     try{
@@ -996,8 +998,15 @@ public class Game extends Thread implements ActionListener, MouseListener  {
                     }
                 }
             }
+            catch (FileNotFoundException e) {
+            System.out.println("Erreur, pas de fichiers");
+                    System.exit(1);
+                } 
             catch(IOException ioe) {}
-            catch(ClassNotFoundException cnfe) {}
+            catch(ClassNotFoundException cnfe) {
+            System.out.println("Erreur, problème classe");
+            System.exit(1);
+            }
          return loadGames;
         }
 
@@ -1053,11 +1062,11 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     public void levelUp(){
         
         level++;
-        worddleTime=40000-level*50; //Le temps en mode Worddle
-        worddleReload=20000+level*50; //Le temps de rechargement de Worddle
-        anagTime=30000-level*50; //Le temps en mode anagramme
-        fallTime=1000-level*5; //Le temps de chute des pièces
-        if(anagLettres<4 && level%3==0){
+        worddleTime=options.worddleTime-level*50; //Le temps en mode Worddle
+        worddleReload=options.worddleReload+level*50; //Le temps de rechargement de Worddle
+        anagTime=options.anagTime-level*50; //Le temps en mode anagramme
+        fallTime=options.fallTime-level*5; //Le temps de chute des pièces
+        if(anagLettres<options.anagLettresMax && level%3==0){
             anagLettres++; //Le nombre de lettres minimum en anagramme
         }
         if(composants.containsKey("Niveau")){
