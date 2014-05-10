@@ -948,7 +948,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     * @param savedGame
     * Vecteurs qui contient un ou plusieurs jeux
  **/
-  public static void saveGame(Vector<Game> savedGame) throws IOException
+  /*public static void saveGame(Vector<Game> savedGame) throws IOException
     {
     try {
 
@@ -970,11 +970,11 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     catch(IOException ioe) {}
  
     }
-
+*/
  /**
     * Permet de charger un jeu déjà existant
  **/
-	public static Vector<Game> readGame()
+/*	public static Vector<Game> readGame()
 	{ 
 		 Vector<Game> loadGames=null;
  
@@ -998,7 +998,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
             catch(ClassNotFoundException cnfe) {}
          return loadGames;
         }
-
+*/
 /**
     * Permet d'avoir la Box inverse d'une box passée en paramètre
     * @param b
