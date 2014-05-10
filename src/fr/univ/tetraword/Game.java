@@ -996,6 +996,10 @@ public class Game extends Thread implements ActionListener, MouseListener  {
                     }
                 }
             }
+            catch (FileNotFoundException e) {
+            System.out.println("Erreur, pas de fichiers");
+                    System.exit(1);
+                } 
             catch(IOException ioe) {}
             catch(ClassNotFoundException cnfe) {}
          return loadGames;
