@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -990,19 +991,19 @@ public class Game extends Thread implements ActionListener, MouseListener  {
 		 Vector<Game> loadGames=null;
  
             try {
-                FileInputStream file2 = new FileInputStream("save.txt");
-                ObjectInputStream object2= new ObjectInputStream(file2);
+                File studentFile = new File("save.txt");
+                FileInputStream fileInput = new FileInputStream(studentFile);
+                ObjectInputStream object2 = new ObjectInputStream(fileInput);
                 try {
-                    System.out.println("Chargement en cour...");
+                    System.out.println("Chargement en cours...");
                     loadGames = (Vector<Game>) object2.readObject();
-
                 }
                 finally{
                     try{
                         object2.close();
                     }
                     finally {
-                        file2.close();
+                        fileInput.close();
                     }
                 }
             }
