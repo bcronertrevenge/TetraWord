@@ -112,18 +112,233 @@ public class MainGame extends JFrame {
     * Lorsque l'on clique sur "Charger un partie"
  **/
     public void chargerPartieActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
-        JFileChooser dialogue = new JFileChooser(new File("."));
-	PrintWriter sortie;
-	File fichier;
-	
-	if (dialogue.showOpenDialog(null)== 
-	    JFileChooser.APPROVE_OPTION) {
-	    fichier = dialogue.getSelectedFile();
-	    sortie = new PrintWriter
-		(new FileWriter(fichier.getPath(), true));
-	    sortie.println("Fichier chargé");
-	    sortie.close();
-	}
+        // Changement du titre
+            this.setTitle("Vous jouez à Tetra Word en Solo");
+            this.setPreferredSize(new Dimension(1024,768));
+                        
+            // Arrière plan
+            JPanel panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/game.jpg"));
+            panel.setMaximumSize(new Dimension(1024, 768));
+            panel.setMinimumSize(new Dimension(600, 400));
+            panel.setPreferredSize(new Dimension(1024, 768));
+            
+            // Fonts
+            Font copperplate = new Font("Copperplate Gothic Bold",0,22);
+            Font bigCentury = new Font("Century Gothic",0,26);
+            Font smallCentury = new Font("Century Gothic",0,18);
+            
+            Composants=new HashMap<String,JButton>(); 
+            
+            // Boutons
+            JWelcomeButton buttonRetour = new JWelcomeButton("Retour");
+            buttonRetour.setFont(bigCentury);
+            buttonRetour.setForeground(Color.WHITE);
+            buttonRetour.setFocusPainted(false);
+            buttonRetour.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        retourActionPerformed(evt);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+            });
+            
+            JWelcomeButton buttonRegles = new JWelcomeButton("?");
+            buttonRegles.setFont(smallCentury);
+            buttonRegles.setForeground(Color.WHITE);
+            buttonRegles.setFocusPainted(false);
+            buttonRegles.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        firstReglesActionPerformed(evt);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+            });
+            
+            JButton buttonWorddle = new JButton("");
+            if(buttonWorddle==null)exit(1);
+            buttonWorddle.setFocusPainted(false);
+            Composants.put("Worddle",buttonWorddle);
+            
+            JWelcomeButton buttonNiveau = new JWelcomeButton("");
+            if(buttonNiveau==null)exit(1);
+            buttonNiveau.setFont(bigCentury);
+            buttonNiveau.setForeground(Color.WHITE);
+            buttonNiveau.setFocusPainted(false);
+            Composants.put("Niveau",buttonNiveau);
+            
+            JWelcomeButton buttonScore = new JWelcomeButton("");
+            if(buttonScore==null)exit(1);
+            buttonScore.setFont(bigCentury);
+            buttonScore.setForeground(Color.WHITE);
+            buttonScore.setFocusPainted(false);
+            Composants.put("Score",buttonScore);
+            
+            JWelcomeButton buttonSaisie = new JWelcomeButton("");
+            buttonSaisie.setFont(bigCentury);
+            buttonSaisie.setForeground(Color.WHITE);
+            buttonSaisie.setFocusPainted(false);
+            Composants.put("Saisie",buttonSaisie);
+            
+            JWelcomeButton buttonSauvegarde = new JWelcomeButton("Sauvegarder la partie");
+            buttonSauvegarde.setFont(smallCentury);
+            buttonSauvegarde.setForeground(Color.WHITE);
+            buttonSauvegarde.setFocusPainted(false);
+            buttonSauvegarde.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        sauvegardeActionPerformed(evt);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+            });
+            
+            // Création du jeu
+          Dictionary dictionary=new Dictionary();
+           Games=new Vector<Game>();
+             
+         /*   Game game=new Game(this,dictionary,Composants,false);
+           game.start();
+          Games.add(game);*/
+         
+          
+            Games=Game.readGame();
+            
+            // Grille de Jeu        
+            JPanel grille=Games.get(0).getGridInterface();
+            
+            // Prochaine piece        
+            JPanel buttonPiece = Games.get(0).getNextInterface();
+                       
+            // Labels
+            JLabel labelTime = new JLabel();
+            labelTime.setFont(copperplate);
+            labelTime.setForeground(new Color(33,91,201));
+            labelTime.setText("Temps");
+            
+            JLabel labelWorddle = new JLabel();
+            labelWorddle.setFont(copperplate);
+            labelWorddle.setForeground(new Color(33,91,201));
+            labelWorddle.setText("Worddle");
+            
+            JLabel labelNiveau = new JLabel();
+            labelNiveau.setFont(copperplate);
+            labelNiveau.setForeground(new Color(33,91,201));
+            labelNiveau.setText("Niveau");
+
+            JLabel labelScore = new JLabel();
+            labelScore.setFont(copperplate);
+            labelScore.setForeground(new Color(33,91,201));
+            labelScore.setText("Score");
+            
+            
+            JLabel labelSaisie = new JLabel();
+            labelSaisie.setFont(copperplate);
+            labelSaisie.setForeground(new Color(33,91,201));
+            labelSaisie.setText("Saisie");
+  
+               javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(panel);
+                panel.setLayout(jPanel1Layout);
+                jPanel1Layout.setHorizontalGroup(
+                    jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(91, 91, 91)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(grille, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                    .addComponent(labelSaisie, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(labelScore, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(labelNiveau, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE))
+                                                .addGap(18, 18, 18)
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addComponent(buttonNiveau, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                                                    .addComponent(buttonScore, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(buttonSaisie, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(19, 19, 19)
+                                                .addComponent(labelTime, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(162, 162, 162))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(140, 140, 140)
+                                                .addComponent(buttonSauvegarde, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(160, 160, 160)
+                                                .addComponent(buttonPiece, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(152, 152, 152)
+                                                .addComponent(labelWorddle, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(buttonWorddle, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(buttonRetour, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(buttonRegles, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(63, 63, 63))))
+                );
+                jPanel1Layout.setVerticalGroup(
+                    jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addComponent(buttonRetour, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(53, 53, 53)
+                                .addComponent(labelTime, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(buttonRegles, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(23, 23, 23)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(buttonPiece, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(49, 49, 49)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(labelWorddle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(buttonWorddle, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(50, 50, 50)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(labelNiveau, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(buttonNiveau, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(labelScore, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(buttonScore, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(labelSaisie, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(buttonSaisie, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(50, 50, 50)
+                                .addComponent(buttonSauvegarde, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(grille, javax.swing.GroupLayout.PREFERRED_SIZE, 590, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(67, Short.MAX_VALUE))
+                );
+       
+            
+       
+            this.pack();
+            this.setVisible(true);
+            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            this.requestFocusInWindow();
     }
 
 /**
