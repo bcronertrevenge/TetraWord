@@ -1682,10 +1682,11 @@ public class MainGame extends JFrame {
     * Fenêtre d'édition de pièce
  **/ 
     public void shapeEditor() throws IOException{
+        
             // Création de la fenêtre
             this.setTitle("Editeur de piece");
             this.setPreferredSize(new Dimension(1024,768));
-                        
+            
             // Arrière plan
             JPanel panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/editeurPiece.jpg"));
             panel.setMaximumSize(new Dimension(1024, 768));
@@ -1728,6 +1729,9 @@ public class MainGame extends JFrame {
             savePiece.setForeground(Color.WHITE);
             savePiece.setFocusPainted(false);
             
+            final Integer[] shapeId=new Integer[1];
+            shapeId[0]=-1;
+            
             JPanel grillePiece = new JPanel(new GridLayout(4,4));
             Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
             final Integer [][]tab=new Integer[4][4];
@@ -1745,7 +1749,7 @@ public class MainGame extends JFrame {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
                             if(evt.getSource() instanceof JButton){
                                 JButton b=(JButton)evt.getSource();
-                                
+                                shapeId[0]=-1;
                                 boolean quit=false;
                                 for(int i=0;i<4;++i){
                                     for(int j=0;j<4;++j){
@@ -1774,6 +1778,7 @@ public class MainGame extends JFrame {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     try {
                         boolean quit=false;
+                        shapeId[0]=-1;
                         for(int i=0;i<4;++i){
                             for(int j=0;j<4;++j){
                                 if(tab[i][j]!=0){
@@ -1797,6 +1802,7 @@ public class MainGame extends JFrame {
             buttonNewPiece.addActionListener(new java.awt.event.ActionListener() {
                 @Override
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    shapeId[0]=-1;
                     for(int i=0;i<4;++i){
                         for(int j=0;j<4;++j){
                             tab[i][j]=0;
@@ -1809,11 +1815,11 @@ public class MainGame extends JFrame {
             chargerPiece.addActionListener(new java.awt.event.ActionListener() {
                 @Override
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    int r = (int) (Math.random() * shapeTypes.size());
+                    shapeId[0] = (int) (Math.random() * shapeTypes.size());
                     
                     for(int i=0;i<4;++i){
                         for(int j=0;j<4;++j){
-                            tab[i][j]=shapeTypes.get(r)[i][j];
+                            tab[i][j]=shapeTypes.get(shapeId[0])[i][j];
                             if(tab[i][j]==0)
                                 tabButton[i][j].setBackground(Color.gray);
                             else
