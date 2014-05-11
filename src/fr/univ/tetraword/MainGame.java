@@ -393,7 +393,8 @@ public class MainGame extends JFrame {
     public void welcomePage() throws IOException{
         
             //Lecture des shapes
-            shapeType.readShapes();
+            if(shapeType.shapeTypes==null)
+                shapeType.readShapes();
             if(options==null)
                 options=new Options();
             
@@ -1814,6 +1815,7 @@ public class MainGame extends JFrame {
                         if(!quit) return;
                         
                         shapeType.shapeTypes.put(shapeType.shapeTypes.size(),tab);
+                        
                         shapeType.saveShapes();
                     } catch (IOException ex) {
                         Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
@@ -1860,6 +1862,10 @@ public class MainGame extends JFrame {
                     if(shapeId[0]>6){
                         System.out.println("Pièce supprimée");
                         shapeTypes.remove(shapeId[0]);
+                        for(int i=shapeId[0]+1;i<=shapeTypes.size();++i){
+                            shapeTypes.put(i-1, shapeTypes.get(i));
+                            shapeTypes.remove(i);
+                        }
                         try {
                             shapeType.saveShapes();
                         } catch (IOException ex) {
