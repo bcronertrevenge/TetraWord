@@ -94,7 +94,22 @@ public class MainGame extends JFrame {
     public void shapeEditorActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
         shapeEditor();
     }
- 
+
+ /**
+    * Lorsque l'on clique sur "Supprimer pièce"
+     * @param <error>
+ **/
+    public void shapeEditorSuppress(int a){                                         
+        if(a<0){
+            JOptionPane.showMessageDialog(this,"Pas de pièce selectionné!");
+        }
+        else if (a<=6){
+            JOptionPane.showMessageDialog(this,"Pièce de base selectionnée!");
+        }
+        else {
+            JOptionPane.showMessageDialog(this,"La pièce a été supprimée!");
+        }
+    }
 /**
     * Lorsque l'on clique sur "Jouer contre un ami"
  **/
@@ -378,7 +393,8 @@ public class MainGame extends JFrame {
     public void welcomePage() throws IOException{
         
             //Lecture des shapes
-            shapeType.readShapes();
+            if(shapeType.shapeTypes==null)
+                shapeType.readShapes();
             if(options==null)
                 options=new Options();
             
@@ -1682,10 +1698,11 @@ public class MainGame extends JFrame {
     * Fenêtre d'édition de pièce
  **/ 
     public void shapeEditor() throws IOException{
+        
             // Création de la fenêtre
             this.setTitle("Editeur de piece");
             this.setPreferredSize(new Dimension(1024,768));
-                        
+            
             // Arrière plan
             JPanel panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/editeurPiece.jpg"));
             panel.setMaximumSize(new Dimension(1024, 768));
@@ -1728,10 +1745,15 @@ public class MainGame extends JFrame {
             savePiece.setForeground(Color.WHITE);
             savePiece.setFocusPainted(false);
             
+
+            final Integer[] shapeId=new Integer[1];
+            shapeId[0]=-1;
+
             JWelcomeButton deletePiece = new JWelcomeButton("Supprimer cette pièce");
             deletePiece.setFont(bigCentury);
             deletePiece.setForeground(Color.WHITE);
             deletePiece.setFocusPainted(false);
+
             
             JPanel grillePiece = new JPanel(new GridLayout(4,4));
             Border whiteline = BorderFactory.createLineBorder(Color.WHITE,1);
@@ -1750,7 +1772,7 @@ public class MainGame extends JFrame {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
                             if(evt.getSource() instanceof JButton){
                                 JButton b=(JButton)evt.getSource();
-                                
+                                shapeId[0]=-1;
                                 boolean quit=false;
                                 for(int i=0;i<4;++i){
                                     for(int j=0;j<4;++j){
@@ -1779,6 +1801,7 @@ public class MainGame extends JFrame {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     try {
                         boolean quit=false;
+                        shapeId[0]=-1;
                         for(int i=0;i<4;++i){
                             for(int j=0;j<4;++j){
                                 if(tab[i][j]!=0){
@@ -1792,6 +1815,7 @@ public class MainGame extends JFrame {
                         if(!quit) return;
                         
                         shapeType.shapeTypes.put(shapeType.shapeTypes.size(),tab);
+                        
                         shapeType.saveShapes();
                     } catch (IOException ex) {
                         Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
@@ -1802,6 +1826,7 @@ public class MainGame extends JFrame {
             buttonNewPiece.addActionListener(new java.awt.event.ActionListener() {
                 @Override
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    shapeId[0]=-1;
                     for(int i=0;i<4;++i){
                         for(int j=0;j<4;++j){
                             tab[i][j]=0;
@@ -1814,11 +1839,11 @@ public class MainGame extends JFrame {
             chargerPiece.addActionListener(new java.awt.event.ActionListener() {
                 @Override
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    int r = (int) (Math.random() * shapeTypes.size());
+                    shapeId[0] = (int) (Math.random() * shapeTypes.size());
                     
                     for(int i=0;i<4;++i){
                         for(int j=0;j<4;++j){
-                            tab[i][j]=shapeTypes.get(r)[i][j];
+                            tab[i][j]=shapeTypes.get(shapeId[0])[i][j];
                             if(tab[i][j]==0)
                                 tabButton[i][j].setBackground(Color.gray);
                             else
@@ -1827,7 +1852,39 @@ public class MainGame extends JFrame {
                     }
                 }
             });
+
+            deletePiece.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        
+                        shapeEditorSuppress(shapeId[0]);
                     
+                    if(shapeId[0]>6){
+                        System.out.println("Pièce supprimée");
+                        shapeTypes.remove(shapeId[0]);
+                        for(int i=shapeId[0]+1;i<=shapeTypes.size();++i){
+                            shapeTypes.put(i-1, shapeTypes.get(i));
+                            shapeTypes.remove(i);
+                        }
+                        try {
+                            shapeType.saveShapes();
+                        } catch (IOException ex) {
+                            Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        for(int i=0;i<4;++i){
+                            for(int j=0;j<4;++j){
+                                tab[i][j]=0;
+                                tabButton[i][j].setBackground(Color.gray);
+                                tabButton[i][j].repaint();
+                            }
+                        }
+                            
+                    }
+                    shapeId[0]=-1;
+                    
+                }
+            });
+
             GroupLayout layout = new GroupLayout(panel);
             panel.setLayout(layout);
             layout.setHorizontalGroup(
