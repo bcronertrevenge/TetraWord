@@ -982,7 +982,34 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     catch(IOException ioe) {}
  
     }
+  
+    /**
+     *
+     * Test de Marie
+     */
+ public void sauvegarder(String s) {
+    try {
+        try (ObjectOutputStream save = new ObjectOutputStream(new FileOutputStream(s))) {
+            save.writeObject(this);
+            System.out.println("Jeu sauvegardé avec succès");
+        }
+    } catch (IOException e) {
+        System.out.println("Impossible de sauvegarder le jeu");
+    } 
+}
+    
+public static Game charger(String s) throws ClassNotFoundException {
 
+    Object obj = null;
+    try {
+        ObjectInputStream load = new ObjectInputStream(new FileInputStream(s));
+        obj = load.readObject();
+        load.close();
+    } catch (IOException e) {
+        System.out.println("Impossible de charger votre jeu");
+    }
+    return (Game) obj;
+}
  /**
     * Permet de charger un jeu déjà existant
  **/
