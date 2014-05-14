@@ -15,6 +15,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import static java.lang.System.exit;
 import java.util.HashMap;
 import java.util.Vector;
@@ -32,18 +33,16 @@ import javax.swing.border.Border;
 /**
     * Game est la classe représentant un jeu de Tetra Word
  **/
-public class Game extends Thread implements ActionListener, MouseListener  {
+public class Game extends Thread implements ActionListener, MouseListener, Serializable {
     Shape currentShape;
     Shape nextShape;
     public double score;
     private int level;
-    Dictionary dictionary;
     private final Box grid[][];
     private final Box nextgrid[][];
     gridInterfaceReversable gridInterface;
-    JPanel nextInterface;
+    gridInterfaceReversable nextInterface;
     private int mode; //0 : mode Tetris, 1 : mode Anagramme, 2 : Worddle
-    JFrame window;
     String mot;
     int anagLine;
     Vector<Integer> worddleStartX;
@@ -51,25 +50,21 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     int worddleBoxPosX,worddleBoxPosY;
     long worddleTime, worddleReload, worddleLast, anagTime, fallTime;
     int anagLettres;
-    HashMap<String,JComponent> composants;
     IA intelligence;
     boolean pause;
     long beginTime;
     Game other;
     boolean gameOver;
     Options options;
+
 /**
     * Constructeur d'un Game
-    * @param window
-    * la fenêtre qui contiendra le jeu
-    * @param dictionary
-    * le dictionnaire qui vérifie l'existence des mots
     * @param composants
     * les JButton à mettre à jour (saisie, score, niveau)
     * @param ia
     * Si le jeu courant est contrôlé par une intelligence artificielle
  **/
-    public Game(JFrame window, Dictionary dictionary,  HashMap<String,JComponent> composants, boolean ia, Options options){  
+    public Game(HashMap<String,JComponent> composants, boolean ia, Options options){  
         this.other=null;
         this.options=options;
         
@@ -90,8 +85,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
         worddleStartX=new Vector<Integer>();
         worddleStartY=new Vector<Integer>();
         beginTime=0;
-                
-        this.composants=composants;
+
         anagLine=-1;
         score=0;
         level=1;
@@ -99,14 +93,12 @@ public class Game extends Thread implements ActionListener, MouseListener  {
         mode = 0;
         grid=new Box[20][10];
         nextgrid=new Box[4][4];
-        this.window=window;
         mot="";
-        this.dictionary=dictionary;
         gameOver=false;
         
         // Initialisation de grid
-        gridInterface = new gridInterfaceReversable(new GridLayout(20,10));
-        nextInterface = new JPanel(new GridLayout(4,4));
+        gridInterface = new gridInterfaceReversable(new GridLayout(20,10),composants);
+        nextInterface = new gridInterfaceReversable(new GridLayout(4,4));
     }
 
 /**
@@ -162,26 +154,26 @@ public class Game extends Thread implements ActionListener, MouseListener  {
             }
         gridInterface.repaint();   
         JButton b;
-        if(composants.containsKey("Niveau")){
-            b=(JButton) composants.get("Niveau");
+        if(gridInterface.Componant.containsKey("Niveau")){
+            b=(JButton) gridInterface.Componant.get("Niveau");
             b.setForeground(Color.white);
             b.setText(String.valueOf(level));
             b.repaint();
         }
-        if(composants.containsKey("Score")){
-            b=(JButton) composants.get("Score");
+        if(gridInterface.Componant.containsKey("Score")){
+            b=(JButton) gridInterface.Componant.get("Score");
             b.setForeground(Color.white);
             b.setText(String.valueOf((int)score));
             b.repaint();
         }
-        if(composants.containsKey("Saisie")){
-            b=(JButton) composants.get("Saisie");
+        if(gridInterface.Componant.containsKey("Saisie")){
+            b=(JButton) gridInterface.Componant.get("Saisie");
             b.setForeground(Color.white);
             b.setText(String.valueOf(mot));
             b.repaint();
         }
-        if(composants.containsKey("Worddle")){
-            b=(JButton) composants.get("Worddle");
+        if(gridInterface.Componant.containsKey("Worddle")){
+            b=(JButton) gridInterface.Componant.get("Worddle");
             if(System.currentTimeMillis()-worddleLast>=worddleReload){
                 b.setBackground(new Color(49,177,19));
                 b.setFocusPainted(false);
@@ -201,8 +193,8 @@ public class Game extends Thread implements ActionListener, MouseListener  {
                 b.repaint();
             }
         }
-        if(composants.containsKey("Temps")){
-            JLabel l=(JLabel) composants.get("Temps");
+        if(gridInterface.Componant.containsKey("Temps")){
+            JLabel l=(JLabel) gridInterface.Componant.get("Temps");
             switch(mode){
                 case 0:
                         l.setForeground(new Color(33,91,201));
@@ -326,7 +318,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
                         mode = 0;
                         unSelected(-1);
                         clean();
-                        window.requestFocusInWindow();
+                        MainGame.getFrames()[0].requestFocusInWindow();
                         mot="";
                         anagLine=-1;
                         gameOver=newShapeInGame();
@@ -340,7 +332,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
                         suppressionWorddle();
                         clean();
                         clearBox();
-                        window.requestFocusInWindow();
+                        MainGame.getFrames()[0].requestFocusInWindow();
                         mot="";
                         worddleLast=System.currentTimeMillis();
                         System.out.println("Worddle Over");
@@ -354,7 +346,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
                   
         }
         System.out.println("GAME OVER");
-        JOptionPane.showMessageDialog(window,"GAME OVER !");
+        JOptionPane.showMessageDialog(JFrame.getFrames()[0],"GAME OVER !");
 
         } catch (InterruptedException ex) {
                 Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
@@ -533,7 +525,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
                 anagLine=-1;
                 newShapeInGame();
             }
-            else if(mot.length() > anagLettres && dictionary.line.contains(mot)){
+            else if(mot.length() > anagLettres && Dictionary.getDictionary().contains(mot)){
                 
                 eraseLine(anagLine);
                 unSelected(-1);
@@ -557,11 +549,11 @@ public class Game extends Thread implements ActionListener, MouseListener  {
                 suppressionWorddle();
                 clean();
                 clearBox();
-                window.requestFocusInWindow();
+                MainGame.getFrames()[0].requestFocusInWindow();
                 mot="";
                 worddleLast=System.currentTimeMillis();
             }
-            else if(dictionary.line.contains(mot)){                
+            else if(Dictionary.getDictionary().contains(mot)){                
                 boolean quit;
                 for(int i=19;i>=0;--i){
                     quit=true;
@@ -960,14 +952,15 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     * @param savedGame
     * Vecteurs qui contient un ou plusieurs jeux
  **/
-  public static void saveGame(Vector<Game> savedGame) throws IOException
+  public void saveGame() throws IOException
     {
     try {
 
-        FileOutputStream file = new FileOutputStream("save.txt");
+        FileOutputStream file = new FileOutputStream("data/save.txt");
         ObjectOutputStream object= new ObjectOutputStream(file);
         try {
-            object.writeObject(savedGame);
+            object.writeObject(this);
+            System.out.println("Fichier sauvegardé");
             object.flush();
         }
         finally{
@@ -979,10 +972,14 @@ public class Game extends Thread implements ActionListener, MouseListener  {
             }
         }
     } 
-    catch(IOException ioe) {}
+    catch(IOException ioe) {
+        System.out.println("Erreur Exception");
+        ioe.printStackTrace();
+    }
  
     }
-
+  
+ 
  /**
     * Permet de charger un jeu déjà existant
  **/
@@ -991,12 +988,13 @@ public class Game extends Thread implements ActionListener, MouseListener  {
 		 Vector<Game> loadGames=null;
  
             try {
-                File studentFile = new File("save.txt");
+                File studentFile = new File("data/save.txt");
                 FileInputStream fileInput = new FileInputStream(studentFile);
                 ObjectInputStream object2 = new ObjectInputStream(fileInput);
                 try {
                     System.out.println("Chargement en cours...");
                     loadGames = (Vector<Game>) object2.readObject();
+                    System.out.println(loadGames.get(0));
                 }
                 finally{
                     try{
@@ -1062,7 +1060,7 @@ public class Game extends Thread implements ActionListener, MouseListener  {
                     }
                  }
              }
-             window.requestFocusInWindow();
+            MainGame.getFrames()[0].requestFocusInWindow();
     }
 
 /**
@@ -1078,8 +1076,8 @@ public class Game extends Thread implements ActionListener, MouseListener  {
         if(anagLettres<4 && level%3==0){
             anagLettres++; //Le nombre de lettres minimum en anagramme
         }
-        if(composants.containsKey("Niveau")){
-            JButton b=(JButton) composants.get("Niveau");
+        if(gridInterface.Componant.containsKey("Niveau")){
+            JButton b=(JButton) gridInterface.Componant.get("Niveau");
             b.setForeground(Color.white);
             b.setText(String.valueOf(level));
             b.repaint();

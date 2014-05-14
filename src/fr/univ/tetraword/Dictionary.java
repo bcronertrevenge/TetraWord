@@ -4,13 +4,14 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.HashSet;
 
 /**
     * Dictionary est la classe qui contient la liste des mots autorisés
  **/
-public class Dictionary {
-	HashSet<String> line;
+public class Dictionary implements Serializable {
+	static HashSet<String> line;
         
 /**
     * Constructeur par défaut
@@ -42,7 +43,7 @@ public class Dictionary {
     * l'expression regulière que l'on souhaite tester
      * @return 
  **/
-        public boolean containsRegEx( String regex ) {
+        public static boolean containsRegEx( String regex ) {
             for( String string : line ) {
                 if( string.matches( regex ) ) {
                     return true;
@@ -50,5 +51,8 @@ public class Dictionary {
             }
             return false;
         }
-
+        
+        public static HashSet<String> getDictionary(){
+            return line;
+        }
 }

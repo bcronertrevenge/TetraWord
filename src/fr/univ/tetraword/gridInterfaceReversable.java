@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.HashMap;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 /**
@@ -13,15 +15,23 @@ import javax.swing.JPanel;
 public class gridInterfaceReversable extends JPanel {
     
     boolean reverse;
- 
+    HashMap<String,JComponent> Componant;
 /**
     * Constructeur par défaut
     * @param g
     * la grille initiale que l'on souhaite renverser (ou pas)
  **/
+    
     public gridInterfaceReversable(GridLayout g){
         super(g);
         reverse=false;
+        this.Componant=null;
+    }
+    
+    public gridInterfaceReversable(GridLayout g, HashMap<String,JComponent> Componant){
+        super(g);
+        reverse=false;
+        this.Componant=Componant;
     }
 
 /**

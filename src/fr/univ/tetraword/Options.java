@@ -6,11 +6,13 @@
 
 package fr.univ.tetraword;
 
+import java.io.Serializable;
+
 /**
  *
  * @author bruno
  */
-public class Options {
+public class Options implements Serializable {
         long worddleTime; //Le temps en mode Worddle
         long worddleReload; //Le temps de rechargement de Worddle
         long anagTime; //Le temps en mode anagramme

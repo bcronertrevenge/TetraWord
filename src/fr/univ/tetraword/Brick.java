@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
     * Brick est la classe représentant le contenu d'une Box
  **/
-public class Brick{
+public class Brick implements Serializable{
     char lettre;
     double rarity;
  

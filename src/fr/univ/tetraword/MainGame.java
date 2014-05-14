@@ -7,9 +7,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.Serializable;
 import static java.lang.System.exit;
 import java.util.HashMap;
 import java.util.Vector;
@@ -25,11 +24,13 @@ import javax.swing.event.ChangeListener;
     * MainGame est la classe représentant le jeu principal 
  **/
 
-public class MainGame extends JFrame {
+public class MainGame extends JFrame implements Serializable {
     Vector<Game> Games;
     HashMap<String,JComponent> Composants;
     HashMap<String,JComponent> Composants2;
     Options options;
+    Dictionary dictionary;
+    
 /**
     * Constructeur du jeu principal
  **/
@@ -97,11 +98,11 @@ public class MainGame extends JFrame {
 
  /**
     * Lorsque l'on clique sur "Supprimer pièce"
-     * @param <error>
+     * @param a identifiant d'une pièce
  **/
     public void shapeEditorSuppress(int a){                                         
         if(a<0){
-            JOptionPane.showMessageDialog(this,"Pas de pièce selectionné!");
+            JOptionPane.showMessageDialog(this,"Pas de pièce selectionnée!");
         }
         else if (a<=6){
             JOptionPane.showMessageDialog(this,"Pièce de base selectionnée!");
@@ -127,242 +128,16 @@ public class MainGame extends JFrame {
 /**
     * Lorsque l'on clique sur "Sauvegarder"
  **/
-    public void sauvegardeActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
+    public void sauvegardeActionPerformed(java.awt.event.ActionEvent evt) throws IOException{ 
+        Games.get(0).saveGame();
         JOptionPane.showMessageDialog(this,"Partie sauvegardée !");
-        Game.saveGame(Games);
     }
 
 /**
     * Lorsque l'on clique sur "Charger un partie"
  **/
-    public void chargerPartieActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
-        // Changement du titre
-            this.setTitle("Vous jouez à Tetra Word en Solo");
-            this.setPreferredSize(new Dimension(1024,768));
-                        
-            // Arrière plan
-            JPanel panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/game.jpg"));
-            panel.setMaximumSize(new Dimension(1024, 768));
-            panel.setMinimumSize(new Dimension(600, 400));
-            panel.setPreferredSize(new Dimension(1024, 768));
-            
-            // Fonts
-            Font copperplate = new Font("Copperplate Gothic Bold",0,22);
-            Font bigCentury = new Font("Century Gothic",0,26);
-            Font smallCentury = new Font("Century Gothic",0,18);
-            
-            Composants=new HashMap<>(); 
-            
-            // Boutons
-            JWelcomeButton buttonRetour = new JWelcomeButton("Retour");
-            buttonRetour.setFont(bigCentury);
-            buttonRetour.setForeground(Color.WHITE);
-            buttonRetour.setFocusPainted(false);
-            buttonRetour.addActionListener(new java.awt.event.ActionListener() {
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    try {
-                        retourActionPerformed(evt);
-                    } catch (IOException ex) {
-                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                }
-            });
-            
-            JWelcomeButton buttonRegles = new JWelcomeButton("?");
-            buttonRegles.setFont(smallCentury);
-            buttonRegles.setForeground(Color.WHITE);
-            buttonRegles.setFocusPainted(false);
-            buttonRegles.addActionListener(new java.awt.event.ActionListener() {
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    try {
-                        firstReglesActionPerformed(evt);
-                    } catch (IOException ex) {
-                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                }
-            });
-            
-            JButton buttonWorddle = new JButton("");
-            if(buttonWorddle==null)exit(1);
-            buttonWorddle.setFocusPainted(false);
-            Composants.put("Worddle",buttonWorddle);
-            
-            JWelcomeButton buttonNiveau = new JWelcomeButton("");
-            if(buttonNiveau==null)exit(1);
-            buttonNiveau.setFont(bigCentury);
-            buttonNiveau.setForeground(Color.WHITE);
-            buttonNiveau.setFocusPainted(false);
-            Composants.put("Niveau",buttonNiveau);
-            
-            JWelcomeButton buttonScore = new JWelcomeButton("");
-            if(buttonScore==null)exit(1);
-            buttonScore.setFont(bigCentury);
-            buttonScore.setForeground(Color.WHITE);
-            buttonScore.setFocusPainted(false);
-            Composants.put("Score",buttonScore);
-            
-            JWelcomeButton buttonSaisie = new JWelcomeButton("");
-            buttonSaisie.setFont(bigCentury);
-            buttonSaisie.setForeground(Color.WHITE);
-            buttonSaisie.setFocusPainted(false);
-            Composants.put("Saisie",buttonSaisie);
-            
-            JWelcomeButton buttonSauvegarde = new JWelcomeButton("Sauvegarder la partie");
-            buttonSauvegarde.setFont(smallCentury);
-            buttonSauvegarde.setForeground(Color.WHITE);
-            buttonSauvegarde.setFocusPainted(false);
-            buttonSauvegarde.addActionListener(new java.awt.event.ActionListener() {
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    try {
-                        sauvegardeActionPerformed(evt);
-                    } catch (IOException ex) {
-                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                }
-            });
-            
-            // Création du jeu
-          Dictionary dictionary=new Dictionary();
-           Games=new Vector<Game>();
-             
-         /*   Game game=new Game(this,dictionary,Composants,false);
-           game.start();
-          Games.add(game);*/
-         
-          
-            Games=Game.readGame();
-            
-            // Grille de Jeu        
-            JPanel grille=Games.get(0).getGridInterface();
-            
-            // Prochaine piece        
-            JPanel buttonPiece = Games.get(0).getNextInterface();
-                       
-            // Labels
-            JLabel labelTime = new JLabel();
-            labelTime.setFont(copperplate);
-            labelTime.setForeground(new Color(33,91,201));
-            labelTime.setText("Temps");
-            
-            JLabel labelWorddle = new JLabel();
-            labelWorddle.setFont(copperplate);
-            labelWorddle.setForeground(new Color(33,91,201));
-            labelWorddle.setText("Worddle");
-            
-            JLabel labelNiveau = new JLabel();
-            labelNiveau.setFont(copperplate);
-            labelNiveau.setForeground(new Color(33,91,201));
-            labelNiveau.setText("Niveau");
-
-            JLabel labelScore = new JLabel();
-            labelScore.setFont(copperplate);
-            labelScore.setForeground(new Color(33,91,201));
-            labelScore.setText("Score");
-            
-            
-            JLabel labelSaisie = new JLabel();
-            labelSaisie.setFont(copperplate);
-            labelSaisie.setForeground(new Color(33,91,201));
-            labelSaisie.setText("Saisie");
-  
-               GroupLayout jPanel1Layout = new GroupLayout(panel);
-                panel.setLayout(jPanel1Layout);
-                jPanel1Layout.setHorizontalGroup(
-                    jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(91, 91, 91)
-                        .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(grille, GroupLayout.PREFERRED_SIZE, 349, GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
-                                        .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                                                    .addComponent(labelSaisie, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                    .addComponent(labelScore, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                    .addComponent(labelNiveau, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE))
-                                                .addGap(18, 18, 18)
-                                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                                    .addComponent(buttonNiveau, GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                                                    .addComponent(buttonScore, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                    .addComponent(buttonSaisie, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(19, 19, 19)
-                                                .addComponent(labelTime, GroupLayout.PREFERRED_SIZE, 240, GroupLayout.PREFERRED_SIZE)))
-                                        .addGap(162, 162, 162))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(140, 140, 140)
-                                                .addComponent(buttonSauvegarde, GroupLayout.PREFERRED_SIZE, 258, GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(160, 160, 160)
-                                                .addComponent(buttonPiece, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(152, 152, 152)
-                                                .addComponent(labelWorddle, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(buttonWorddle, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)))
-                                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(buttonRetour, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(buttonRegles, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
-                                .addGap(63, 63, 63))))
-                );
-                jPanel1Layout.setVerticalGroup(
-                    jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(28, 28, 28)
-                                .addComponent(buttonRetour, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(53, 53, 53)
-                                .addComponent(labelTime, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addComponent(buttonRegles, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)))
-                        .addGap(23, 23, 23)
-                        .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(buttonPiece, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE)
-                                .addGap(49, 49, 49)
-                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(labelWorddle, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(buttonWorddle, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
-                                .addGap(50, 50, 50)
-                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                    .addComponent(labelNiveau, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(buttonNiveau, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                    .addComponent(labelScore, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(buttonScore, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                    .addComponent(labelSaisie, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(buttonSaisie, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
-                                .addGap(50, 50, 50)
-                                .addComponent(buttonSauvegarde, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
-                            .addComponent(grille, GroupLayout.PREFERRED_SIZE, 590, GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(67, Short.MAX_VALUE))
-                );
-       
-            
-       
-            this.pack();
-            this.setVisible(true);
-            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            this.requestFocusInWindow();
+    public void chargerPartieActionPerformed(java.awt.event.ActionEvent evt) throws IOException{ 
+       loadGame();
     }
 
 /**
@@ -397,6 +172,8 @@ public class MainGame extends JFrame {
                 shapeType.readShapes();
             if(options==null)
                 options=new Options();
+            if(dictionary==null)
+                dictionary=new Dictionary();
             
             // Création de la fenêtre
             this.setTitle("Bienvenue sur Tetra Word");
@@ -440,7 +217,7 @@ public class MainGame extends JFrame {
                         chargerPartieActionPerformed(evt);
                     } catch (IOException ex) {
                         Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    } 
                 }
             });
                         
@@ -536,7 +313,7 @@ public class MainGame extends JFrame {
  **/ 
     public void pausePage() throws IOException{
             if (Games.get(0).pause)
-                JOptionPane.showMessageDialog(this,"Le jeu est en pause");
+                JOptionPane.showMessageDialog(this,"Le jeu est en pause\n Appuyez sur p pour reprendre");
     }
 
 /**
@@ -947,10 +724,9 @@ public class MainGame extends JFrame {
             });
             
             // Création du jeu
-            Dictionary dictionary=new Dictionary();
             Games=new Vector<Game>();
             
-            Game game=new Game(this,dictionary,Composants,false,options);
+            Game game=new Game(Composants,false,options);
             game.start();
             Games.add(game);
             
@@ -1162,10 +938,9 @@ public class MainGame extends JFrame {
             Composants.put("Saisie",buttonSaisie1);
             
             // Création du jeu
-            Dictionary dictionary=new Dictionary();
             Games=new Vector<Game>();
             
-            Game game1=new Game(this,dictionary,Composants,false,options);
+            Game game1=new Game(Composants,false,options);
             game1.start();
             Games.add(game1);
             
@@ -1243,7 +1018,7 @@ public class MainGame extends JFrame {
             Composants2.put("Saisie",buttonSaisie2);
             
             // Création du jeu
-            Game game2=new Game(this,dictionary,Composants2,ia,options);
+            Game game2=new Game(Composants2,ia,options);
             game2.start();
             Games.add(game2);
             
@@ -1410,7 +1185,235 @@ public class MainGame extends JFrame {
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.requestFocusInWindow();
     }
+    
+    
+/**
+    * Page de chargement d'un jeu enregistré
+ **/
+public void loadGame() throws IOException{
+            
+            // Changement du titre
+            this.setTitle("Vous jouez à Tetra Word en Solo");
+            this.setPreferredSize(new Dimension(1024,768));
+                        
+            // Arrière plan
+            JPanel panel = setBackgroundImage(this, new File("src/fr/univ/graphicinterface/game.jpg"));
+            panel.setMaximumSize(new Dimension(1024, 768));
+            panel.setMinimumSize(new Dimension(600, 400));
+            panel.setPreferredSize(new Dimension(1024, 768));
+            
+            // Fonts
+            Font copperplate = new Font("Copperplate Gothic Bold",0,22);
+            Font bigCentury = new Font("Century Gothic",0,26);
+            Font smallCentury = new Font("Century Gothic",0,18);
+            
+            Composants=new HashMap<>(); 
+            
+            // Boutons
+            JWelcomeButton buttonRetour = new JWelcomeButton("Retour");
+            buttonRetour.setFont(bigCentury);
+            buttonRetour.setForeground(Color.WHITE);
+            buttonRetour.setFocusPainted(false);
+            buttonRetour.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        retourActionPerformed(evt);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 
+                }
+            });
+            
+            JWelcomeButton buttonRegles = new JWelcomeButton("?");
+            buttonRegles.setFont(smallCentury);
+            buttonRegles.setForeground(Color.WHITE);
+            buttonRegles.setFocusPainted(false);
+            buttonRegles.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        firstReglesActionPerformed(evt);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+            });
+            
+            JButton buttonWorddle = new JButton("");
+            if(buttonWorddle==null)exit(1);
+            buttonWorddle.setFocusPainted(false);
+            Composants.put("Worddle",buttonWorddle);
+            
+            JWelcomeButton buttonNiveau = new JWelcomeButton("");
+            if(buttonNiveau==null)exit(1);
+            buttonNiveau.setFont(bigCentury);
+            buttonNiveau.setForeground(Color.WHITE);
+            buttonNiveau.setFocusPainted(false);
+            Composants.put("Niveau",buttonNiveau);
+            
+            JWelcomeButton buttonScore = new JWelcomeButton("");
+            if(buttonScore==null)exit(1);
+            buttonScore.setFont(bigCentury);
+            buttonScore.setForeground(Color.WHITE);
+            buttonScore.setFocusPainted(false);
+            Composants.put("Score",buttonScore);
+            
+            JWelcomeButton buttonSaisie = new JWelcomeButton("");
+            buttonSaisie.setFont(bigCentury);
+            buttonSaisie.setForeground(Color.WHITE);
+            buttonSaisie.setFocusPainted(false);
+            Composants.put("Saisie",buttonSaisie);
+            
+            JWelcomeButton buttonSauvegarde = new JWelcomeButton("Sauvegarder la partie");
+            buttonSauvegarde.setFont(smallCentury);
+            buttonSauvegarde.setForeground(Color.WHITE);
+            buttonSauvegarde.setFocusPainted(false);
+            buttonSauvegarde.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        sauvegardeActionPerformed(evt);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+            });
+            
+            // Création du jeu
+            Games=new Vector<Game>();
+
+            Games=Game.readGame();
+            
+            // Grille de Jeu        
+            JPanel grille=Games.get(0).getGridInterface();
+            
+            // Prochaine piece        
+            JPanel buttonPiece = Games.get(0).getNextInterface();
+                       
+            // Labels
+            JLabel labelTime = new JLabel();
+            labelTime.setFont(copperplate);
+            labelTime.setForeground(new Color(33,91,201));
+            labelTime.setText("Temps");
+            
+            JLabel labelWorddle = new JLabel();
+            labelWorddle.setFont(copperplate);
+            labelWorddle.setForeground(new Color(33,91,201));
+            labelWorddle.setText("Worddle");
+            
+            JLabel labelNiveau = new JLabel();
+            labelNiveau.setFont(copperplate);
+            labelNiveau.setForeground(new Color(33,91,201));
+            labelNiveau.setText("Niveau");
+
+            JLabel labelScore = new JLabel();
+            labelScore.setFont(copperplate);
+            labelScore.setForeground(new Color(33,91,201));
+            labelScore.setText("Score");
+            
+            
+            JLabel labelSaisie = new JLabel();
+            labelSaisie.setFont(copperplate);
+            labelSaisie.setForeground(new Color(33,91,201));
+            labelSaisie.setText("Saisie");
+  
+               GroupLayout jPanel1Layout = new GroupLayout(panel);
+                panel.setLayout(jPanel1Layout);
+                jPanel1Layout.setHorizontalGroup(
+                    jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(91, 91, 91)
+                        .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(grille, GroupLayout.PREFERRED_SIZE, 349, GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
+                                        .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+                                                    .addComponent(labelSaisie, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(labelScore, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(labelNiveau, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE))
+                                                .addGap(18, 18, 18)
+                                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                                    .addComponent(buttonNiveau, GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                                                    .addComponent(buttonScore, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(buttonSaisie, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(19, 19, 19)
+                                                .addComponent(labelTime, GroupLayout.PREFERRED_SIZE, 240, GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(162, 162, 162))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(140, 140, 140)
+                                                .addComponent(buttonSauvegarde, GroupLayout.PREFERRED_SIZE, 258, GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(160, 160, 160)
+                                                .addComponent(buttonPiece, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(152, 152, 152)
+                                                .addComponent(labelWorddle, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(buttonWorddle, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)))
+                                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(buttonRetour, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(buttonRegles, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+                                .addGap(63, 63, 63))))
+                );
+                jPanel1Layout.setVerticalGroup(
+                    jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addComponent(buttonRetour, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(53, 53, 53)
+                                .addComponent(labelTime, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(buttonRegles, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)))
+                        .addGap(23, 23, 23)
+                        .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(buttonPiece, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE)
+                                .addGap(49, 49, 49)
+                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(labelWorddle, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(buttonWorddle, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
+                                .addGap(50, 50, 50)
+                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                    .addComponent(labelNiveau, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(buttonNiveau, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                    .addComponent(labelScore, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(buttonScore, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                    .addComponent(labelSaisie, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(buttonSaisie, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
+                                .addGap(50, 50, 50)
+                                .addComponent(buttonSauvegarde, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+                            .addComponent(grille, GroupLayout.PREFERRED_SIZE, 590, GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(67, Short.MAX_VALUE))
+                );
+       
+            
+       
+            this.pack();
+            this.setVisible(true);
+            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            this.requestFocusInWindow();
+    }
 /**
     * Fenêtre avec les options du jeu
  **/ 
@@ -1937,7 +1940,7 @@ public class MainGame extends JFrame {
    class ClavierListener implements KeyListener{
 
         public void keyPressed(KeyEvent event) {
-            
+                
                 int keyCode = event.getKeyCode();
                 switch( keyCode ) {
                     //Joueur1
@@ -2017,7 +2020,7 @@ public class MainGame extends JFrame {
                     case KeyEvent.VK_J:
                         try {
                             
-                            Game.saveGame(Games);
+                            Games.get(0).saveGame();
                         } catch (IOException ex) {
                             Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -2047,7 +2050,7 @@ public class MainGame extends JFrame {
                                 g.pause=true;
                         }
    }
-
+   
  /**
     * Programme principal
  **/ 

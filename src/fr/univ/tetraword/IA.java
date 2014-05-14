@@ -240,12 +240,12 @@ public class IA {
              
              lettre=Character.toLowerCase(game.getGrid()[game.anagLine][i].getBrick().lettre);
              
-             if(game.dictionary.line.contains(mot+lettre) && mot.length()>=game.anagLettres){
+             if(Dictionary.getDictionary().contains(mot+lettre) && mot.length()>=game.anagLettres){
                  game.getGrid()[game.anagLine][i].isSelected=true;
                  game.mot=mot+lettre;
                  return true;
              }
-             else if(game.dictionary.containsRegEx(mot+lettre+".")){
+             else if(Dictionary.containsRegEx(mot+lettre+".")){
                  game.getGrid()[game.anagLine][i].isSelected=true;
                  res=findWordAnagramme(mot+lettre);
                  if(res) return true;
@@ -295,13 +295,13 @@ public class IA {
                     lettre=Character.toLowerCase(game.getGrid()[y][x-1].getBrick().lettre);
                     
                     //Mot Correct
-                    if(game.dictionary.line.contains(mot+lettre)){
+                    if(Dictionary.getDictionary().contains(mot+lettre)){
                         game.getGrid()[y][x-1].isSelected=true;
                         game.mot=mot+lettre;
                         return true;
                     }
                     //Partie du mot
-                    else if(game.dictionary.containsRegEx(mot+lettre+".")){
+                    else if(Dictionary.containsRegEx(mot+lettre+".")){
                         game.getGrid()[y][x-1].isSelected=true;
                         res=findWordWorddle(mot+lettre,x-1,y);
                         if(res) return true;
@@ -318,13 +318,13 @@ public class IA {
                     lettre=Character.toLowerCase(game.getGrid()[y-1][x].getBrick().lettre);
                     
                     //Mot Correct
-                    if(game.dictionary.line.contains(mot+lettre)){
+                    if(Dictionary.getDictionary().contains(mot+lettre)){
                         game.getGrid()[y-1][x].isSelected=true;
                         game.mot=mot+lettre;
                         return true;
                     }
                     //Partie du mot
-                    else if(game.dictionary.containsRegEx(mot+lettre+".")){
+                    else if(Dictionary.containsRegEx(mot+lettre+".")){
                         game.getGrid()[y-1][x].isSelected=true;
                         res=findWordWorddle(mot+lettre,x,y-1);
                         if(res) return true;
@@ -341,13 +341,13 @@ public class IA {
                     lettre=Character.toLowerCase(game.getGrid()[y][x+1].getBrick().lettre);
                     
                     //Mot Correct
-                    if(game.dictionary.line.contains(mot+lettre)){
+                    if(Dictionary.getDictionary().contains(mot+lettre)){
                         game.getGrid()[y][x+1].isSelected=true;
                         game.mot=mot+lettre;
                         return true;
                     }
                     //Partie du mot
-                    else if(game.dictionary.containsRegEx(mot+lettre+".")){
+                    else if(Dictionary.containsRegEx(mot+lettre+".")){
                         game.getGrid()[y][x+1].isSelected=true;
                         res=findWordWorddle(mot+lettre,x+1,y);
                         if(res) return true;
@@ -364,13 +364,13 @@ public class IA {
                     lettre=Character.toLowerCase(game.getGrid()[y+1][x].getBrick().lettre);
                     
                     //Mot Correct
-                    if(game.dictionary.line.contains(mot+lettre)){
+                    if(Dictionary.getDictionary().contains(mot+lettre)){
                         game.getGrid()[y+1][x].isSelected=true;
                         game.mot=mot+lettre;
                         return true;
                     }
                     //Partie du mot
-                    else if(game.dictionary.containsRegEx(mot+lettre+".")){
+                    else if(Dictionary.containsRegEx(mot+lettre+".")){
                         game.getGrid()[y+1][x].isSelected=true;
                         res=findWordWorddle(mot+lettre,x,y+1);
                         if(res) return true;
