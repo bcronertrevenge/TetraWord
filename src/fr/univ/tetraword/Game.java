@@ -15,8 +15,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import static java.lang.System.exit;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -24,6 +27,7 @@ import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -962,7 +966,9 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
     {
     try {
         firstGame=false;
-        FileOutputStream file = new FileOutputStream("data/save.txt");
+        Date date = new Date( System.currentTimeMillis() );
+    SimpleDateFormat sdf = new SimpleDateFormat( "dd.MM.yyyy" );
+        FileOutputStream file = new FileOutputStream("data/"+sdf.format( date )+".txt");
         ObjectOutputStream object= new ObjectOutputStream(file);
         try {
             object.writeObject(this);
@@ -989,12 +995,25 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
  /**
     * Permet de charger un jeu déjà existant
  **/
-	public static Game readGame()
+	public static Game readGame() throws IOException, ClassNotFoundException
 	{ 
 		 Game loadGame=null;
- 
+                 File studentFile = null;
             try {
-                File studentFile = new File("data/save.txt");
+                JFileChooser dialogue = new JFileChooser(new File("data/."));
+	PrintWriter sortie;
+	
+	int choix = dialogue.showOpenDialog(null);
+	if (choix== 
+	    JFileChooser.APPROVE_OPTION) {
+	   studentFile = dialogue.getSelectedFile();
+	    sortie = new PrintWriter
+		(new FileWriter(studentFile.getPath(), true));
+	    sortie.close();
+            
+            
+	}else 
+            return null;
                 FileInputStream fileInput = new FileInputStream(studentFile);
                 ObjectInputStream object2 = new ObjectInputStream(fileInput);
                 try {
@@ -1021,6 +1040,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
             System.out.println("Erreur, problème classe");
             System.exit(1);
             }
+            
          return loadGame;
         }
 
