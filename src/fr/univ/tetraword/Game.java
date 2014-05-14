@@ -15,6 +15,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import static java.lang.System.exit;
 import java.util.HashMap;
 import java.util.Vector;
@@ -32,7 +33,7 @@ import javax.swing.border.Border;
 /**
     * Game est la classe représentant un jeu de Tetra Word
  **/
-public class Game extends Thread implements ActionListener, MouseListener  {
+public class Game extends Thread implements ActionListener, MouseListener, Serializable {
     Shape currentShape;
     Shape nextShape;
     public double score;
@@ -960,14 +961,15 @@ public class Game extends Thread implements ActionListener, MouseListener  {
     * @param savedGame
     * Vecteurs qui contient un ou plusieurs jeux
  **/
-  public static void saveGame(Vector<Game> savedGame) throws IOException
+  public void saveGame() throws IOException
     {
     try {
 
         FileOutputStream file = new FileOutputStream("save.txt");
         ObjectOutputStream object= new ObjectOutputStream(file);
         try {
-            object.writeObject(savedGame);
+            object.writeObject(this);
+            System.out.println("Fichier sauvegardé");
             object.flush();
         }
         finally{
@@ -979,37 +981,14 @@ public class Game extends Thread implements ActionListener, MouseListener  {
             }
         }
     } 
-    catch(IOException ioe) {}
+    catch(IOException ioe) {
+        System.out.println("Erreur Exception");
+        ioe.printStackTrace();
+    }
  
     }
   
-    /**
-     *
-     * Test de Marie
-     */
- public void sauvegarder(String s) {
-    try {
-        try (ObjectOutputStream save = new ObjectOutputStream(new FileOutputStream(s))) {
-            save.writeObject(this);
-            System.out.println("Jeu sauvegardé avec succès");
-        }
-    } catch (IOException e) {
-        System.out.println("Impossible de sauvegarder le jeu");
-    } 
-}
-    
-public static Game charger(String s) throws ClassNotFoundException {
-
-    Object obj = null;
-    try {
-        ObjectInputStream load = new ObjectInputStream(new FileInputStream(s));
-        obj = load.readObject();
-        load.close();
-    } catch (IOException e) {
-        System.out.println("Impossible de charger votre jeu");
-    }
-    return (Game) obj;
-}
+ 
  /**
     * Permet de charger un jeu déjà existant
  **/
@@ -1024,6 +1003,7 @@ public static Game charger(String s) throws ClassNotFoundException {
                 try {
                     System.out.println("Chargement en cours...");
                     loadGames = (Vector<Game>) object2.readObject();
+                    System.out.println(loadGames.get(0));
                 }
                 finally{
                     try{

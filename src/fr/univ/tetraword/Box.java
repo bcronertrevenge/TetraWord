@@ -1,12 +1,13 @@
 package fr.univ.tetraword;
 
 import java.awt.Color;
+import java.io.Serializable;
 import javax.swing.JButton;
 
 /**
     * Box est la classe représentant une case de la grille
  **/
-public class Box extends JButton {
+public class Box extends JButton implements Serializable {
     
     private Shape shape;
     private Brick brick;

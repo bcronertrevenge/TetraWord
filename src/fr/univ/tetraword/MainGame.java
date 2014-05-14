@@ -126,7 +126,7 @@ public class MainGame extends JFrame {
     * Lorsque l'on clique sur "Sauvegarder"
  **/
     public void sauvegardeActionPerformed(java.awt.event.ActionEvent evt) throws IOException{ 
-        Game.saveGame(Games);
+        Games.get(0).saveGame();
         JOptionPane.showMessageDialog(this,"Partie sauvegardée !");
     }
 
@@ -2018,7 +2018,7 @@ public void loadGame() throws IOException{
                     case KeyEvent.VK_J:
                         try {
                             
-                            Game.saveGame(Games);
+                            Games.get(0).saveGame();
                         } catch (IOException ex) {
                             Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
                         }
