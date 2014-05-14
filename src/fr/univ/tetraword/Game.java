@@ -816,8 +816,13 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
     * Permet de tester si la pièce courante peut tourner ou pas
  **/
     public boolean canRotate(){
+        while(currentShape.x+currentShape.height>=10 || currentShape.y+currentShape.width>=20){
+            if(!canMoveAside(-1)) break;
+            moveShapeAside(-1, true);
+        }
         if(currentShape.x+currentShape.height>=10 || currentShape.y+currentShape.width>=20)
             return false;
+        
         int taille=currentShape.width;
         if(taille < currentShape.height) taille=currentShape.height;
         
