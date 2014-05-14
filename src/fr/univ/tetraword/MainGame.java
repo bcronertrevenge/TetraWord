@@ -122,7 +122,8 @@ public class MainGame extends JFrame implements Serializable {
     * Lorsque l'on clique sur "Retour"
  **/
     public void retourActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
-       Games.clear();
+        if(Games!=null)
+            Games.clear();
         welcomePage();
     }
  
@@ -1273,9 +1274,9 @@ public void loadGame() throws IOException, ClassNotFoundException{
             JButton buttonWorddle=(JButton) Games.get(0).gridInterface.Componant.get("Worddle");
             JLabel labelTime=(JLabel) Games.get(0).gridInterface.Componant.get("Temps");
             
-            buttonSaisie.setFont(copperplate);
-            buttonNiveau.setFont(copperplate);
-            buttonScore.setFont(copperplate);
+            buttonSaisie.setFont(bigCentury);
+            buttonNiveau.setFont(bigCentury);
+            buttonScore.setFont(bigCentury);
             buttonWorddle.setFont(copperplate);
             labelTime.setFont(copperplate);
             

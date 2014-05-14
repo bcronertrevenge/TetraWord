@@ -997,7 +997,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
         firstGame=false;
         Date date = new Date( System.currentTimeMillis() );
     SimpleDateFormat sdf = new SimpleDateFormat( "dd.MM.yyyy" );
-        FileOutputStream file = new FileOutputStream("data/"+sdf.format( date )+".txt");
+        FileOutputStream file = new FileOutputStream("save/"+sdf.format( date )+".txt");
         ObjectOutputStream object= new ObjectOutputStream(file);
         try {
             object.writeObject(this);
@@ -1036,7 +1036,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
 		 Game loadGame=null;
                  File studentFile = null;
             try {
-                JFileChooser dialogue = new JFileChooser(new File("data/."));
+                JFileChooser dialogue = new JFileChooser(new File("save/."));
 	PrintWriter sortie;
 	
 	int choix = dialogue.showOpenDialog(null);
