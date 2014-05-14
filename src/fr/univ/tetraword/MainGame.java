@@ -122,6 +122,7 @@ public class MainGame extends JFrame implements Serializable {
     * Lorsque l'on clique sur "Retour"
  **/
     public void retourActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
+        Games.clear();
         welcomePage();
     }
  
@@ -137,7 +138,7 @@ public class MainGame extends JFrame implements Serializable {
 /**
     * Lorsque l'on clique sur "Charger un partie"
  **/
-    public void chargerPartieActionPerformed(java.awt.event.ActionEvent evt) throws IOException{ 
+    public void chargerPartieActionPerformed(java.awt.event.ActionEvent evt) throws IOException, ClassNotFoundException{ 
        loadGame();
     }
 
@@ -217,6 +218,8 @@ public class MainGame extends JFrame implements Serializable {
                     try {
                         chargerPartieActionPerformed(evt);
                     } catch (IOException ex) {
+                        Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ClassNotFoundException ex) {
                         Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
                     } 
                 }
@@ -1191,7 +1194,10 @@ public class MainGame extends JFrame implements Serializable {
 /**
     * Page de chargement d'un jeu enregistré
  **/
-public void loadGame() throws IOException{
+public void loadGame() throws IOException, ClassNotFoundException{
+            Game g = Game.readGame();
+            if(g == null)
+                return;
             
             // Changement du titre
             this.setTitle("Vous jouez à Tetra Word en Solo");
@@ -1259,8 +1265,9 @@ public void loadGame() throws IOException{
             
             // Création du jeu
             Games=new Vector<Game>();
-
-            Games.add(Game.readGame());
+            
+            if(g != null)  
+                Games.add(g);
             
             JButton buttonSaisie=(JButton) Games.get(0).gridInterface.Componant.get("Saisie");
             JButton buttonNiveau=(JButton) Games.get(0).gridInterface.Componant.get("Niveau");
