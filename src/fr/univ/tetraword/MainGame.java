@@ -1207,8 +1207,6 @@ public void loadGame() throws IOException{
             Font bigCentury = new Font("Century Gothic",0,26);
             Font smallCentury = new Font("Century Gothic",0,18);
             
-            Composants=new HashMap<>(); 
-            
             // Boutons
             JWelcomeButton buttonRetour = new JWelcomeButton("Retour");
             buttonRetour.setFont(bigCentury);
@@ -1241,32 +1239,7 @@ public void loadGame() throws IOException{
 
                 }
             });
-            
-            JButton buttonWorddle = new JButton("");
-            if(buttonWorddle==null)exit(1);
-            buttonWorddle.setFocusPainted(false);
-            Composants.put("Worddle",buttonWorddle);
-            
-            JWelcomeButton buttonNiveau = new JWelcomeButton("");
-            if(buttonNiveau==null)exit(1);
-            buttonNiveau.setFont(bigCentury);
-            buttonNiveau.setForeground(Color.WHITE);
-            buttonNiveau.setFocusPainted(false);
-            Composants.put("Niveau",buttonNiveau);
-            
-            JWelcomeButton buttonScore = new JWelcomeButton("");
-            if(buttonScore==null)exit(1);
-            buttonScore.setFont(bigCentury);
-            buttonScore.setForeground(Color.WHITE);
-            buttonScore.setFocusPainted(false);
-            Composants.put("Score",buttonScore);
-            
-            JWelcomeButton buttonSaisie = new JWelcomeButton("");
-            buttonSaisie.setFont(bigCentury);
-            buttonSaisie.setForeground(Color.WHITE);
-            buttonSaisie.setFocusPainted(false);
-            Composants.put("Saisie",buttonSaisie);
-            
+                        
             JWelcomeButton buttonSauvegarde = new JWelcomeButton("Sauvegarder la partie");
             buttonSauvegarde.setFont(smallCentury);
             buttonSauvegarde.setForeground(Color.WHITE);
@@ -1288,8 +1261,12 @@ public void loadGame() throws IOException{
 
             Games.add(Game.readGame());
             
-            Games.get(0).start();
+            JButton buttonSaisie=(JButton) Games.get(0).gridInterface.Componant.get("Saisie");
+            JButton buttonNiveau=(JButton) Games.get(0).gridInterface.Componant.get("Niveau");
+            JButton buttonScore=(JButton) Games.get(0).gridInterface.Componant.get("Score");
+            JButton buttonWorddle=(JButton) Games.get(0).gridInterface.Componant.get("Worddle");
             
+            Games.get(0).start();
             // Grille de Jeu        
             JPanel grille=Games.get(0).getGridInterface();
             

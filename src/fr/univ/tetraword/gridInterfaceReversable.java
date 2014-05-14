@@ -3,8 +3,6 @@ package fr.univ.tetraword;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.HashMap;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
