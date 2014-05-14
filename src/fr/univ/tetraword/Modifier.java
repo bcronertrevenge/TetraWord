@@ -12,12 +12,11 @@ import static fr.univ.tetraword.modifierType.speedFall;
 import static fr.univ.tetraword.modifierType.switchGrid;
 import java.awt.Color;
 import java.io.Serializable;
-import javax.swing.JButton;
 
 /**
     * Modifier est la classe représentant un modificateur du jeu
  **/
-public class Modifier {
+public class Modifier implements Serializable {
     modifierType type;
     Game game;
     Game other;

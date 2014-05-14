@@ -131,6 +131,7 @@ public class MainGame extends JFrame implements Serializable {
     public void sauvegardeActionPerformed(java.awt.event.ActionEvent evt) throws IOException{ 
         Games.get(0).saveGame();
         JOptionPane.showMessageDialog(this,"Partie sauvegardée !");
+        this.requestFocusInWindow();
     }
 
 /**
