@@ -70,6 +70,8 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
     * les JButton à mettre à jour (saisie, score, niveau)
     * @param ia
     * Si le jeu courant est contrôlé par une intelligence artificielle
+    * @param options
+    * Les options gérées dans le menu
  **/
     public Game(HashMap<String,JComponent> composants, boolean ia, Options options){  
         this.other=null;
@@ -248,6 +250,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
 
 /**
     * Permet de récupérer le niveau du jeu
+     * @return le niveau
  **/
     public int getLevel(){
         return level;
@@ -255,6 +258,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
 
 /**
     * Permet de récupérer la grille du jeu
+     * @return la grille de Box
  **/
     public Box[][] getGrid(){
         return grid;
@@ -262,6 +266,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
 
 /**
     * Permet de récupérer le mode actuel du jeu (Tetris, Anagramme, Worddle)
+     * @return le mode actuel
  **/
     public int getMode(){
         return mode;
@@ -269,6 +274,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
     
 /**
     * Permet de récupérer le JPanel de la grille
+     * @return le composant Swing de la grille
  **/   
     public gridInterfaceReversable getGridInterface(){
         return gridInterface;
@@ -276,6 +282,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
 
 /**
     * Permet de récupérer le JPanel de la prochaine pièce
+     * @return le composant Swing de la prochaine pièce
  **/
     public JPanel getNextInterface(){
         return nextInterface;
@@ -287,18 +294,16 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
     @Override
     public void run(){
         
-        
         //Boucle principale
         try {
             if(firstGame){
                 init();
                 nextShape=Shape.getRandomShape();
                 newShapeInGame();
-                System.out.println("First Game");
             }
             else{
                 decalage=System.currentTimeMillis()-decalage;
-                System.out.println(decalage);
+                pause=false;
             }
             
             boolean modif=false;
@@ -354,7 +359,6 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
                         MainGame.getFrames()[0].requestFocusInWindow();
                         mot="";
                         worddleLast=System.currentTimeMillis()-decalage;
-                        System.out.println("Worddle Over");
                     }
                 }
                 
@@ -512,6 +516,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
     * Permet d'activer le mode anagramme
     * @param ligne
     * numéro de la ligne sur laquelle on active le mode anagramme
+    * @return l'heure à laquelle la ligne à été faite
  **/
     public long anagramme(int ligne){
         
@@ -634,6 +639,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
     
 /**
     * Permet de vérifier si il y a une ligne complète dans la grille
+     * @return l'heure à laquelle une ligne a été realisé
  **/  
     public long verifLigne(){
         int ligne=-1;
@@ -665,6 +671,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
 
 /**
     * Permet de créer une nouvelle forme dans le jeu
+     * @return true si il y a GameOver, false sinon
  **/ 
     public boolean newShapeInGame(){
         
@@ -781,6 +788,8 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
     
 /**
     * Permet de tester si le mouvement est possible ou pas
+     * @param sens, le sens du deplacement
+     * @return true si la pièce peut bouger, false sinon
  **/
     public boolean canMoveAside(int sens){          
 
@@ -814,6 +823,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
 
 /**
     * Permet de tester si la pièce courante peut tourner ou pas
+     * @return true si la pièce peut tourner, false sinon
  **/
     public boolean canRotate(){
         while(currentShape.x+currentShape.height>=10 || currentShape.y+currentShape.width>=20){
@@ -884,6 +894,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
     * La forme que l'on veut faire tomber
     * @param modifierTake
     * Si la forme doit prendre le modificateur ou pas
+     * @return si la pièce peut descendre
  **/
     public int shapeFall(Shape shape, boolean modifierTake){
         
@@ -946,6 +957,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
     * Permet de tester si une pièce peut tomber
     * @param shape
     * la pièce que l'on souhaite tester
+     * @return si la pièce peut descendre
  **/
     public boolean canFall(Shape shape){
        
@@ -973,8 +985,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
 
 /**
     * Permet la sauvegarde d'un ou plusieurs jeux
-    * @param savedGame
-    * Vecteurs qui contient un ou plusieurs jeux
+     * @throws java.io.IOException
  **/
   public void saveGame() throws IOException
     {
@@ -1003,7 +1014,6 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
         }
     } 
     catch(IOException ioe) {
-        System.out.println("Erreur Exception");
         ioe.printStackTrace();
     }
         decalage=tmp;
@@ -1013,6 +1023,12 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
   
  
  /**
+    * Permet de charger un jeu déjà existant
+     * @return le jeu crée
+     * @throws java.io.IOException
+     * @throws java.lang.ClassNotFoundException
+ **/
+	 /**
     * Permet de charger un jeu déjà existant
  **/
 	public static Game readGame() throws IOException, ClassNotFoundException
@@ -1064,10 +1080,12 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
          return loadGame;
         }
 
+
 /**
     * Permet d'avoir la Box inverse d'une box passée en paramètre
     * @param b
     * La Box dont on veut l'inverse
+    * @return La box inverse
  **/ 
     public Box getInverse(Box b){
         for(int i=0;i<20;++i){
@@ -1085,6 +1103,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
     * La Box sur laquelle l'utilisateur a cliqué
  **/
     
+    @Override
     public void actionPerformed(java.awt.event.ActionEvent evt) {
              if(evt.getSource() instanceof Box){
                 if(mode==1){
