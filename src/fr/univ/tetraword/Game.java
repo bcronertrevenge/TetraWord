@@ -56,7 +56,8 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
     Game other;
     boolean gameOver;
     Options options;
-
+    private static final long serialVersionUID=1;
+    boolean firstGame;
 /**
     * Constructeur d'un Game
     * @param composants
@@ -99,6 +100,8 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
         // Initialisation de grid
         gridInterface = new gridInterfaceReversable(new GridLayout(20,10),composants);
         nextInterface = new gridInterfaceReversable(new GridLayout(4,4));
+        
+        firstGame=true; //Le jeu a été crée et non chargé
     }
 
 /**
@@ -278,12 +281,15 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
         
         //Boucle principale
         try {
-        init();
-        nextShape=Shape.getRandomShape();
-        newShapeInGame();
-        int nbShape=1;
-        boolean modif=false;
-        
+            if(firstGame){
+                init();
+                nextShape=Shape.getRandomShape();
+                newShapeInGame();
+                System.out.println("First Game");
+            }
+            int nbShape=1;
+            boolean modif=false;
+            
         while(!gameOver){
      
                 if(pause){
@@ -955,7 +961,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
   public void saveGame() throws IOException
     {
     try {
-
+        firstGame=false;
         FileOutputStream file = new FileOutputStream("data/save.txt");
         ObjectOutputStream object= new ObjectOutputStream(file);
         try {
@@ -983,9 +989,9 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
  /**
     * Permet de charger un jeu déjà existant
  **/
-	public static Vector<Game> readGame()
+	public static Game readGame()
 	{ 
-		 Vector<Game> loadGames=null;
+		 Game loadGame=null;
  
             try {
                 File studentFile = new File("data/save.txt");
@@ -993,8 +999,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
                 ObjectInputStream object2 = new ObjectInputStream(fileInput);
                 try {
                     System.out.println("Chargement en cours...");
-                    loadGames = (Vector<Game>) object2.readObject();
-                    System.out.println(loadGames.get(0));
+                    loadGame = (Game) object2.readObject();
                 }
                 finally{
                     try{
@@ -1009,12 +1014,14 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
             System.out.println("Erreur, pas de fichiers");
                     System.exit(1);
                 } 
-            catch(IOException ioe) {}
+            catch(IOException ioe) {
+                ioe.printStackTrace();
+            }
             catch(ClassNotFoundException cnfe) {
             System.out.println("Erreur, problème classe");
             System.exit(1);
             }
-         return loadGames;
+         return loadGame;
         }
 
 /**

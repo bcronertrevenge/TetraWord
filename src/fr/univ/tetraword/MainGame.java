@@ -1286,7 +1286,9 @@ public void loadGame() throws IOException{
             // Création du jeu
             Games=new Vector<Game>();
 
-            Games=Game.readGame();
+            Games.add(Game.readGame());
+            
+            Games.get(0).start();
             
             // Grille de Jeu        
             JPanel grille=Games.get(0).getGridInterface();
