@@ -122,6 +122,7 @@ public class MainGame extends JFrame implements Serializable {
     * Lorsque l'on clique sur "Retour"
  **/
     public void retourActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
+       Games.clear();
         welcomePage();
     }
  
