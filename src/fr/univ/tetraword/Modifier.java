@@ -37,7 +37,7 @@ public class Modifier implements Serializable {
             a=(int)(Math.random()*10);
         else
             a=(int)(Math.random()*8);
-a=5;
+
         switch(a){
             case 0:
                 type=speedFall;

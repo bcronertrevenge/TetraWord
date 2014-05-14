@@ -122,7 +122,7 @@ public class MainGame extends JFrame implements Serializable {
     * Lorsque l'on clique sur "Retour"
  **/
     public void retourActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
-        Games.clear();
+       Games.clear();
         welcomePage();
     }
  
@@ -1264,15 +1264,20 @@ public void loadGame() throws IOException, ClassNotFoundException{
             });
             
             // Création du jeu
-            Games=new Vector<Game>();
-            
-            if(g != null)  
-                Games.add(g);
+            Games=new Vector<Game>();           
+            Games.add(g);
             
             JButton buttonSaisie=(JButton) Games.get(0).gridInterface.Componant.get("Saisie");
             JButton buttonNiveau=(JButton) Games.get(0).gridInterface.Componant.get("Niveau");
             JButton buttonScore=(JButton) Games.get(0).gridInterface.Componant.get("Score");
             JButton buttonWorddle=(JButton) Games.get(0).gridInterface.Componant.get("Worddle");
+            JLabel labelTime=(JLabel) Games.get(0).gridInterface.Componant.get("Temps");
+            
+            buttonSaisie.setFont(copperplate);
+            buttonNiveau.setFont(copperplate);
+            buttonScore.setFont(copperplate);
+            buttonWorddle.setFont(copperplate);
+            labelTime.setFont(copperplate);
             
             Games.get(0).start();
             // Grille de Jeu        
@@ -1282,11 +1287,6 @@ public void loadGame() throws IOException, ClassNotFoundException{
             JPanel buttonPiece = Games.get(0).getNextInterface();
                        
             // Labels
-            JLabel labelTime = new JLabel();
-            labelTime.setFont(copperplate);
-            labelTime.setForeground(new Color(33,91,201));
-            labelTime.setText("Temps");
-            
             JLabel labelWorddle = new JLabel();
             labelWorddle.setFont(copperplate);
             labelWorddle.setForeground(new Color(33,91,201));

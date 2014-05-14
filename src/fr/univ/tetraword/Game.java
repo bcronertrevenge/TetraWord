@@ -62,6 +62,8 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
     Options options;
     private static final long serialVersionUID=1;
     boolean firstGame;
+    private long decalage;
+    int nbShape;
 /**
     * Constructeur d'un Game
     * @param composants
@@ -106,6 +108,9 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
         nextInterface = new gridInterfaceReversable(new GridLayout(4,4));
         
         firstGame=true; //Le jeu a été crée et non chargé
+        
+        decalage=0;
+        nbShape=1;
     }
 
 /**
@@ -181,7 +186,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
         }
         if(gridInterface.Componant.containsKey("Worddle")){
             b=(JButton) gridInterface.Componant.get("Worddle");
-            if(System.currentTimeMillis()-worddleLast>=worddleReload){
+            if(System.currentTimeMillis()-decalage-worddleLast>=worddleReload){
                 b.setBackground(new Color(49,177,19));
                 b.setFocusPainted(false);
                 b.setText("");
@@ -208,7 +213,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
                         l.setText("Temps");
                     break;
                 case 1:
-                        long timeAnag=anagTime-(System.currentTimeMillis()-beginTime);
+                        long timeAnag=anagTime-(System.currentTimeMillis()-decalage-beginTime);
                         if(timeAnag < 6000)
                             l.setForeground(Color.red);
                         else
@@ -216,7 +221,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
                         l.setText(String.valueOf(timeAnag/1000)+" s restantes");
                     break;
                 case 2:
-                        long timeWorddle=worddleTime-(System.currentTimeMillis()-worddleLast);
+                        long timeWorddle=worddleTime-(System.currentTimeMillis()-decalage-worddleLast);
                         if(timeWorddle < 6000)
                             l.setForeground(Color.red);
                         else
@@ -291,7 +296,11 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
                 newShapeInGame();
                 System.out.println("First Game");
             }
-            int nbShape=1;
+            else{
+                decalage=System.currentTimeMillis()-decalage;
+                System.out.println(decalage);
+            }
+            
             boolean modif=false;
             
         while(!gameOver){
@@ -324,7 +333,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
                         if(intelligence!=null)
                              intelligence.play();
                         rafraichir();
-                    if(System.currentTimeMillis()-beginTime>anagTime){
+                    if(System.currentTimeMillis()-decalage-beginTime>anagTime){
                         mode = 0;
                         unSelected(-1);
                         clean();
@@ -337,14 +346,14 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
                         if(intelligence!=null)
                             intelligence.play();
                         rafraichir();
-                    if(System.currentTimeMillis()-worddleLast>worddleTime){
+                    if(System.currentTimeMillis()-decalage-worddleLast>worddleTime){
                         mode=0;
                         suppressionWorddle();
                         clean();
                         clearBox();
                         MainGame.getFrames()[0].requestFocusInWindow();
                         mot="";
-                        worddleLast=System.currentTimeMillis();
+                        worddleLast=System.currentTimeMillis()-decalage;
                         System.out.println("Worddle Over");
                     }
                 }
@@ -401,7 +410,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
     * Permet d'activer le mode Worddle
  **/
     public void worddle(){
-        if(mode != 0 || System.currentTimeMillis()-worddleLast<worddleReload || pause){
+        if(mode != 0 || System.currentTimeMillis()-decalage-worddleLast<worddleReload || pause){
             return;
         }    
         
@@ -436,7 +445,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
         worddleBoxPosX=x;
         worddleBoxPosY=y;
         mode=2;
-        worddleLast=System.currentTimeMillis();
+        worddleLast=System.currentTimeMillis()-decalage;
         mot+=firstBox.getBrick().lettre;
     }
 
@@ -508,7 +517,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
         
         //Si l'autre joueur est en anagramme, il ne peut pas jouer l'anagramme tout de suite
         if(other!=null){
-            if(other.getMode()==1) return System.currentTimeMillis();
+            if(other.getMode()==1) return System.currentTimeMillis()-decalage;
         }
         
         Border yellowline = BorderFactory.createLineBorder(Color.YELLOW,1);
@@ -517,7 +526,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
             }
         anagLine=ligne;
         mode = 1;
-        return System.currentTimeMillis(); 
+        return System.currentTimeMillis()-decalage; 
         
     }
 
@@ -561,7 +570,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
                 clearBox();
                 MainGame.getFrames()[0].requestFocusInWindow();
                 mot="";
-                worddleLast=System.currentTimeMillis();
+                worddleLast=System.currentTimeMillis()-decalage;
             }
             else if(Dictionary.getDictionary().contains(mot)){                
                 boolean quit;
@@ -964,7 +973,11 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
  **/
   public void saveGame() throws IOException
     {
+        pause=true;
+       long tmp=decalage;
+       decalage=System.currentTimeMillis()-decalage;
     try {
+        
         firstGame=false;
         Date date = new Date( System.currentTimeMillis() );
     SimpleDateFormat sdf = new SimpleDateFormat( "dd.MM.yyyy" );
@@ -988,7 +1001,9 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
         System.out.println("Erreur Exception");
         ioe.printStackTrace();
     }
- 
+        decalage=tmp;
+        pause=false;
+        
     }
   
  
