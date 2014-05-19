@@ -64,6 +64,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
     boolean firstGame;
     private long decalage;
     int nbShape;
+    boolean stop;
 /**
     * Constructeur d'un Game
     * @param composants
@@ -74,6 +75,7 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
     * Les options gérées dans le menu
  **/
     public Game(HashMap<String,JComponent> composants, boolean ia, Options options){  
+        stop=false;
         this.other=null;
         this.options=options;
         
@@ -368,9 +370,10 @@ public class Game extends Thread implements ActionListener, MouseListener, Seria
               }
                   
         }
-        System.out.println("GAME OVER");
-        JOptionPane.showMessageDialog(JFrame.getFrames()[0],"GAME OVER !");
-
+        if(!stop){
+            System.out.println("GAME OVER");
+            JOptionPane.showMessageDialog(JFrame.getFrames()[0],"GAME OVER !");
+        }
         } catch (InterruptedException ex) {
                 Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
             }

@@ -122,8 +122,11 @@ public class MainGame extends JFrame implements Serializable {
     * Lorsque l'on clique sur "Retour"
  **/
     public void retourActionPerformed(java.awt.event.ActionEvent evt) throws IOException{                                         
-        if(Games!=null)
+        if(Games!=null){
+            for(Game g:Games)
+                g.stop=true;
             Games.clear();
+        }
         welcomePage();
     }
  
@@ -1473,7 +1476,7 @@ public void loadGame() throws IOException, ClassNotFoundException{
             JLabel TimeChute = new JLabel();
             TimeChute.setFont(smallCentury);
             TimeChute.setForeground(new Color(33,91,201));
-            TimeChute.setText("Temps de chute d'une pièce (s)");
+            TimeChute.setText("Temps de chute d'une pièce (ms)");
             
             JLabel FreqModif = new JLabel();
             FreqModif.setFont(smallCentury);
@@ -1554,9 +1557,9 @@ public void loadGame() throws IOException, ClassNotFoundException{
             
             // Chute d'une pièce
             JSlider jSlider4 = new JSlider();
-            jSlider4.setMaximum(40);
-            jSlider4.setMinimum(20);
-            jSlider4.setValue(30);
+            jSlider4.setMaximum(1500);
+            jSlider4.setMinimum(500);
+            jSlider4.setValue(1000);
             final JLabel labelSlider4 = new JLabel();
             labelSlider4.setHorizontalAlignment(SwingConstants.CENTER);
             labelSlider4.setText(String.valueOf(jSlider4.getValue()));
@@ -1570,7 +1573,7 @@ public void loadGame() throws IOException, ClassNotFoundException{
                             labelSlider4.setText(String.valueOf(value));
                             labelSlider4.repaint();
                         }
-                        options.fallTime=value*1000;
+                        options.fallTime=value;
                     }    
                 }
             });
